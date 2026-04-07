@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Content Security Policy -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data:;
+  connect-src https://api.countapi.xyz https://ipapi.co;
+">
 <title>Julia Liu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -18,7 +27,83 @@
     --accent:  #111111;
   }
 
-  html { font-size: 16px; }
+  /* ── WATERMARK ── */
+  .wm-label {
+    position: absolute;
+    bottom: 8px; right: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.07em;
+    pointer-events: none;
+    z-index: 5;
+    -webkit-user-select: none;
+    user-select: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    white-space: nowrap;
+  }
+  /* album grid images need their own wrapper */
+  .img-wrap {
+    position: relative;
+    overflow: hidden;
+    display: block;
+  }
+  .img-wrap img {
+    width: 100%; aspect-ratio: 4/3;
+    object-fit: cover; display: block;
+    transition: opacity 0.2s, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    cursor: zoom-in;
+  }
+  .img-wrap:hover img { opacity: 0.88; transform: scale(1.02); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .site-footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .site-footer-copy a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-footer-copy a:hover { color: var(--text); }
+  @media(max-width:680px) {
+    .site-footer { margin-left: 0; padding: 20px 24px; }
+  }
+  img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none; /* blocks right-click on images */
+  }
+  /* Re-enable pointer for lightbox trigger (handled via parent) */
+  .g-slot, .ep-album-grid, .ep-cover { pointer-events: auto; }
+
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* Allow text selection only on readable content */
+  .project-desc, .about-bio, .ab-tl-text, .item-title {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  @media print {
+    body { display: none !important; }
+  }
 
   body {
     background: var(--bg);
@@ -28,69 +113,128 @@
     min-height: 100vh;
   }
 
-  /* ── TOP NAV ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
+  /* ── SIDEBAR LAYOUT ── */
+  body {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 64px;
-    height: 56px;
+    min-height: 100vh;
+    align-items: flex-start;
   }
 
-  .header-name {
+  .content-wrap {
+    margin-left: 160px;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 160px;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 48px 32px 40px;
+    z-index: 100;
+    background: var(--bg);
+  }
+
+  .sidebar-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
+    font-size: 16px;
     font-style: italic;
     font-weight: 400;
     color: var(--text);
     letter-spacing: 0.01em;
-    text-decoration: none;
     cursor: pointer;
+    margin-bottom: 48px;
+    line-height: 1.2;
   }
 
   nav {
     display: flex;
-    align-items: center;
-    gap: 36px;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
   }
 
   nav a {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     text-decoration: none;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: color 0.2s;
     cursor: pointer;
+    padding: 9px 0;
     position: relative;
-    padding-bottom: 2px;
   }
-  nav a::after {
+  nav a::before {
     content: '';
     position: absolute;
-    bottom: -2px;
-    left: 0; right: 0;
-    height: 1px;
+    left: -12px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px; height: 3px;
+    border-radius: 50%;
     background: var(--text);
-    transform: scaleX(0);
-    transition: transform 0.2s;
+    opacity: 0;
+    transition: opacity 0.2s;
   }
   nav a:hover { color: var(--text); }
   nav a.active { color: var(--text); }
-  nav a.active::after { transform: scaleX(1); }
+  nav a.active::before { opacity: 1; }
+
+  /* ── LANG PICKER ── */
+  .lang-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .lp-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 7px 0;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .lp-btn::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%; transform: translateY(-50%);
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--text);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .lp-btn:hover { color: var(--text); }
+  .lp-btn.active { color: var(--text); }
+  .lp-btn.active::before { opacity: 1; }
 
   /* ── MAIN ── */
   main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 72px 64px 120px;
+    flex: 1;
+    padding: 64px 80px 80px;
+    min-width: 0;
+  }
+
+  /* text-heavy sections get a comfortable reading width */
+  #about, #thoughts, #notes {
+    max-width: 680px;
   }
 
   section { display: none; }
@@ -103,24 +247,8 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── HEADER TOP ROW (mobile only) ── */
-  .header-top-row { display: contents; }
-
-  /* ── LANG TOGGLE ── */
-  .lang-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    background: none;
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    margin-left: 16px;
-    flex-shrink: 0;
-  }
-  .lang-btn:hover { color: var(--text); border-color: #aaa; }
+  /* ── MOBILE TOPBAR (kept for reference, activated below) ── */
+  .mobile-topbar { display: none; }
 
   /* ── ABOUT REDESIGN ── */
   .ab-hero {
@@ -130,7 +258,15 @@
     align-items: start;
     margin-bottom: 48px;
   }
-  .ab-tagline {
+  .ab-oneliner {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .ab-bio {
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 300;
@@ -141,7 +277,7 @@
   }
   .r-hero { aspect-ratio: 3/4; background: #f0eeeb; }
 
-  /* identity cards */
+  /* ── FLIP CARDS ── */
   .ab-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -149,11 +285,36 @@
     margin-bottom: 32px;
   }
   .ab-card {
+    height: 160px;
+    perspective: 800px;
+    cursor: pointer;
+  }
+  .ab-card-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ab-card.flipped .ab-card-inner { transform: rotateY(180deg); }
+  .ab-card-front,
+  .ab-card-back {
+    position: absolute;
+    inset: 0;
     border: 1px solid var(--border);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
     padding: 18px 16px;
     transition: border-color 0.2s;
   }
-  .ab-card:hover { border-color: #aaa; }
+  .ab-card:hover .ab-card-front,
+  .ab-card:hover .ab-card-back { border-color: #aaa; }
+  .ab-card-back {
+    transform: rotateY(180deg);
+    justify-content: center;
+    background: var(--bg);
+  }
   .ab-card-icon {
     font-size: 18px;
     color: #bbb;
@@ -168,11 +329,24 @@
     color: var(--muted);
     margin-bottom: 8px;
   }
-  .ab-card-desc {
-    font-family: 'Cormorant Garamond', serif;
+  .ab-card-hint {
     font-size: 14px;
-    line-height: 1.6;
+    color: var(--text);
+    margin-top: auto;
+    transition: transform 0.2s;
+  }
+  .ab-card:hover .ab-card-hint { transform: rotate(90deg); }
+  .ab-card-desc {
+    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    line-height: 1.65;
     color: var(--text2);
+    font-weight: 400;
+  }
+
+  @media(max-width:600px) {
+    .ab-cards { grid-template-columns: repeat(2,1fr); }
+    .ab-card { height: 140px; }
   }
 
   /* stats */
@@ -208,7 +382,7 @@
   .ab-timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 8px; }
   .ab-tl-item {
     display: grid;
-    grid-template-columns: 68px 20px 1fr;
+    grid-template-columns: 64px 16px 1fr;
     align-items: start;
     gap: 0;
     padding: 12px 0;
@@ -230,11 +404,12 @@
     margin: 5px auto 0;
   }
   .ab-tl-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
+    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
     font-weight: 400;
     color: var(--text);
     padding-left: 12px;
+    line-height: 1.5;
   }
 
   @media(max-width:600px) {
@@ -249,7 +424,113 @@
   /* ── SHARED ── */
   .divider { width: 40px; height: 1px; background: #ddd; margin: 44px 0; }
 
-  /* ── ABOUT ── */
+  /* ── ABOUT NAME ROW ── */
+  .ab-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .ab-social-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+  .ab-slink {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .ab-slink:hover { color: var(--text); border-color: #aaa; }
+  .ab-sdot { font-size: 9px; color: #ddd; }
+
+  /* ── ABOUT BLOCK B ── */
+  .ab-block-b {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 40px;
+    margin-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ab-stamps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .ab-stat-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .ab-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  /* Countries tooltip */
+  .ab-stat-countries {
+    position: relative;
+    cursor: default;
+    display: inline-block;
+  }
+  .ab-countries-tip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    min-width: 180px;
+    z-index: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+    pointer-events: none;
+  }
+  .ab-countries-tip span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text2);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .ab-stat-countries:hover .ab-countries-tip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .ab-stamps-sep {
+    width: 1px;
+    height: 11px;
+    background: var(--border);
+    flex-shrink: 0;
+    margin: 0 4px;
+  }
   .about-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 56px;
@@ -302,18 +583,62 @@
   .social-link:hover { color: var(--text); }
   .social-sep { color: #ddd; font-size: 10px; }
 
-  .about-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 52px; }
+  .about-flags {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .af-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .af-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .af-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    transition: color 0.2s;
+    cursor: default;
+  }
+  .af-code:hover { color: var(--text2); }
+  .af-code + .af-code::before {
+    content: '·';
+    margin-right: 6px;
+    color: var(--border);
+  }
+
+  /* social link arrow indicator */
+  .social-link::after {
+    content: ' ↗';
+    font-size: 9px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .social-link:hover::after { opacity: 1; }
   .about-tag {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    border: 1px solid #ddd;
-    padding: 5px 14px;
-    color: var(--muted);
+    color: var(--text2);
     letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
   }
-  .about-tag:hover { border-color: var(--text); color: var(--text); }
+  .about-tags {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
 
   /* photo grid */
   .photo-grid   { display: grid; grid-template-columns: 1.1fr 2fr 1.1fr; gap: 4px; }
@@ -378,9 +703,10 @@
     margin-bottom: 14px;
   }
   .project-desc {
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 1.8;
+    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.75;
     color: var(--text2);
     max-width: 520px;
   }
@@ -404,8 +730,88 @@
     margin-top: 10px;
     max-width: 520px;
   }
-  .project-authors strong { color: var(--text); }
+  .project-meta strong {
+    color: var(--text);
+    font-weight: 700;
+  }
   .project-authors span { font-size: 10px; opacity: 0.7; }
+
+  /* ── PROJECT STYLE / COLOUR BLOCK ── */
+  .proj-style {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ps-style-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .ps-style-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-shrink: 0;
+    width: 52px;
+    padding-top: 3px;
+  }
+  .ps-swatches {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .ps-style-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+  }
+
+  /* ── PROJECT STACK BREAKDOWN ── */
+  .proj-stack {
+    margin-top: 20px;
+    border: 1px solid var(--border);
+  }
+  .ps-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .ps-row:last-child { border-bottom: none; }
+  .ps-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-right: 1px solid var(--border);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    background: #fafafa;
+  }
+  .ps-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.04em;
+    padding: 10px 16px;
+    line-height: 1.6;
+  }
 
   /* ── PROJECT LINK ── */
   .project-link {
@@ -432,23 +838,76 @@
   .notes-cat::after { content:''; flex:1; height:1px; background:var(--border); max-width:40px; }
   .notes-cat:first-of-type { margin-top:0; }
 
-  /* ── PROJECT CATEGORY ── */
-  .proj-cat {
+  /* ── PROJECT TABS ── */
+  .proj-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 44px;
+  }
+  .ptab {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 14px 28px 12px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: -1px;
+    text-align: left;
+    transition: opacity 0.2s;
+  }
+  .ptab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 100%; height: 1px;
+    background: var(--text);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .ptab:hover { opacity: 0.7; }
+  .ptab.active::after { transform: scaleX(1); }
+  .ptab-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .ptab-name {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .ptab.active .ptab-name,
+  .ptab.active .ptab-num { color: var(--text); }
+
+  /* project groups */
+  .proj-group { display: none; }
+  .proj-group.active {
+    display: block;
+    animation: fadeUp 0.25s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* PROJECT CATEGORY ── */
+  .proj-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: 32px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
   .proj-cat::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
+    content: ''; flex: 1; height: 1px; background: var(--border);
   }
   .project-header {
     display: flex;
@@ -466,10 +925,10 @@
     border-radius: 2px;
     flex-shrink: 0;
   }
-  .badge-research { background: #eef2ff; color: #4455aa; border: 1px solid #c8d0f0; }
-  .badge-corp     { background: #fff4e6; color: #aa6600; border: 1px solid #f0d0a0; }
-  .badge-aws      { background: #fff8e6; color: #997700; border: 1px solid #f0d880; }
-  .badge-side     { background: #f0f0f0; color: #777777; border: 1px solid #ddd; }
+  .badge-research { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+  .badge-corp     { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+  .badge-aws      { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
+  .badge-side     { background: #f0f0f0; color: #777; border: 1px solid #ddd; }
 
   /* ── GALLERY SERIES LABEL ── */
   .gallery-series-label {
@@ -540,21 +999,21 @@
     margin-bottom: 32px;
   }
   .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 200px;
-    gap: 4px;
+    columns: 3;
+    column-gap: 4px;
   }
+  @media(max-width: 900px) { .gallery-grid { columns: 2; } }
+  @media(max-width: 500px) { .gallery-grid { columns: 1; } }
   .g-slot {
+    break-inside: avoid;
+    margin-bottom: 4px;
     background: #f0eeeb;
     overflow: hidden;
     position: relative;
   }
-  .g-slot.tall  { grid-row: span 2; }
-  .g-slot.wide  { grid-column: span 2; }
   .g-slot img {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
     display: block;
     transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
     cursor: pointer;
@@ -573,12 +1032,23 @@
   }
   .gph::after { content: 'photo'; }
 
-  @media(max-width:600px) {
-    .gallery-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 160px;
-    }
-    .g-slot.wide { grid-column: span 1; }
+  .gallery-empty {
+    display: none;
+    padding: 80px 0;
+    text-align: center;
+  }
+  .gallery-empty.visible { display: block; }
+  .gallery-empty-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+  .gallery-empty-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   /* ── EPISODES EXPANDABLE ── */
@@ -588,6 +1058,12 @@
     gap: 4px;
   }
   .ep-country { display: flex; flex-direction: column; }
+
+  /* 展開時佔滿整行 */
+  .ep-country.open {
+    grid-column: 1 / -1;
+  }
+
   .ep-cover {
     position: relative;
     aspect-ratio: 3/2;
@@ -595,21 +1071,24 @@
     overflow: hidden;
     transition: opacity 0.2s;
   }
+  .ep-country.open .ep-cover { aspect-ratio: 16/7; }
+
   .ep-cover:hover { opacity: 0.88; }
   .ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
   .ep-cover-info {
     position: absolute;
-    bottom: 12px; left: 14px;
+    bottom: 16px; left: 18px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
   .ep-cover-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
+    font-size: 22px;
     font-style: italic;
     color: rgba(255,255,255,0.95);
   }
+  .ep-country.open .ep-cover-name { font-size: 28px; }
   .ep-cover-date {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -618,10 +1097,10 @@
   }
   .ep-expand-hint {
     position: absolute;
-    bottom: 12px; right: 14px;
-    font-size: 12px;
+    bottom: 16px; right: 18px;
+    font-size: 13px;
     color: rgba(255,255,255,0.5);
-    transition: transform 0.3s, color 0.2s;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), color 0.2s;
     font-family: 'DM Mono', monospace;
   }
   .ep-country.open .ep-expand-hint {
@@ -631,194 +1110,335 @@
   .ep-album {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1);
+    transition: max-height 0.6s cubic-bezier(0.22,1,0.36,1);
   }
-  .ep-country.open .ep-album { max-height: 800px; }
+  .ep-country.open .ep-album { max-height: 4000px; }
   .ep-album-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
-    padding-top: 3px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding-top: 4px;
   }
-  .ep-album-grid img {
-    width: 100%; aspect-ratio: 3/2;
-    object-fit: cover; display: block;
-    transition: opacity 0.2s;
-  }
-  .ep-album-grid img:hover { opacity: 0.85; }
   .ep-ph {
-    aspect-ratio: 3/2;
+    aspect-ratio: 4/3;
     background: #f0eeeb;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: lbIn 0.25s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes lbIn {
+    from { opacity:0; transform: scale(0.93); }
+    to   { opacity:1; transform: scale(1); }
+  }
+  .lb-close {
+    position: fixed;
+    top: 20px; right: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    z-index: 10000;
+  }
+  .lb-close:hover { color: #fff; }
+  .lb-nav {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    padding: 20px 16px;
+    transition: color 0.2s;
+    z-index: 10000;
+    user-select: none;
+  }
+  .lb-nav:hover { color: #fff; }
+  .lb-prev { left: 8px; }
+  .lb-next { right: 8px; }
+  .lb-counter {
+    position: fixed;
+    bottom: 22px; left: 50%; transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    z-index: 10000;
+  }
+
+  .sidebar-views {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .sv-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .sv-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .sv-loc {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
   /* ── RESPONSIVE ── */
 
-  /* Tablet */
-  @media(max-width:860px){
-    header { padding: 0 32px; }
-    main { padding: 60px 32px 100px; }
-    .about-name { font-size: 46px; }
-    nav { gap: 16px; }
-    nav a { font-size: 10px; letter-spacing: 0.06em; }
+  /* Tablet: narrow sidebar */
+  @media(max-width:960px){
+    .sidebar { width: 140px; padding: 40px 24px 36px; }
+    .content-wrap { margin-left: 140px; }
+    main { padding: 56px 52px 80px; }
   }
 
-  @media(max-width:720px){
-    header { padding: 0; height: auto; flex-direction: column; align-items: stretch; }
-    .header-top-row { display: flex !important; align-items: center; justify-content: space-between; padding: 0 20px; }
-    .header-name { padding: 14px 0 12px; }
-    .lang-btn { margin-left: 0; }
-    nav {
+  /* Mobile: sidebar → top bar */
+  @media(max-width:680px){
+    body { flex-direction: column; }
+    .content-wrap { margin-left: 0; }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
       width: 100%;
-      display: flex;
+      height: auto;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 20px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+    }
+    .sidebar-name {
+      font-size: 15px;
+      margin-bottom: 0;
+      padding: 14px 0;
+      flex-shrink: 0;
+    }
+    nav {
       flex-direction: row;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      border-top: 1px solid var(--border);
+      flex: 1;
       padding: 0 8px;
+      margin: 0 8px;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
       gap: 0;
     }
     nav::-webkit-scrollbar { display: none; }
     nav a {
       flex-shrink: 0;
-      padding: 12px 14px;
-      font-size: 10px;
+      padding: 14px 14px;
+      font-size: 9px;
       letter-spacing: 0.07em;
     }
-    nav a::after { display: none; }
-    nav a.active { color: var(--text); border-bottom: 2px solid var(--text); }
-    main { padding: 48px 24px 80px; }
-  }
-
-  /* Mobile */
-  @media(max-width:600px){
-    header {
-      padding: 0;
-      height: auto;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-    }
-    .header-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-    }
-    .header-name {
-      padding: 14px 0 12px;
-      font-size: 16px;
-    }
-    .lang-btn {
-      margin-left: 0;
-    }
-    nav {
-      width: 100%;
-      gap: 0;
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      border-top: 1px solid var(--border);
-      padding: 0 8px;
-    }
-    nav::-webkit-scrollbar { display: none; }
-    nav a {
-      flex-shrink: 0;
-      text-align: center;
-      padding: 14px 16px;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      min-width: 64px;
-    }
-    nav a::after { display: none; }
+    nav a::before { display: none; }
     nav a.active {
       color: var(--text);
       border-bottom: 2px solid var(--text);
     }
-    main { padding: 36px 20px 80px; }
+    .lang-picker {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+      gap: 0;
+      flex-shrink: 0;
+    }
+    .lp-btn { font-size: 8px; padding: 4px 6px; letter-spacing: 0.04em; }
+    .lp-btn::before { display: none; }
+    .lp-btn.active { color: var(--text); border-bottom: 2px solid var(--text); }
+    main { padding: 40px 24px 80px; }
+    .site-footer { padding: 20px 24px; }
+    #about, #thoughts, #projects, #notes { max-width: 100%; }
+
     .about-name { font-size: 36px; }
     .about-bio { font-size: 17px; }
-    .about-sub { font-size: 9px; letter-spacing: 0.07em; }
+    .about-sub { font-size: 9px; }
     .photo-grid { grid-template-columns: 1fr 1fr; }
     .photo-grid-b { grid-template-columns: 1fr 1fr; }
     .photo-grid .r1,.photo-grid .r3 { display: none; }
-    .ep-grid { grid-template-columns: repeat(2,1fr); }
-    .ep-card:nth-child(5),.ep-card:nth-child(8){ aspect-ratio: 3/2; }
     .item-title { font-size: 15px; white-space: normal; }
     .project-name { font-size: 22px; }
     .project-desc { font-size: 15px; }
-    .about-tags { gap: 6px; }
-    .about-tag { font-size: 10px; padding: 4px 10px; }
+    .about-tags { gap: 12px; }
+    .about-tag { font-size: 10px; }
     .project-tags { gap: 5px; }
     .ptag { font-size: 10px; padding: 4px 10px; }
     .about-social { flex-wrap: wrap; gap: 12px; }
+    .ep-album-grid { grid-template-columns: repeat(2, 1fr); }
+    .ep-country.open .ep-cover { aspect-ratio: 4/3; }
+    .ep-country.open .ep-cover-name { font-size: 20px; }
+    .visitor-badge { bottom: 12px; right: 12px; }
+    .ab-cards { grid-template-columns: repeat(2,1fr); }
   }
 
-  /* Very small */
   @media(max-width:360px){
-    nav a { font-size: 9px; padding: 12px 12px; }
-    .about-name { font-size: 30px; }
+    nav a { font-size: 8px; padding: 12px 10px; }
+    .about-name { font-size: 28px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-top-row">
-    <span class="header-name" data-section="about">Julia Liu</span>
-    <button class="lang-btn" id="langBtn">中文</button>
-  </div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <span class="sidebar-name" data-section="about">Julia Liu</span>
   <nav>
-    <a class="active" data-section="about" data-zh="about" data-en="about">about</a>
-    <a data-section="gallery" data-zh="gallery" data-en="gallery">gallery</a>
-    <a data-section="thoughts" data-zh="thoughts" data-en="thoughts">thoughts</a>
-    <a data-section="episodes" data-zh="episodes" data-en="episodes">episodes</a>
-    <a data-section="projects" data-zh="projects" data-en="projects">projects</a>
-    <a data-section="notes" data-zh="notes" data-en="notes">notes</a>
+    <a class="active" data-section="about">about</a>
+    <a data-section="gallery">gallery</a>
+    <a data-section="thoughts">thoughts</a>
+    <a data-section="episodes">episodes</a>
+    <a data-section="projects">projects</a>
+    <a data-section="notes">tech notes</a>
   </nav>
-</header>
+  <div class="lang-picker">
+    <button class="lp-btn active" data-lang="en">EN</button>
+    <button class="lp-btn" data-lang="zh">中文</button>
+    <button class="lp-btn" data-lang="fr">FR</button>
+    <button class="lp-btn" data-lang="ja">日本語</button>
+    <button class="lp-btn" data-lang="ko">한국어</button>
+  </div>
+  <div class="sidebar-views">
+    <div class="sv-num" id="vbCount">—</div>
+    <div class="sv-label" data-zh="累計瀏覽" data-en="total views" data-fr="vues totales" data-ja="総閲覧数" data-ko="총 조회수">total views</div>
+    <div class="sv-loc">
+      <span id="vbFlag">🌐</span>
+      <span id="vbLocText">—</span>
+    </div>
+  </div>
+</aside>
 
+<!-- CONTENT WRAP -->
+<div class="content-wrap">
 <main>
 
   <!-- ABOUT -->
   <section id="about" class="active">
 
-    <!-- Hero row -->
-    <div class="about-name">Julia Liu</div>
-    <div class="about-sub"><span data-zh="AI 研究者 &nbsp;·&nbsp; 斜槓人 &nbsp;·&nbsp; 台灣" data-en="AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan">AI 研究者 &nbsp;·&nbsp; 斜槓人 &nbsp;·&nbsp; 台灣</span></div>
-    <p class="ab-tagline"><span data-zh="在程式碼、鏡頭之間找到自己的節奏。" data-en="Finding my rhythm between code and the lens.">在程式碼、鏡頭之間找到自己的節奏。</span></p>
-    <div class="about-social">
-      <a href="https://github.com/juliahahah" target="_blank" class="social-link" data-zh="GitHub" data-en="GitHub">GitHub</a>
-      <span class="social-sep">·</span>
-      <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="social-link" data-zh="LinkedIn" data-en="LinkedIn">LinkedIn</a>
-      <span class="social-sep">·</span>
-      <a href="#" data-mail="1" class="social-link" data-zh="Email" data-en="Email">Email</a>
+    <!-- ── Block A: Identity ── -->
+    <div class="ab-name-row">
+      <div class="about-name">Julia Liu</div>
+      <div class="ab-social-mini">
+        <a href="https://github.com/juliahahah" target="_blank" class="ab-slink" data-zh="GitHub" data-en="GitHub">GitHub</a>
+        <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="ab-slink" data-zh="LinkedIn" data-en="LinkedIn">LinkedIn</a>
+        <a href="#" data-mail="1" class="ab-slink" data-zh="Email" data-en="Email">Email</a>
+      </div>
+    </div>
+    <div class="about-sub"><span data-zh="AI 研究者 &nbsp;·&nbsp; 斜槓人 &nbsp;·&nbsp; 台灣" data-en="AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan" data-fr="Chercheuse en IA &nbsp;·&nbsp; Multipotentialiste &nbsp;·&nbsp; Taïwan" data-ja="AI研究者 &nbsp;·&nbsp; マルチポテンシャライト &nbsp;·&nbsp; 台湾" data-ko="AI 연구자 &nbsp;·&nbsp; 다재다능 &nbsp;·&nbsp; 대만">AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan</span></div>
+    <p class="ab-tagline"><span data-zh="在程式碼、鏡頭之間找到自己的節奏。" data-en="Finding my rhythm between code and the lens." data-fr="Trouver mon rythme entre le code et l'objectif." data-ja="コードとレンズの間で、自分のリズムを見つけていく。" data-ko="코드와 렌즈 사이에서 나만의 리듬을 찾아가며.">Finding my rhythm between code and the lens.</span></p>
+
+    <!-- ── Block B: Personal stamps ── -->
+    <div class="ab-block-b">
+      <div class="ab-stamps">
+        <span class="about-tag" data-zh="#心碎小狗" data-en="#Heartbroken Puppy" data-fr="#Chiot Brisé" data-ja="#心砕けた子犬" data-ko="#상처받은 강아지">#心碎小狗</span>
+        <span class="about-tag" data-zh="#內耗達人" data-en="#Overthinker" data-fr="#Maître de l'Épuisement" data-ja="#内省マスター" data-ko="#내면소진 전문가">#內耗達人</span>
+        <span class="about-tag" data-zh="#工作狂" data-en="#Workaholic" data-fr="#Bourreau de Travail" data-ja="#仕事中毒" data-ko="#워커홀릭">#工作狂</span>
+      </div>
+      <div class="ab-stamps">
+        <span class="ab-stat-item ab-stat-countries">
+          <span class="ab-stat-num">10+</span>&nbsp;<span class="ab-stat-label-text" data-zh="個國家" data-en="countries" data-fr="pays" data-ja="ヵ国" data-ko="개국">countries</span>
+          <div class="ab-countries-tip">
+            <span>🇹🇼 Taiwan</span><span>🇯🇵 Japan</span><span>🇫🇷 France</span>
+            <span>🇸🇬 Singapore</span><span>🇲🇾 Malaysia</span><span>🇵🇭 Philippines</span>
+            <span>🇨🇳 China</span><span>🇲🇴 Macau</span><span>🇪🇸 Spain</span>
+            <span>🇺🇸 USA</span><span>🇭🇰 Hong Kong</span>
+          </div>
+        </span>
+        <span class="ab-sdot">·</span>
+        <span class="ab-stat-item"><span class="ab-stat-num">5+</span>&nbsp;<span data-zh="個專案" data-en="projects" data-fr="projets" data-ja="プロジェクト" data-ko="프로젝트">projects</span></span>
+        <span class="ab-sdot">·</span>
+        <span class="ab-stat-item"><span class="ab-stat-num">50+</span>&nbsp;<span data-zh="張照片" data-en="photos" data-fr="photos" data-ja="枚の写真" data-ko="장 사진">photos</span></span>
+      </div>
     </div>
 
-    <!-- Identity cards -->
+    <!-- Identity cards (click to flip) -->
     <div class="ab-cards">
       <div class="ab-card">
-        <div class="ab-card-icon">⬡</div>
-        <div class="ab-card-label" data-zh="研究" data-en="Research">研究</div>
-        <div class="ab-card-desc" data-zh="AI Agent · Robotics · RAG<br>交大 AI Innovation 碩士" data-en="AI Agent · Robotics · RAG<br>NYCU AI Innovation MS">AI Agent · Robotics · RAG<br>交大 AI Innovation 碩士</div>
+        <div class="ab-card-inner">
+          <div class="ab-card-front">
+            <div class="ab-card-icon">⬡</div>
+            <div class="ab-card-label" data-zh="研究" data-en="Research" data-fr="Recherche" data-ja="研究" data-ko="연구">Research</div>
+            <div class="ab-card-hint">↻</div>
+          </div>
+          <div class="ab-card-back">
+            <div class="ab-card-desc" data-zh="AI Agent · Robotics · RAG<br>交大 AI Innovation 碩士" data-en="AI Agent · Robotics · RAG<br>NYCU AI Innovation MS" data-fr="IA Agent · Robotique · RAG<br>Master IA NYCU" data-ja="AI Agent · ロボティクス · RAG<br>交通大学 AI Innovation 修士" data-ko="AI Agent · 로보틱스 · RAG<br>교통대 AI Innovation 석사">AI Agent · Robotics · RAG<br>NYCU AI Innovation MS</div>
+          </div>
+        </div>
       </div>
       <div class="ab-card">
-        <div class="ab-card-icon">◎</div>
-        <div class="ab-card-label" data-zh="業界" data-en="Industry">業界</div>
-        <div class="ab-card-desc" data-zh="鴻海 AI Engineer<br>優式資本 助理工程師<br>Cake Taiwan 講師" data-en="Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor">鴻海 AI Engineer<br>優式資本 助理工程師<br>Cake Taiwan 講師</div>
+        <div class="ab-card-inner">
+          <div class="ab-card-front">
+            <div class="ab-card-icon">◎</div>
+            <div class="ab-card-label" data-zh="業界" data-en="Industry" data-fr="Industrie" data-ja="業界" data-ko="산업">Industry</div>
+            <div class="ab-card-hint">↻</div>
+          </div>
+          <div class="ab-card-back">
+            <div class="ab-card-desc" data-zh="鴻海 AI Engineer<br>優式資本 助理工程師<br>Cake Taiwan 講師" data-en="Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor" data-fr="Foxconn Ingénieur IA<br>UC Capital Asst. Ingénieur<br>Cake Taiwan Formateur" data-ja="鴻海 AIエンジニア<br>UCキャピタル アシスタント<br>Cake Taiwan 講師" data-ko="폭스콘 AI 엔지니어<br>UC 캐피탈 보조 엔지니어<br>Cake Taiwan 강사">Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor</div>
+          </div>
+        </div>
       </div>
       <div class="ab-card">
-        <div class="ab-card-icon">△</div>
-        <div class="ab-card-label" data-zh="國際" data-en="Global">國際</div>
-        <div class="ab-card-desc" data-zh="聯合國海洋大會<br>法國交流 · 國際志工" data-en="UN Ocean Conference<br>France Exchange · Int'l Volunteer">聯合國海洋大會<br>法國交流 · 國際志工</div>
+        <div class="ab-card-inner">
+          <div class="ab-card-front">
+            <div class="ab-card-icon">△</div>
+            <div class="ab-card-label" data-zh="國際" data-en="Global" data-fr="International" data-ja="国際" data-ko="국제">Global</div>
+            <div class="ab-card-hint">↻</div>
+          </div>
+          <div class="ab-card-back">
+            <div class="ab-card-desc" data-zh="聯合國海洋大會<br>法國交流 · 國際志工" data-en="UN Ocean Conference<br>France Exchange · Int'l Volunteer" data-fr="Conférence ONU Océan<br>Échange en France · Bénévole" data-ja="国連海洋会議<br>フランス交流 · 国際ボランティア" data-ko="UN 해양 회의<br>프랑스 교류 · 국제 봉사">UN Ocean Conference<br>France Exchange · Int'l Volunteer</div>
+          </div>
+        </div>
       </div>
       <div class="ab-card">
-        <div class="ab-card-icon">○</div>
-        <div class="ab-card-label" data-zh="生活" data-en="Life">生活</div>
-        <div class="ab-card-desc" data-zh="外拍 · 人像模特<br>烘焙 · 旅遊 8 國" data-en="Photography · Modeling<br>Baking · Traveled 8 countries">外拍 · 人像模特<br>烘焙 · 旅遊 8 國</div>
+        <div class="ab-card-inner">
+          <div class="ab-card-front">
+            <div class="ab-card-icon">○</div>
+            <div class="ab-card-label" data-zh="生活" data-en="Life" data-fr="Vie" data-ja="ライフ" data-ko="생활">Life</div>
+            <div class="ab-card-hint">↻</div>
+          </div>
+          <div class="ab-card-back">
+            <div class="ab-card-desc" data-zh="外拍 · 人像模特<br>烘焙 · 旅遊 8 國" data-en="Photography · Modeling<br>Baking · Traveled 8 countries" data-fr="Photo · Mannequinat<br>Pâtisserie · 8 pays visités" data-ja="撮影 · モデル<br>ベーキング · 8カ国旅行" data-ko="사진 · 모델<br>베이킹 · 8개국 여행">Photography · Modeling<br>Baking · Traveled 8 countries</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -827,32 +1447,32 @@
       <div class="ab-tl-item">
         <div class="ab-tl-year">2026.01</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="優式資本 助理工程師" data-en="UC Capital — Asst. Engineer">優式資本 助理工程師</div>
+        <div class="ab-tl-text" data-zh="優式資本 助理工程師" data-en="UC Capital — Asst. Engineer" data-fr="UC Capital — Ingénieur Asst." data-ja="UCキャピタル — アシスタントエンジニア" data-ko="UC 캐피탈 — 보조 엔지니어">UC Capital — Asst. Engineer</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.09</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="交大 AI Innovation 碩士入學" data-en="NYCU AI Innovation MS — Enrolled">交大 AI Innovation 碩士入學</div>
+        <div class="ab-tl-text" data-zh="交大 AI Innovation 碩士入學" data-en="NYCU AI Innovation MS — Enrolled" data-fr="NYCU Master IA — Inscrit" data-ja="交通大学 AI Innovation 修士 入学" data-ko="교통대 AI Innovation 석사 입학">NYCU AI Innovation MS — Enrolled</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.09</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>支援 400+ 學員 AWS AIF 證照備考</span>" data-en="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span>">Technical Teaching Consultant · Cake Taiwan<br><span style="font-size:13px;color:var(--muted);">支援 400+ 學員 AWS AIF 證照備考</span></div>
+        <div class="ab-tl-text" data-zh="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>支援 400+ 學員 AWS AIF 證照備考</span>" data-en="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span>" data-fr="Consultant Pédagogique · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>400+ participants pour l'examen AWS AIF</span>" data-ja="テクニカル教育コンサルタント · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>AWS AIF試験 400+名サポート</span>" data-ko="기술 교육 컨설턴트 · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>AWS AIF 시험 400+명 지원</span>">Technical Teaching Consultant · Cake Taiwan<br><span style="font-size:13px;color:var(--muted);">Supported 400+ participants for AWS AIF exam</span></div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.06</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="參與聯合國海洋大會 · 赴法交流" data-en="UN Ocean Conference · Exchange in France">參與聯合國海洋大會 · 赴法交流</div>
+        <div class="ab-tl-text" data-zh="參與聯合國海洋大會 · 赴法交流" data-en="UN Ocean Conference · Exchange in France" data-fr="Conférence ONU sur l'Océan · Échange en France" data-ja="国連海洋会議 · フランス交流" data-ko="UN 해양 회의 · 프랑스 교류">UN Ocean Conference · Exchange in France</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.01</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="AWS Campus Ambassador" data-en="AWS Campus Ambassador">AWS Campus Ambassador</div>
+        <div class="ab-tl-text" data-zh="AWS Campus Ambassador" data-en="AWS Campus Ambassador" data-fr="AWS Campus Ambassador" data-ja="AWSキャンパスアンバサダー" data-ko="AWS 캠퍼스 앰배서더">AWS Campus Ambassador</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2024.12</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-zh="鴻海 AI Engineer Intern（1 年 2 個月）" data-en="Foxconn — AI Engineer Intern (1 yr 2 mo)">鴻海 AI Engineer Intern（1 年 2 個月）</div>
+        <div class="ab-tl-text" data-zh="鴻海 AI Engineer Intern（1 年 2 個月）" data-en="Foxconn — AI Engineer Intern (1 yr 2 mo)" data-fr="Foxconn — Stagiaire Ingénieur IA (1 an 2 mois)" data-ja="鴻海 — AIエンジニアインターン（1年2ヶ月）" data-ko="폭스콘 — AI 엔지니어 인턴 (1년 2개월)">Foxconn — AI Engineer Intern (1 yr 2 mo)</div>
       </div>
 
     </div>
@@ -1106,91 +1726,161 @@
   <!-- PROJECTS -->
   <section id="projects">
 
-    <!-- Category 1 -->
-    <div class="proj-cat" data-zh="學術研究與業界實務" data-en="Academic Research &amp; Industry">學術研究與業界實務</div>
-
-    <div class="project">
-      <div class="project-header">
-        <div class="project-name">SceneFoundry</div>
-        <span class="proj-badge badge-research">Publication</span>
-      </div>
-      <div class="project-meta" data-zh="2025 · Research Paper · 第三作者" data-en="2025 · Research Paper · 3rd Author">2025 &nbsp;·&nbsp; Research Paper &nbsp;·&nbsp; 第三作者</div>
-      <p class="project-authors">ChunTeng Chen, YiChen Hsu, <strong>YiWen Liu</strong>, WeiFang Sun, TsaiChing Ni, ChunYi Lee, Min Sun, YuanFu Yang<br><span>NYCU · NTHU · NVIDIA ATC · NTU</span></p>
-      <p class="project-desc" data-zh="語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。" data-en="A language-guided diffusion framework that generates apartment-scale interactive 3D worlds with articulated furniture for robotics training and embodied AI research.">語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。</p>
-      <div class="project-tags">
-        <span class="ptag">Diffusion</span><span class="ptag">LLM</span><span class="ptag">Robotics</span><span class="ptag">3D Generation</span><span class="ptag">Embodied AI</span>
-      </div>
-      <div style="display:flex;gap:16px;margin-top:14px;">
-        <a href="https://anc891203.github.io/SceneFoundry-Demo/" target="_blank" class="project-link">Demo →</a>
-        <a href="https://github.com/anc891203/SceneFoundry" target="_blank" class="project-link">View Repo →</a>
-      </div>
+    <!-- Tabs — all 3 visible at once -->
+    <div class="proj-tabs">
+      <button class="ptab active" data-pcat="research">
+        <span class="ptab-num">01</span>
+        <span class="ptab-name" data-zh="學術研究 · 業界" data-en="Academic Research" data-fr="Recherche Académique" data-ja="学術研究・業界" data-ko="학술 연구 & 산업">Academic Research</span>
+      </button>
+      <button class="ptab" data-pcat="community">
+        <span class="ptab-num">02</span>
+        <span class="ptab-name" data-zh="社群影響力" data-en="Community Impact" data-fr="Impact Communautaire" data-ja="コミュニティ影響力" data-ko="커뮤니티 영향력">Community Impact</span>
+      </button>
+      <button class="ptab" data-pcat="side">
+        <span class="ptab-num">03</span>
+        <span class="ptab-name" data-zh="個人專案" data-en="Side Projects" data-fr="Projets Personnels" data-ja="個人プロジェクト" data-ko="개인 프로젝트">Side Projects</span>
+      </button>
     </div>
 
-    <div class="divider"></div>
+    <!-- Group 01 -->
+    <div class="proj-group active" data-pcat="research">
 
-    <div class="project">
-      <div class="project-header">
-        <div class="project-name">FoxBrain — Data Augmentation</div>
-        <span class="proj-badge badge-corp">Foxconn</span>
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">SceneFoundry</div>
+          <span class="proj-badge badge-research">Publication</span>
+        </div>
+        <div class="project-meta" data-zh="2025 · Research Paper · 第三作者" data-en="2025 · Research Paper · 3rd Author">2025 &nbsp;·&nbsp; Research Paper &nbsp;·&nbsp; 第三作者</div>
+        <p class="project-authors">ChunTeng Chen, YiChen Hsu, <strong>YiWen Liu</strong>, WeiFang Sun, TsaiChing Ni, ChunYi Lee, Min Sun, YuanFu Yang<br><span>NYCU · NTHU · NVIDIA ATC · NTU</span></p>
+        <p class="project-desc" data-zh="語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。" data-en="A language-guided diffusion framework that generates apartment-scale interactive 3D worlds with articulated furniture for robotics training and embodied AI research.">語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。</p>
+        <div class="project-tags">
+          <span class="ptag">Diffusion</span><span class="ptag">LLM</span><span class="ptag">Robotics</span><span class="ptag">3D Generation</span><span class="ptag">Embodied AI</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:14px;">
+          <a href="https://anc891203.github.io/SceneFoundry-Demo/" target="_blank" class="project-link">Demo →</a>
+          <a href="https://github.com/anc891203/SceneFoundry" target="_blank" class="project-link">View Repo →</a>
+        </div>
       </div>
-      <div class="project-meta" data-zh="2024 · 鴻海精密工業" data-en="2024 · Foxconn">2024 &nbsp;·&nbsp; 鴻海精密工業</div>
-      <p class="project-desc" data-zh="執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。" data-en="Executed data augmentation strategies to enhance the FoxBrain project, evaluated 8 LLMs for performance optimization.">執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。</p>
-      <div class="project-tags">
-        <span class="ptag">LLM</span><span class="ptag">Data Augmentation</span><span class="ptag">Computer Vision</span><span class="ptag">EV</span>
-      </div>
-    </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <div class="project">
-      <div class="project-header">
-        <div class="project-name">PDF RAG Benchmark</div>
-        <span class="proj-badge badge-research">Research</span>
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">FoxBrain — Data Augmentation</div>
+          <span class="proj-badge badge-corp">Foxconn</span>
+        </div>
+        <div class="project-meta" data-zh="2024 · 鴻海精密工業 · Ye-Yu Lin · <strong>Julia Liu</strong>" data-en="2024 · Foxconn · Ye-Yu Lin · <strong>Julia Liu</strong>">2024 &nbsp;·&nbsp; 鴻海精密工業 &nbsp;·&nbsp; Ye-Yu Lin · <strong>Julia Liu</strong></div>
+        <p class="project-desc" data-zh="執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。" data-en="Executed data augmentation strategies to enhance the FoxBrain project, evaluated 8 LLMs for performance optimization.">執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。</p>
+        <div class="project-tags">
+          <span class="ptag">LLM</span><span class="ptag">Data Augmentation</span><span class="ptag">Computer Vision</span><span class="ptag">EV</span>
+        </div>
       </div>
-      <div class="project-meta" data-zh="2025 · Research" data-en="2025 · Research">2025 &nbsp;·&nbsp; Research</div>
-      <p class="project-desc" data-zh="針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。" data-en="A systematic performance comparison of PDF extraction tools for RAG pipelines, providing practical tool selection guidance.">針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。</p>
-      <div class="project-tags">
-        <span class="ptag">RAG</span><span class="ptag">PDF Parsing</span><span class="ptag">Benchmark</span><span class="ptag">LLM</span>
-      </div>
-      <a href="https://github.com/juliahahah/pdf-rag-extraction-benchmark" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
-    </div>
 
-    <!-- Category 2 -->
-    <div class="proj-cat" style="margin-top:56px;" data-zh="社群影響力與技術推廣" data-en="Community Impact &amp; Leadership">社群影響力與技術推廣</div>
+      <div class="divider"></div>
 
-    <div class="project">
-      <div class="project-header">
-        <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
-        <span class="proj-badge badge-aws">AWS</span>
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">PDF RAG Benchmark</div>
+          <span class="proj-badge badge-research">Research</span>
+        </div>
+        <div class="project-meta" data-zh="2025 · Research · <strong>Julia Liu</strong> · Kenny" data-en="2025 · Research · <strong>Julia Liu</strong> · Kenny">2025 &nbsp;·&nbsp; Research &nbsp;·&nbsp; <strong>Julia Liu</strong> · Kenny</div>
+        <p class="project-desc" data-zh="針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。" data-en="A systematic performance comparison of PDF extraction tools for RAG pipelines, providing practical tool selection guidance.">針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。</p>
+        <div class="project-tags">
+          <span class="ptag">RAG</span><span class="ptag">PDF Parsing</span><span class="ptag">Benchmark</span><span class="ptag">LLM</span>
+        </div>
+        <a href="https://github.com/juliahahah/pdf-rag-extraction-benchmark" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
       </div>
-      <div class="project-meta" data-zh="2025 · AWS Educate Taiwan · Reeve · Cody · Julia" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · Julia">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · Julia</div>
-      <p class="project-desc" data-zh="使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
-      <div class="project-tags">
-        <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
-      </div>
-      <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
-        <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
-        <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-zh="AIF 重點整理衝刺班 →" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
-      </div>
-    </div>
 
-    <!-- Category 3 -->
-    <div class="proj-cat" style="margin-top:56px;" data-zh="創新應用與個人專案" data-en="Innovative Side Projects">創新應用與個人專案</div>
+    </div><!-- /group research -->
 
-    <div class="project">
-      <div class="project-header">
-        <div class="project-name">AI Fashion Designer</div>
-        <span class="proj-badge badge-side">Side Project</span>
+    <!-- Group 02 -->
+    <div class="proj-group" data-pcat="community">
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
+          <span class="proj-badge badge-aws">AWS</span>
+        </div>
+        <div class="project-meta" data-zh="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · <strong>Julia Liu</strong></div>
+        <p class="project-desc" data-zh="使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
+        <div class="project-tags">
+          <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+          <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
+          <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-zh="AIF 重點整理衝刺班 →" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
+        </div>
       </div>
-      <div class="project-meta" data-zh="2024 · Julia · 家賢 · JingWen" data-en="2024 · Julia · 家賢 · JingWen">2024 &nbsp;·&nbsp; Julia · 家賢 · JingWen</div>
-      <p class="project-desc" data-zh="結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。" data-en="A virtual try-on system using ControlNet and Inpainting techniques, enabling users to preview outfits online in real time.">結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。</p>
-      <div class="project-tags">
-        <span class="ptag">ControlNet</span><span class="ptag">Inpainting</span><span class="ptag">Computer Vision</span><span class="ptag">Generative AI</span>
+
+    </div><!-- /group community -->
+
+    <!-- Group 03 -->
+    <div class="proj-group" data-pcat="side">
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">Personal Portfolio — juliahahah.github.io</div>
+          <span class="proj-badge badge-side">Side Project</span>
+        </div>
+        <div class="project-meta" data-zh="2025 · <strong>Julia Liu</strong> · 設計 &amp; 開發" data-en="2025 · <strong>Julia Liu</strong> · Design &amp; Development">2025 &nbsp;·&nbsp; <strong>Julia Liu</strong> &nbsp;·&nbsp; Design &amp; Development</div>
+        <p class="project-desc" data-zh="從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與技術筆記，支援中英雙語切換。" data-en="A personal portfolio built from scratch with zero frameworks — pure HTML / CSS / JavaScript in a single file. Features a photography gallery, travel episodes, project showcase, and technical notes with bilingual EN/ZH support.">從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與技術筆記，支援中英雙語切換。</p>
+
+        <!-- Colour & Style -->
+        <div class="proj-style">
+          <div class="ps-style-row">
+            <span class="ps-style-label" data-zh="色調" data-en="Colour">Colour</span>
+            <div class="ps-swatches">
+              <span class="swatch" style="background:#111111;" title="#111111"></span>
+              <span class="swatch" style="background:#444444;" title="#444444"></span>
+              <span class="swatch" style="background:#999999;" title="#999999"></span>
+              <span class="swatch" style="background:#e8e8e8;" title="#e8e8e8"></span>
+              <span class="swatch" style="background:#ffffff;border:1px solid #e8e8e8;" title="#ffffff"></span>
+              <span class="ps-style-note" data-zh="純黑白系 · 無彩色 · 以對比與留白建立層次" data-en="Monochrome only · No colour accents · Hierarchy through contrast &amp; whitespace">Monochrome only · No colour accents · Hierarchy through contrast &amp; whitespace</span>
+            </div>
+          </div>
+          <div class="ps-style-row">
+            <span class="ps-style-label" data-zh="風格" data-en="Style">Style</span>
+            <span class="ps-style-note" data-zh="Editorial minimal — 雜誌排版美學，大量留白、斜體襯線字與等寬小標題並用，視覺語言接近藝術攝影集與文學季刊。" data-en="Editorial minimal — magazine-layout aesthetics with generous whitespace, italic serif headlines paired with monospace micro-labels. Visual language inspired by art photography books and literary journals.">Editorial minimal — magazine-layout aesthetics with generous whitespace, italic serif headlines paired with monospace micro-labels. Visual language inspired by art photography books and literary journals.</span>
+          </div>
+          <div class="ps-style-row">
+            <span class="ps-style-label" data-zh="字型" data-en="Type">Type</span>
+            <span class="ps-style-note">
+              <em style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.01em;">Cormorant Garamond</em>
+              <span style="color:var(--muted);font-size:11px;margin:0 6px;">·</span>
+              <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.08em;">DM MONO</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="project-tags" style="margin-top:20px;">
+          <span class="ptag">Vanilla JS</span>
+          <span class="ptag">CSS Grid</span>
+          <span class="ptag">Single-file SPA</span>
+          <span class="ptag">Bilingual</span>
+          <span class="ptag">GitHub Pages</span>
+        </div>
       </div>
-      <a href="https://github.com/juliahahah/ControlNet_Fashion" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
-    </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">AI Fashion Designer</div>
+          <span class="proj-badge badge-side">Side Project</span>
+        </div>
+        <div class="project-meta" data-zh="2024 · <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen" data-en="2024 · <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen">2024 &nbsp;·&nbsp; <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen</div>
+        <p class="project-desc" data-zh="結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。" data-en="A virtual try-on system using ControlNet and Inpainting techniques, enabling users to preview outfits online in real time.">結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。</p>
+        <div class="project-tags">
+          <span class="ptag">ControlNet</span><span class="ptag">Inpainting</span><span class="ptag">Computer Vision</span><span class="ptag">Generative AI</span>
+        </div>
+        <a href="https://github.com/juliahahah/ControlNet_Fashion" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
+      </div>
+
+    </div><!-- /group side -->
 
   </section>
+
+
 
     <!-- NOTES -->
   <section id="notes">
@@ -1206,7 +1896,7 @@
     <div class="list-item"><span class="item-title" data-zh="SceneFoundry 論文閱讀筆記" data-en="SceneFoundry — Paper Reading Notes">SceneFoundry 論文閱讀筆記</span><span class="dots"></span><span class="item-date">——</span></div>
     <div class="list-item"><span class="item-title" data-zh="NVIDIA Isaac — Jetson Nano 入門" data-en="NVIDIA Isaac — Getting Started with Jetson Nano">NVIDIA Isaac — Jetson Nano 入門</span><span class="dots"></span><span class="item-date">——</span></div>
     <div class="list-item"><span class="item-title" data-zh="具身智慧（Embodied AI）概念整理" data-en="Embodied AI — Concept Overview">具身智慧（Embodied AI）概念整理</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="notes-cat" data-zh="雲端 / 工具" data-en="Cloud / Tools">雲端 / 工具</div>
+    <div class="notes-cat" data-zh="雲端 / 工具" data-en="Cloud / Tools" data-fr="Cloud / Outils" data-ja="クラウド / ツール" data-ko="클라우드 / 도구">Cloud / Tools</div>
     <div class="list-item"><span class="item-title" data-zh="AWS Lambda + AI Agent 實作記錄" data-en="AWS Lambda + AI Agent — Implementation Notes">AWS Lambda + AI Agent 實作記錄</span><span class="dots"></span><span class="item-date">——</span></div>
     <div class="list-item"><span class="item-title" data-zh="AWS AIF 考試準備心得" data-en="AWS AIF Exam Preparation Notes">AWS AIF 考試準備心得</span><span class="dots"></span><span class="item-date">——</span></div>
   </section>
@@ -1227,59 +1917,63 @@
     </div>
 
     <!-- All -->
+    <div class="gallery-empty" id="galleryEmpty">
+      <div class="gallery-empty-icon">📷</div>
+      <div class="gallery-empty-text" data-zh="照片上傳後即可顯示" data-en="Photos will appear once uploaded" data-fr="Les photos apparaîtront après téléchargement" data-ja="写真をアップロードすると表示されます" data-ko="사진 업로드 후 표시됩니다">Photos will appear once uploaded</div>
+    </div>
     <div class="gallery-grid" data-cat="all">
-      <div class="g-slot tall" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_06.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_06.jpg" alt="NYCU 2026"></div>
       <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_02.jpg" alt="NYCU 2026"></div>
       <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_07.jpg" alt="NYCU 2026"></div>
-      <div class="g-slot wide" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_05.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_05.jpg" alt="NYCU 2026"></div>
       <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_04.jpg" alt="NYCU 2026"></div>
-      <div class="g-slot tall" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_08.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_08.jpg" alt="NYCU 2026"></div>
       <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_01.jpg" alt="NYCU 2026"></div>
       <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_03.jpg" alt="NYCU 2026"></div>
-      <div class="g-slot wide" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_01.jpg" alt="Blue Hour"></div>
-      <div class="g-slot tall" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_04.jpg" alt="Blue Hour"></div>
+      <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_01.jpg" alt="Blue Hour"></div>
+      <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_04.jpg" alt="Blue Hour"></div>
       <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_03.jpg" alt="Blue Hour"></div>
       <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_02.jpg" alt="Blue Hour"></div>
-      <div class="g-slot wide" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_05.jpg" alt="Blue Hour"></div>
-      <div class="g-slot tall" data-tags="amber"><img src="photos/gallery/amber/amb_01.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_05.jpg" alt="Blue Hour"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_01.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_05.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_09.jpg" alt="Amber"></div>
-      <div class="g-slot wide" data-tags="amber"><img src="photos/gallery/amber/amb_03.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_03.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_06.jpg" alt="Amber"></div>
-      <div class="g-slot tall" data-tags="amber"><img src="photos/gallery/amber/amb_08.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_08.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_02.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_07.jpg" alt="Amber"></div>
-      <div class="g-slot wide" data-tags="amber"><img src="photos/gallery/amber/amb_10.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_10.jpg" alt="Amber"></div>
       <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_04.jpg" alt="Amber"></div>
-      <div class="g-slot wide" data-tags="spark"><img src="photos/gallery/spark/sp_01.jpg" alt="Spark"></div>
-      <div class="g-slot tall" data-tags="spark"><img src="photos/gallery/spark/sp_05.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_01.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_05.jpg" alt="Spark"></div>
       <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_03.jpg" alt="Spark"></div>
       <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_07.jpg" alt="Spark"></div>
-      <div class="g-slot wide" data-tags="spark"><img src="photos/gallery/spark/sp_04.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_04.jpg" alt="Spark"></div>
       <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_02.jpg" alt="Spark"></div>
       <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_06.jpg" alt="Spark"></div>
-      <div class="g-slot wide" data-tags="stage"><img src="photos/gallery/stage-dance/stage_01.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_01.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_05.jpg" alt="Stage Dance"></div>
-      <div class="g-slot tall" data-tags="stage"><img src="photos/gallery/stage-dance/stage_06.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_06.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_02.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_03.jpg" alt="Stage Dance"></div>
-      <div class="g-slot wide" data-tags="stage"><img src="photos/gallery/stage-dance/stage_04.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_04.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_07.jpg" alt="Stage Dance"></div>
-      <div class="g-slot tall" data-tags="stage"><img src="photos/gallery/stage-dance/stage_08.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_08.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_09.jpg" alt="Stage Dance"></div>
       <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_10.jpg" alt="Stage Dance"></div>
-      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_01.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_01.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_14.jpg" alt="Stage Performance"></div>
-      <div class="g-slot tall" data-tags="perf"><img src="photos/gallery/stage-performance/perf_10.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_10.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_07.jpg" alt="Stage Performance"></div>
-      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_02.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_02.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_08.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_05.jpg" alt="Stage Performance"></div>
-      <div class="g-slot tall" data-tags="perf"><img src="photos/gallery/stage-performance/perf_11.jpg" alt="Stage Performance"></div>
-      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_04.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_11.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_04.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_09.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_06.jpg" alt="Stage Performance"></div>
-      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_03.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_03.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_12.jpg" alt="Stage Performance"></div>
       <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_13.jpg" alt="Stage Performance"></div>
     </div>
@@ -1287,6 +1981,26 @@
   </section>
 
 </main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span class="site-footer-copy">© 2026 Julia Liu. All rights reserved.</span>
+  <span class="site-footer-copy">
+    <a href="https://github.com/juliahahah/juliahahah.github.io" target="_blank">juliahahah.github.io</a>
+  </span>
+</footer>
+</div><!-- /.content-wrap -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <span class="lb-close" id="lbClose">✕</span>
+  <span class="lb-nav lb-prev" id="lbPrev">‹</span>
+  <img id="lbImg" src="" alt="">
+  <span class="lb-nav lb-next" id="lbNext">›</span>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
+<!-- VISITOR BADGE removed — now inside sidebar -->
 
 <script>
 (function() {
@@ -1298,6 +2012,13 @@
     var link = document.querySelector('nav a[data-section="' + id + '"]');
     if (link) link.classList.add('active');
     window.scrollTo(0, 0);
+    if (id === 'gallery') {
+      setTimeout(function() {
+        var activeTab = document.querySelector('.gtab.active');
+        if (activeTab) activeTab.click();
+        else if (typeof rebuildGalleryLayout === 'function') rebuildGalleryLayout();
+      }, 50);
+    }
   }
   // Gallery tabs
   document.querySelectorAll('.gtab').forEach(function(tab) {
@@ -1319,25 +2040,45 @@
     });
   });
 
-  // Language toggle
+  // Language picker
   var currentLang = 'en';
+
+  var navLabels = {
+    en: { about:'about',    gallery:'gallery',  thoughts:'thoughts', episodes:'episodes', projects:'projects', notes:'tech notes'   },
+    zh: { about:'關於',      gallery:'作品集',    thoughts:'文章',      episodes:'旅記',      projects:'專案',     notes:'技術筆記'    },
+    fr: { about:'à propos', gallery:'galerie',  thoughts:'réflexions',episodes:'épisodes', projects:'projets',  notes:'notes tech'  },
+    ja: { about:'自己紹介',   gallery:'ギャラリー', thoughts:'思考',      episodes:'エピソード', projects:'プロジェクト',notes:'技術ノート'  },
+    ko: { about:'소개',       gallery:'갤러리',   thoughts:'생각',      episodes:'에피소드',  projects:'프로젝트',  notes:'기술 노트'   }
+  };
+
   function applyLang(lang) {
     currentLang = lang;
-    document.getElementById('langBtn').textContent = lang === 'zh' ? 'EN' : '中文';
-    document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
-    document.querySelectorAll('[data-zh][data-en]').forEach(function(el) {
-      // skip if a parent already has data-zh/data-en (avoid double processing)
-      if (el.closest('[data-zh]') !== el) return;
-      el.innerHTML = lang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    document.documentElement.lang = { en:'en', zh:'zh-TW', fr:'fr', ja:'ja', ko:'ko' }[lang] || 'en';
+
+    // update picker buttons
+    document.querySelectorAll('.lp-btn').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
     });
-    // nav link text
-    var navMap = {about:'about',gallery:'gallery',thoughts:'thoughts',episodes:'episodes',projects:'projects',notes:'notes'};
-    document.querySelectorAll('nav a[data-section]').forEach(function(a){
-      a.textContent = navMap[a.getAttribute('data-section')] || a.getAttribute('data-section');
+
+    // translate elements — use lang attr, fall back to en
+    document.querySelectorAll('[data-en]').forEach(function(el) {
+      var parent = el.parentElement && el.parentElement.closest('[data-en]');
+      if (parent && parent !== el) return;
+      var val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
+      el.innerHTML = val;
+    });
+
+    // nav labels
+    var map = navLabels[lang] || navLabels.en;
+    document.querySelectorAll('nav a[data-section]').forEach(function(a) {
+      a.textContent = map[a.getAttribute('data-section')] || a.getAttribute('data-section');
     });
   }
-  document.getElementById('langBtn').addEventListener('click', function() {
-    applyLang(currentLang === 'zh' ? 'en' : 'zh');
+
+  document.querySelectorAll('.lp-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      applyLang(this.getAttribute('data-lang'));
+    });
   });
   applyLang('en');
 
@@ -1347,9 +2088,229 @@
       var country = this.closest('.ep-country');
       var isOpen = country.classList.contains('open');
       document.querySelectorAll('.ep-country').forEach(function(c){ c.classList.remove('open'); });
-      if (!isOpen) country.classList.add('open');
+      if (!isOpen) {
+        country.classList.add('open');
+        // 捲動到展開的卡片
+        setTimeout(function() {
+          country.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
     });
   });
+
+  // ── LIGHTBOX ──
+  var lbOverlay = document.getElementById('lightbox');
+  var lbImg     = document.getElementById('lbImg');
+  var lbCounter = document.getElementById('lbCounter');
+  var lbImages  = [];
+  var lbIndex   = 0;
+
+  function openLightbox(imgs, idx) {
+    lbImages = imgs;
+    lbIndex  = idx;
+    showLb();
+    lbOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function showLb() {
+    lbImg.src = lbImages[lbIndex].src;
+    lbCounter.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+  }
+  function closeLightbox() {
+    lbOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  document.getElementById('lbClose').addEventListener('click', function(e) {
+    e.stopPropagation(); closeLightbox();
+  });
+  lbOverlay.addEventListener('click', function(e) {
+    if (e.target === lbOverlay || e.target === lbImg) closeLightbox();
+  });
+  document.getElementById('lbPrev').addEventListener('click', function(e) {
+    e.stopPropagation();
+    lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLb();
+  });
+  document.getElementById('lbNext').addEventListener('click', function(e) {
+    e.stopPropagation();
+    lbIndex = (lbIndex + 1) % lbImages.length; showLb();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (!lbOverlay.classList.contains('active')) return;
+    if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLb(); }
+    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLb(); }
+    if (e.key === 'Escape')     { closeLightbox(); }
+  });
+
+  // ── WATERMARK ──
+  (function() {
+    var WM = 'juliahahah.github.io';
+
+    // Gallery slots & episode covers → append wm-label span
+    document.querySelectorAll('.g-slot, .ep-cover').forEach(function(el) {
+      var s = document.createElement('span');
+      s.className = 'wm-label';
+      s.textContent = WM;
+      el.appendChild(s);
+    });
+
+    // Album grid: wrap each img in .img-wrap, then add watermark
+    document.querySelectorAll('.ep-album-grid img').forEach(function(img) {
+      var wrap = document.createElement('div');
+      wrap.className = 'img-wrap';
+      img.parentNode.insertBefore(wrap, img);
+      wrap.appendChild(img);
+      var s = document.createElement('span');
+      s.className = 'wm-label';
+      s.textContent = WM;
+      wrap.appendChild(s);
+    });
+
+    // Re-bind lightbox to .img-wrap after wrapping
+    document.querySelectorAll('.ep-album-grid').forEach(function(grid) {
+      var wraps = Array.from(grid.querySelectorAll('.img-wrap'));
+      wraps.forEach(function(wrap, i) {
+        wrap.style.cursor = 'zoom-in';
+        wrap.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var imgs = wraps.map(function(w) { return w.querySelector('img'); });
+          openLightbox(imgs, i);
+        });
+      });
+    });
+  })();
+
+  var rebuildGalleryLayout; // exposed for navigate()
+
+  // ── GALLERY: dynamic layout rebuild ──
+  (function() {
+    var PATTERN = ['wide','tall','','','','wide','','tall','',''];
+
+    function applyPattern(slots) {
+      slots.forEach(function(s) { s.classList.remove('wide','tall'); });
+      slots.forEach(function(s, i) {
+        var t = PATTERN[i % PATTERN.length];
+        if (t) s.classList.add(t);
+      });
+    }
+
+    rebuildGalleryLayout = function(catFilter) {
+      var cat = catFilter || (document.querySelector('.gtab.active') ? document.querySelector('.gtab.active').getAttribute('data-cat') : 'all');
+      var slots;
+      if (cat === 'all') {
+        slots = Array.from(document.querySelectorAll('.gallery-grid .g-slot:not(.hidden)'));
+      } else {
+        slots = Array.from(document.querySelectorAll(
+          '.gallery-grid .g-slot:not(.hidden)[data-tags*="' + cat + '"]'
+        ));
+      }
+      applyPattern(slots);
+      var empty = document.getElementById('galleryEmpty');
+      if (empty) empty.classList.toggle('visible', slots.length === 0);
+    };
+
+    // Hide broken images then rebuild
+    function checkImg(img) {
+      if (!img.complete || img.naturalWidth === 0) {
+        img.closest('.g-slot').classList.add('hidden');
+      }
+    }
+
+    var imgs = Array.from(document.querySelectorAll('.gallery-grid .g-slot img'));
+    var pending = imgs.length;
+
+    function onSettle() {
+      pending--;
+      if (pending <= 0) rebuildGalleryLayout();
+    }
+
+    imgs.forEach(function(img) {
+      img.addEventListener('error', function() {
+        this.closest('.g-slot').classList.add('hidden');
+        onSettle();
+      });
+      img.addEventListener('load', onSettle);
+      // already settled
+      if (img.complete) {
+        checkImg(img);
+        onSettle();
+      }
+    });
+
+    // Fallback: force rebuild after 1.2s
+    setTimeout(function() {
+      imgs.forEach(checkImg);
+      rebuildGalleryLayout();
+    }, 1200);
+
+    // Re-apply layout on tab switch
+    document.querySelectorAll('.gtab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var cat = this.getAttribute('data-cat');
+        setTimeout(function() { rebuildGalleryLayout(cat); }, 50);
+      });
+    });
+  })();
+
+
+
+  // ── EPISODES: hide broken album cells & covers ──
+  document.querySelectorAll('.img-wrap img').forEach(function(img) {
+    function hideWrap() { var w = img.closest('.img-wrap'); if (w) w.style.display = 'none'; }
+    img.addEventListener('error', hideWrap);
+    if (img.complete && img.naturalWidth === 0) hideWrap();
+  });
+  document.querySelectorAll('.ep-cover img').forEach(function(img) {
+    function showPlaceholder() {
+      img.style.display = 'none'; // hide broken img icon, keep card visible
+    }
+    img.addEventListener('error', showPlaceholder);
+    if (img.complete && img.naturalWidth === 0) showPlaceholder();
+  });
+
+  // ── PROJECT TABS ──
+  document.querySelectorAll('.ptab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var cat = this.getAttribute('data-pcat');
+      document.querySelectorAll('.ptab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.proj-group').forEach(function(g) { g.classList.remove('active'); });
+      this.classList.add('active');
+      var group = document.querySelector('.proj-group[data-pcat="' + cat + '"]');
+      if (group) group.classList.add('active');
+      window.scrollTo(0, 0);
+    });
+  });
+
+  // ── FLIP CARDS ──
+  document.querySelectorAll('.ab-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      this.classList.toggle('flipped');
+    });
+  });
+
+  // ── VISITOR COUNT ──
+  fetch('https://api.countapi.xyz/hit/juliahahah.github.io/page-visits-v1')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      document.getElementById('vbCount').textContent = Number(d.value).toLocaleString();
+    })
+    .catch(function(){ document.getElementById('vbCount').textContent = '—'; });
+
+  fetch('https://ipapi.co/json/')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var flag = d.country_code
+        ? d.country_code.toUpperCase().replace(/./g, function(c){
+            return String.fromCodePoint(127397 + c.charCodeAt(0));
+          })
+        : '🌐';
+      document.getElementById('vbFlag').textContent = flag;
+      var city = d.city || '';
+      var country = d.country_name || '';
+      document.getElementById('vbLocText').textContent = city ? city + ', ' + country : country || '—';
+    })
+    .catch(function(){ document.getElementById('vbLocText').textContent = '—'; });
 
   document.addEventListener('click', function(e) {
     var t = e.target.closest('[data-section]');
@@ -1359,6 +2320,30 @@
     var m = e.target.closest('[data-mail]');
     if (m) { e.preventDefault(); window.location.href = 'mai' + 'lto:juliaangle61@gmai' + 'l.com'; }
   });
+
+  // ── CONTENT PROTECTION ──
+
+  // 1. 停用右鍵
+  document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+  // 2. 攔截開發者工具快捷鍵
+  document.addEventListener('keydown', function(e) {
+    // F12
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + I  (DevTools)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + J  (Console)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + C  (Inspector)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + U  (View Source)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'u') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + S  (Save page)
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + A  (Select all)
+    if ((e.ctrlKey || e.metaKey) && e.key === 'a') { e.preventDefault(); return false; }
+  });
+
 })();
 </script>
 </body>
