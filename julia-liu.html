@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julia Liu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #ffffff;
+    --text:    #111111;
+    --text2:   #444444;
+    --muted:   #999999;
+    --border:  #e8e8e8;
+    --dot:     #cccccc;
+    --accent:  #111111;
+  }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── TOP NAV ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    height: 56px;
+  }
+
+  .header-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--text);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+  nav a.active { color: var(--text); }
+  nav a.active::after { transform: scaleX(1); }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 64px 120px;
+  }
+
+  section { display: none; }
+  section.active {
+    display: block;
+    animation: fadeUp 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HEADER TOP ROW (mobile only) ── */
+  .header-top-row { display: contents; }
+
+  /* ── LANG TOGGLE ── */
+  .lang-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-left: 16px;
+    flex-shrink: 0;
+  }
+  .lang-btn:hover { color: var(--text); border-color: #aaa; }
+
+  /* ── ABOUT REDESIGN ── */
+  .ab-hero {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 48px;
+  }
+  .ab-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text2);
+    margin: 12px 0 24px;
+    line-height: 1.6;
+  }
+  .r-hero { aspect-ratio: 3/4; background: #f0eeeb; }
+
+  /* identity cards */
+  .ab-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .ab-card {
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    transition: border-color 0.2s;
+  }
+  .ab-card:hover { border-color: #aaa; }
+  .ab-card-icon {
+    font-size: 18px;
+    color: #bbb;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+  .ab-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .ab-card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text2);
+  }
+
+  /* stats */
+  .ab-stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .ab-stat { flex: 1; text-align: center; }
+  .ab-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .ab-stat-num span { font-size: 18px; color: var(--muted); }
+  .ab-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ab-stat-div { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+
+  /* timeline */
+  .ab-timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 8px; }
+  .ab-tl-item {
+    display: grid;
+    grid-template-columns: 68px 20px 1fr;
+    align-items: start;
+    gap: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .ab-tl-item:last-child { border-bottom: none; }
+  .ab-tl-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+  .ab-tl-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #ccc;
+    margin: 5px auto 0;
+  }
+  .ab-tl-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+    padding-left: 12px;
+  }
+
+  @media(max-width:600px) {
+    .ab-hero { grid-template-columns: 1fr; }
+    .ab-hero-right { display: none; }
+    .ab-cards { grid-template-columns: repeat(2,1fr); }
+    .ab-stats { flex-wrap: wrap; gap: 16px; }
+    .ab-stat-div { display: none; }
+    .ab-stat { flex: 0 0 45%; }
+  }
+
+  /* ── SHARED ── */
+  .divider { width: 40px; height: 1px; background: #ddd; margin: 44px 0; }
+
+  /* ── ABOUT ── */
+  .about-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .about-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 44px;
+  }
+  .about-bio {
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text2);
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+  .about-bio a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #ccc;
+    transition: text-decoration-color 0.2s;
+  }
+  .about-bio a:hover { text-decoration-color: var(--text); }
+
+  .about-social {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 40px;
+  }
+  .social-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .social-link:hover { color: var(--text); }
+  .social-sep { color: #ddd; font-size: 10px; }
+
+  .about-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 52px; }
+  .about-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    padding: 5px 14px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .about-tag:hover { border-color: var(--text); color: var(--text); }
+
+  /* photo grid */
+  .photo-grid   { display: grid; grid-template-columns: 1.1fr 2fr 1.1fr; gap: 4px; }
+  .photo-grid-b { display: grid; grid-template-columns: 2fr 1.3fr 1fr;   gap: 4px; margin-top: 4px; }
+  .photo-slot {
+    background: #f0eeeb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.5s ease; }
+  .photo-slot:hover img { transform: scale(1.04); }
+  .photo-slot .ph { font-family:'DM Mono',monospace; font-size:9px; color:#bbb; letter-spacing:0.05em; }
+  .r1{aspect-ratio:2/3;} .r2{aspect-ratio:4/3;} .r3{aspect-ratio:2/3;}
+  .r4{aspect-ratio:3/2;} .r5{aspect-ratio:5/3;} .r6{aspect-ratio:1/1;}
+
+  /* ── LIST ── */
+  .list-item {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.15s;
+  }
+  .list-item:hover { opacity: 0.45; }
+  .item-title { font-size: 17px; font-weight: 300; color: var(--text); white-space: nowrap; }
+  .dots { flex:1; border-bottom:1px dotted var(--dot); margin:0 12px; position:relative; top:-3px; min-width:16px; }
+  .item-date { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); white-space:nowrap; letter-spacing:0.06em; }
+
+  /* ── EPISODES ── */
+  .ep-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-top:44px; }
+  .ep-card { position:relative; aspect-ratio:3/2; background:#f0eeeb; overflow:hidden; cursor:pointer; }
+  .ep-card:nth-child(5),.ep-card:nth-child(8){aspect-ratio:3/4;}
+  .ep-inner { width:100%; height:100%; transition:transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+  .ep-card:hover .ep-inner { transform:scale(1.05); }
+  .ep-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,0.35) 0%,transparent 55%); }
+  .ep-label { position:absolute; bottom:11px; left:13px; font-family:'Cormorant Garamond',serif; font-size:14px; font-style:italic; color:rgba(255,255,255,0.95); }
+  .ep-date  { position:absolute; bottom:12px; right:11px; font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.55); letter-spacing:0.05em; }
+  .s1{background:#dddad4;}.s2{background:#d4d8dc;}.s3{background:#d8dcd4;}
+  .s4{background:#dcd4d0;}.s5{background:#d0d8dc;}.s6{background:#d8d4d0;}
+  .s7{background:#d4d0dc;}.s8{background:#dcd8d4;}
+
+  /* ── PROJECTS ── */
+  .project { margin-bottom: 52px; }
+  .project-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .project-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .project-desc {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text2);
+    max-width: 520px;
+  }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+  .ptag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    padding: 5px 13px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* ── PROJECT AUTHORS ── */
+  .project-authors {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 10px;
+    max-width: 520px;
+  }
+  .project-authors strong { color: var(--text); }
+  .project-authors span { font-size: 10px; opacity: 0.7; }
+
+  /* ── PROJECT LINK ── */
+  .project-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1px;
+    transition: border-color 0.2s;
+  }
+  .project-link:hover { border-color: var(--text); }
+
+  /* ── NOTES ── */
+  .notes-cat {
+    font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em;
+    color:var(--muted); text-transform:uppercase;
+    margin-bottom:14px; margin-top:36px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .notes-cat::after { content:''; flex:1; height:1px; background:var(--border); max-width:40px; }
+  .notes-cat:first-of-type { margin-top:0; }
+
+  /* ── PROJECT CATEGORY ── */
+  .proj-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .proj-cat::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 3px;
+    flex-wrap: wrap;
+  }
+  .proj-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .badge-research { background: #eef2ff; color: #4455aa; border: 1px solid #c8d0f0; }
+  .badge-corp     { background: #fff4e6; color: #aa6600; border: 1px solid #f0d0a0; }
+  .badge-aws      { background: #fff8e6; color: #997700; border: 1px solid #f0d880; }
+  .badge-side     { background: #f0f0f0; color: #777777; border: 1px solid #ddd; }
+
+  /* ── GALLERY SERIES LABEL ── */
+  .gallery-series-label {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .series-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text);
+  }
+  .series-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── GALLERY TABS ── */
+  .gallery-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .gtab {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 10px 24px 10px 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .gtab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 100%; height: 1px;
+    background: var(--text);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .gtab:hover { color: var(--text); }
+  .gtab.active { color: var(--text); }
+  .gtab.active::after { transform: scaleX(1); }
+  .g-slot.hidden { display: none; }
+
+  /* ── GALLERY ── */
+  .gallery-intro {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 200px;
+    gap: 4px;
+  }
+  .g-slot {
+    background: #f0eeeb;
+    overflow: hidden;
+    position: relative;
+  }
+  .g-slot.tall  { grid-row: span 2; }
+  .g-slot.wide  { grid-column: span 2; }
+  .g-slot img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    cursor: pointer;
+  }
+  .g-slot:hover img { transform: scale(1.04); }
+  .gph {
+    width: 100%; height: 100%;
+    background: #ece9e4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #ccc;
+    letter-spacing: 0.05em;
+  }
+  .gph::after { content: 'photo'; }
+
+  @media(max-width:600px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 160px;
+    }
+    .g-slot.wide { grid-column: span 1; }
+  }
+
+  /* ── EPISODES EXPANDABLE ── */
+  .ep-country-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+  .ep-country { display: flex; flex-direction: column; }
+  .ep-cover {
+    position: relative;
+    aspect-ratio: 3/2;
+    cursor: pointer;
+    overflow: hidden;
+    transition: opacity 0.2s;
+  }
+  .ep-cover:hover { opacity: 0.88; }
+  .ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+  .ep-cover-info {
+    position: absolute;
+    bottom: 12px; left: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ep-cover-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: rgba(255,255,255,0.95);
+  }
+  .ep-cover-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+  }
+  .ep-expand-hint {
+    position: absolute;
+    bottom: 12px; right: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    transition: transform 0.3s, color 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .ep-country.open .ep-expand-hint {
+    transform: rotate(180deg);
+    color: rgba(255,255,255,0.9);
+  }
+  .ep-album {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .ep-country.open .ep-album { max-height: 800px; }
+  .ep-album-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    padding-top: 3px;
+  }
+  .ep-album-grid img {
+    width: 100%; aspect-ratio: 3/2;
+    object-fit: cover; display: block;
+    transition: opacity 0.2s;
+  }
+  .ep-album-grid img:hover { opacity: 0.85; }
+  .ep-ph {
+    aspect-ratio: 3/2;
+    background: #f0eeeb;
+  }
+
+  /* ── RESPONSIVE ── */
+
+  /* Tablet */
+  @media(max-width:860px){
+    header { padding: 0 32px; }
+    main { padding: 60px 32px 100px; }
+    .about-name { font-size: 46px; }
+    nav { gap: 16px; }
+    nav a { font-size: 10px; letter-spacing: 0.06em; }
+  }
+
+  @media(max-width:720px){
+    header { padding: 0; height: auto; flex-direction: column; align-items: stretch; }
+    .header-top-row { display: flex !important; align-items: center; justify-content: space-between; padding: 0 20px; }
+    .header-name { padding: 14px 0 12px; }
+    .lang-btn { margin-left: 0; }
+    nav {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-top: 1px solid var(--border);
+      padding: 0 8px;
+      gap: 0;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav a {
+      flex-shrink: 0;
+      padding: 12px 14px;
+      font-size: 10px;
+      letter-spacing: 0.07em;
+    }
+    nav a::after { display: none; }
+    nav a.active { color: var(--text); border-bottom: 2px solid var(--text); }
+    main { padding: 48px 24px 80px; }
+  }
+
+  /* Mobile */
+  @media(max-width:600px){
+    header {
+      padding: 0;
+      height: auto;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .header-name {
+      padding: 14px 0 12px;
+      font-size: 16px;
+    }
+    .lang-btn {
+      margin-left: 0;
+    }
+    nav {
+      width: 100%;
+      gap: 0;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      border-top: 1px solid var(--border);
+      padding: 0 8px;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav a {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 14px 16px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      min-width: 64px;
+    }
+    nav a::after { display: none; }
+    nav a.active {
+      color: var(--text);
+      border-bottom: 2px solid var(--text);
+    }
+    main { padding: 36px 20px 80px; }
+    .about-name { font-size: 36px; }
+    .about-bio { font-size: 17px; }
+    .about-sub { font-size: 9px; letter-spacing: 0.07em; }
+    .photo-grid { grid-template-columns: 1fr 1fr; }
+    .photo-grid-b { grid-template-columns: 1fr 1fr; }
+    .photo-grid .r1,.photo-grid .r3 { display: none; }
+    .ep-grid { grid-template-columns: repeat(2,1fr); }
+    .ep-card:nth-child(5),.ep-card:nth-child(8){ aspect-ratio: 3/2; }
+    .item-title { font-size: 15px; white-space: normal; }
+    .project-name { font-size: 22px; }
+    .project-desc { font-size: 15px; }
+    .about-tags { gap: 6px; }
+    .about-tag { font-size: 10px; padding: 4px 10px; }
+    .project-tags { gap: 5px; }
+    .ptag { font-size: 10px; padding: 4px 10px; }
+    .about-social { flex-wrap: wrap; gap: 12px; }
+  }
+
+  /* Very small */
+  @media(max-width:360px){
+    nav a { font-size: 9px; padding: 12px 12px; }
+    .about-name { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top-row">
+    <span class="header-name" data-section="about">Julia Liu</span>
+    <button class="lang-btn" id="langBtn">中文</button>
+  </div>
+  <nav>
+    <a class="active" data-section="about" data-zh="about" data-en="about">about</a>
+    <a data-section="gallery" data-zh="gallery" data-en="gallery">gallery</a>
+    <a data-section="thoughts" data-zh="thoughts" data-en="thoughts">thoughts</a>
+    <a data-section="episodes" data-zh="episodes" data-en="episodes">episodes</a>
+    <a data-section="projects" data-zh="projects" data-en="projects">projects</a>
+    <a data-section="notes" data-zh="notes" data-en="notes">notes</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ABOUT -->
+  <section id="about" class="active">
+
+    <!-- Hero row -->
+    <div class="about-name">Julia Liu</div>
+    <div class="about-sub"><span data-zh="AI 研究者 &nbsp;·&nbsp; 斜槓人 &nbsp;·&nbsp; 台灣" data-en="AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan">AI 研究者 &nbsp;·&nbsp; 斜槓人 &nbsp;·&nbsp; 台灣</span></div>
+    <p class="ab-tagline"><span data-zh="在程式碼、鏡頭之間找到自己的節奏。" data-en="Finding my rhythm between code and the lens.">在程式碼、鏡頭之間找到自己的節奏。</span></p>
+    <div class="about-social">
+      <a href="https://github.com/juliahahah" target="_blank" class="social-link" data-zh="GitHub" data-en="GitHub">GitHub</a>
+      <span class="social-sep">·</span>
+      <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="social-link" data-zh="LinkedIn" data-en="LinkedIn">LinkedIn</a>
+      <span class="social-sep">·</span>
+      <a href="#" data-mail="1" class="social-link" data-zh="Email" data-en="Email">Email</a>
+    </div>
+
+    <!-- Identity cards -->
+    <div class="ab-cards">
+      <div class="ab-card">
+        <div class="ab-card-icon">⬡</div>
+        <div class="ab-card-label" data-zh="研究" data-en="Research">研究</div>
+        <div class="ab-card-desc" data-zh="AI Agent · Robotics · RAG<br>交大 AI Innovation 碩士" data-en="AI Agent · Robotics · RAG<br>NYCU AI Innovation MS">AI Agent · Robotics · RAG<br>交大 AI Innovation 碩士</div>
+      </div>
+      <div class="ab-card">
+        <div class="ab-card-icon">◎</div>
+        <div class="ab-card-label" data-zh="業界" data-en="Industry">業界</div>
+        <div class="ab-card-desc" data-zh="鴻海 AI Engineer<br>優式資本 助理工程師<br>Cake Taiwan 講師" data-en="Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor">鴻海 AI Engineer<br>優式資本 助理工程師<br>Cake Taiwan 講師</div>
+      </div>
+      <div class="ab-card">
+        <div class="ab-card-icon">△</div>
+        <div class="ab-card-label" data-zh="國際" data-en="Global">國際</div>
+        <div class="ab-card-desc" data-zh="聯合國海洋大會<br>法國交流 · 國際志工" data-en="UN Ocean Conference<br>France Exchange · Int'l Volunteer">聯合國海洋大會<br>法國交流 · 國際志工</div>
+      </div>
+      <div class="ab-card">
+        <div class="ab-card-icon">○</div>
+        <div class="ab-card-label" data-zh="生活" data-en="Life">生活</div>
+        <div class="ab-card-desc" data-zh="外拍 · 人像模特<br>烘焙 · 旅遊 8 國" data-en="Photography · Modeling<br>Baking · Traveled 8 countries">外拍 · 人像模特<br>烘焙 · 旅遊 8 國</div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="ab-timeline">
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2026.01</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="優式資本 助理工程師" data-en="UC Capital — Asst. Engineer">優式資本 助理工程師</div>
+      </div>
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2025.09</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="交大 AI Innovation 碩士入學" data-en="NYCU AI Innovation MS — Enrolled">交大 AI Innovation 碩士入學</div>
+      </div>
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2025.09</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>支援 400+ 學員 AWS AIF 證照備考</span>" data-en="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span>">Technical Teaching Consultant · Cake Taiwan<br><span style="font-size:13px;color:var(--muted);">支援 400+ 學員 AWS AIF 證照備考</span></div>
+      </div>
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2025.06</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="參與聯合國海洋大會 · 赴法交流" data-en="UN Ocean Conference · Exchange in France">參與聯合國海洋大會 · 赴法交流</div>
+      </div>
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2025.01</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="AWS Campus Ambassador" data-en="AWS Campus Ambassador">AWS Campus Ambassador</div>
+      </div>
+      <div class="ab-tl-item">
+        <div class="ab-tl-year">2024.12</div>
+        <div class="ab-tl-dot"></div>
+        <div class="ab-tl-text" data-zh="鴻海 AI Engineer Intern（1 年 2 個月）" data-en="Foxconn — AI Engineer Intern (1 yr 2 mo)">鴻海 AI Engineer Intern（1 年 2 個月）</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- THOUGHTS -->
+  <section id="thoughts">
+    <div class="list-item"><span class="item-title"><span data-zh="在法國與聯合國之間，我看見了什麼" data-en="What I Saw Between France and the UN">在法國與聯合國之間，我看見了什麼</span></span><span class="dots"></span><span class="item-date">2025.06</span></div>
+    <div class="list-item"><span class="item-title"><span data-zh="AWS Campus Ambassador — 八個月的回望" data-en="AWS Campus Ambassador — Looking Back on 8 Months">AWS Campus Ambassador — 八個月的回望</span></span><span class="dots"></span><span class="item-date">2025.07</span></div>
+    <div class="list-item"><span class="item-title"><span data-zh="鴻海實習：2% 錄取率背後的那一年" data-en="Foxconn Internship: The Year Behind a 2% Acceptance Rate">鴻海實習：2% 錄取率背後的那一年</span></span><span class="dots"></span><span class="item-date">2025.01</span></div>
+  </section>
+
+  <!-- EPISODES -->
+  <section id="episodes">
+
+    <!-- Country cards -->
+    <div class="ep-country-grid">
+
+      <div class="ep-country" data-country="japan">
+        <div class="ep-cover s1">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="日本" data-en="Japan">日本</span>
+            <span class="ep-cover-date">2025.10</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-japan">
+          <div class="ep-album-grid">
+            <!-- 放入照片：src="photos/episodes/japan/japan_01.jpg" 等 -->
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ep-country" data-country="france">
+        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;cursor:pointer;overflow:hidden;">
+          <img src="photos/episodes/france/france_02.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="法國" data-en="France">法國</span>
+            <span class="ep-cover-date">2025.06</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-france">
+          <div class="ep-album-grid">
+            <img src="photos/episodes/france/france_03.jpg" alt="France">
+            <img src="photos/episodes/france/france_09.jpg" alt="France">
+            <img src="photos/episodes/france/france_10.jpg" alt="France">
+            <img src="photos/episodes/france/france_05.jpg" alt="France">
+            <img src="photos/episodes/france/france_07.jpg" alt="France">
+            <img src="photos/episodes/france/france_08.jpg" alt="France">
+            <img src="photos/episodes/france/france_04.jpg" alt="France">
+            <img src="photos/episodes/france/france_11.jpg" alt="France">
+            <img src="photos/episodes/france/france_01.jpg" alt="France">
+            <img src="photos/episodes/france/france_06.jpg" alt="France">
+            <img src="photos/episodes/france/france_12.jpg" alt="France">
+          </div>
+        </div>
+      </div>
+
+      <div class="ep-country" data-country="singapore">
+        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;cursor:pointer;overflow:hidden;">
+          <img src="photos/episodes/singapore/singapore_05.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="新加坡" data-en="Singapore">新加坡</span>
+            <span class="ep-cover-date">2025.11</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-singapore">
+          <div class="ep-album-grid">
+            <img src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_02.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore">
+            <img src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore">
+          </div>
+        </div>
+      </div>
+
+      <div class="ep-country" data-country="malaysia">
+        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;cursor:pointer;overflow:hidden;">
+          <img src="photos/episodes/malaysia/malaysia_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="馬來西亞" data-en="Malaysia">馬來西亞</span>
+            <span class="ep-cover-date">2025.06</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-malaysia">
+          <div class="ep-album-grid">
+            <img src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_02.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_08.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia">
+            <img src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia">
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="ep-country" data-country="china">
+        <div class="ep-cover s6">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="中國" data-en="China">中國</span>
+            <span class="ep-cover-date">2023.07</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-china">
+          <div class="ep-album-grid">
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ep-country" data-country="macau">
+        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;cursor:pointer;overflow:hidden;">
+          <img src="photos/episodes/macau/macau_03.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="澳門" data-en="Macau">澳門</span>
+            <span class="ep-cover-date">2025.02</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-macau">
+          <div class="ep-album-grid">
+            <img src="photos/episodes/macau/macau_01.jpg" alt="Macau">
+            <img src="photos/episodes/macau/macau_02.jpg" alt="Macau">
+            <img src="photos/episodes/macau/macau_04.jpg" alt="Macau">
+            <img src="photos/episodes/macau/macau_05.jpg" alt="Macau">
+          </div>
+        </div>
+      </div>
+
+      <div class="ep-country" data-country="taiwan">
+        <div class="ep-cover s8">
+          <div class="ep-overlay"></div>
+          <div class="ep-cover-info">
+            <span class="ep-cover-name" data-zh="台灣 · 各地" data-en="Taiwan · Various">台灣 · 各地</span>
+            <span class="ep-cover-date">——</span>
+          </div>
+          <span class="ep-expand-hint">↓</span>
+        </div>
+        <div class="ep-album" id="album-taiwan">
+          <div class="ep-album-grid">
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+            <div class="ep-ph"></div><div class="ep-ph"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+
+    <!-- Category 1 -->
+    <div class="proj-cat" data-zh="學術研究與業界實務" data-en="Academic Research &amp; Industry">學術研究與業界實務</div>
+
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">SceneFoundry</div>
+        <span class="proj-badge badge-research">Publication</span>
+      </div>
+      <div class="project-meta" data-zh="2025 · Research Paper · 第三作者" data-en="2025 · Research Paper · 3rd Author">2025 &nbsp;·&nbsp; Research Paper &nbsp;·&nbsp; 第三作者</div>
+      <p class="project-authors">ChunTeng Chen, YiChen Hsu, <strong>YiWen Liu</strong>, WeiFang Sun, TsaiChing Ni, ChunYi Lee, Min Sun, YuanFu Yang<br><span>NYCU · NTHU · NVIDIA ATC · NTU</span></p>
+      <p class="project-desc" data-zh="語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。" data-en="A language-guided diffusion framework that generates apartment-scale interactive 3D worlds with articulated furniture for robotics training and embodied AI research.">語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。</p>
+      <div class="project-tags">
+        <span class="ptag">Diffusion</span><span class="ptag">LLM</span><span class="ptag">Robotics</span><span class="ptag">3D Generation</span><span class="ptag">Embodied AI</span>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;">
+        <a href="https://anc891203.github.io/SceneFoundry-Demo/" target="_blank" class="project-link">Demo →</a>
+        <a href="https://github.com/anc891203/SceneFoundry" target="_blank" class="project-link">View Repo →</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">FoxBrain — Data Augmentation</div>
+        <span class="proj-badge badge-corp">Foxconn</span>
+      </div>
+      <div class="project-meta" data-zh="2024 · 鴻海精密工業" data-en="2024 · Foxconn">2024 &nbsp;·&nbsp; 鴻海精密工業</div>
+      <p class="project-desc" data-zh="執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。" data-en="Executed data augmentation strategies to enhance the FoxBrain project, evaluated 8 LLMs for performance optimization.">執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。</p>
+      <div class="project-tags">
+        <span class="ptag">LLM</span><span class="ptag">Data Augmentation</span><span class="ptag">Computer Vision</span><span class="ptag">EV</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">PDF RAG Benchmark</div>
+        <span class="proj-badge badge-research">Research</span>
+      </div>
+      <div class="project-meta" data-zh="2025 · Research" data-en="2025 · Research">2025 &nbsp;·&nbsp; Research</div>
+      <p class="project-desc" data-zh="針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。" data-en="A systematic performance comparison of PDF extraction tools for RAG pipelines, providing practical tool selection guidance.">針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。</p>
+      <div class="project-tags">
+        <span class="ptag">RAG</span><span class="ptag">PDF Parsing</span><span class="ptag">Benchmark</span><span class="ptag">LLM</span>
+      </div>
+      <a href="https://github.com/juliahahah/pdf-rag-extraction-benchmark" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
+    </div>
+
+    <!-- Category 2 -->
+    <div class="proj-cat" style="margin-top:56px;" data-zh="社群影響力與技術推廣" data-en="Community Impact &amp; Leadership">社群影響力與技術推廣</div>
+
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
+        <span class="proj-badge badge-aws">AWS</span>
+      </div>
+      <div class="project-meta" data-zh="2025 · AWS Educate Taiwan · Reeve · Cody · Julia" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · Julia">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · Julia</div>
+      <p class="project-desc" data-zh="使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
+      <div class="project-tags">
+        <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+        <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
+        <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-zh="AIF 重點整理衝刺班 →" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
+      </div>
+    </div>
+
+    <!-- Category 3 -->
+    <div class="proj-cat" style="margin-top:56px;" data-zh="創新應用與個人專案" data-en="Innovative Side Projects">創新應用與個人專案</div>
+
+    <div class="project">
+      <div class="project-header">
+        <div class="project-name">AI Fashion Designer</div>
+        <span class="proj-badge badge-side">Side Project</span>
+      </div>
+      <div class="project-meta" data-zh="2024 · Julia · 家賢 · JingWen" data-en="2024 · Julia · 家賢 · JingWen">2024 &nbsp;·&nbsp; Julia · 家賢 · JingWen</div>
+      <p class="project-desc" data-zh="結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。" data-en="A virtual try-on system using ControlNet and Inpainting techniques, enabling users to preview outfits online in real time.">結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。</p>
+      <div class="project-tags">
+        <span class="ptag">ControlNet</span><span class="ptag">Inpainting</span><span class="ptag">Computer Vision</span><span class="ptag">Generative AI</span>
+      </div>
+      <a href="https://github.com/juliahahah/ControlNet_Fashion" target="_blank" class="project-link" style="display:inline-block;margin-top:14px;">View Repo →</a>
+    </div>
+
+  </section>
+
+    <!-- NOTES -->
+  <section id="notes">
+    <div class="notes-cat" data-zh="AI Agent" data-en="AI Agent">AI Agent</div>
+    <div class="list-item"><span class="item-title" data-zh="AI Agent 的工具選擇與記憶機制" data-en="AI Agent — Tool Selection &amp; Memory">AI Agent 的工具選擇與記憶機制</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="Agentic RAG vs. RAG：從被動檢索到主動推理" data-en="Agentic RAG vs. RAG: From Passive to Active Retrieval">Agentic RAG vs. RAG：從被動檢索到主動推理</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="Multi-agent 協作框架初探" data-en="Intro to Multi-agent Collaboration Frameworks">Multi-agent 協作框架初探</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="notes-cat" data-zh="RAG" data-en="RAG">RAG</div>
+    <div class="list-item"><span class="item-title" data-zh="向量檢索 vs. 結構化檢索" data-en="Vector Retrieval vs. Structured Retrieval">向量檢索 vs. 結構化檢索</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="Embedding 模型選擇筆記" data-en="Notes on Choosing Embedding Models">Embedding 模型選擇筆記</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="Chunking 策略與 Context Loss" data-en="Chunking Strategies &amp; Context Loss">Chunking 策略與 Context Loss</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="notes-cat" data-zh="Robotics" data-en="Robotics">Robotics</div>
+    <div class="list-item"><span class="item-title" data-zh="SceneFoundry 論文閱讀筆記" data-en="SceneFoundry — Paper Reading Notes">SceneFoundry 論文閱讀筆記</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="NVIDIA Isaac — Jetson Nano 入門" data-en="NVIDIA Isaac — Getting Started with Jetson Nano">NVIDIA Isaac — Jetson Nano 入門</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="具身智慧（Embodied AI）概念整理" data-en="Embodied AI — Concept Overview">具身智慧（Embodied AI）概念整理</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="notes-cat" data-zh="雲端 / 工具" data-en="Cloud / Tools">雲端 / 工具</div>
+    <div class="list-item"><span class="item-title" data-zh="AWS Lambda + AI Agent 實作記錄" data-en="AWS Lambda + AI Agent — Implementation Notes">AWS Lambda + AI Agent 實作記錄</span><span class="dots"></span><span class="item-date">——</span></div>
+    <div class="list-item"><span class="item-title" data-zh="AWS AIF 考試準備心得" data-en="AWS AIF Exam Preparation Notes">AWS AIF 考試準備心得</span><span class="dots"></span><span class="item-date">——</span></div>
+  </section>
+
+
+  <!-- GALLERY -->
+  <section id="gallery">
+
+    <!-- Category Tabs -->
+    <div class="gallery-tabs">
+      <button class="gtab active" data-cat="all" data-zh="All" data-en="All">All</button>
+      <button class="gtab" data-cat="campus" data-zh="GreenPath" data-en="GreenPath">GreenPath</button>
+      <button class="gtab" data-cat="bluehour" data-zh="Blue Hour" data-en="Blue Hour">Blue Hour</button>
+      <button class="gtab" data-cat="amber" data-zh="Amber" data-en="Amber">Amber</button>
+      <button class="gtab" data-cat="spark" data-zh="Spark" data-en="Spark">Spark</button>
+      <button class="gtab" data-cat="stage" data-zh="Off Stage" data-en="Off Stage">Off Stage</button>
+      <button class="gtab" data-cat="perf" data-zh="Renaissance" data-en="Renaissance">Renaissance</button>
+    </div>
+
+    <!-- All -->
+    <div class="gallery-grid" data-cat="all">
+      <div class="g-slot tall" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_06.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_02.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_07.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot wide" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_05.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_04.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot tall" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_08.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_01.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot" data-tags="campus portrait"><img src="photos/gallery/green-path-nycu/nycu_03.jpg" alt="NYCU 2026"></div>
+      <div class="g-slot wide" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_01.jpg" alt="Blue Hour"></div>
+      <div class="g-slot tall" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_04.jpg" alt="Blue Hour"></div>
+      <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_03.jpg" alt="Blue Hour"></div>
+      <div class="g-slot" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_02.jpg" alt="Blue Hour"></div>
+      <div class="g-slot wide" data-tags="bluehour"><img src="photos/gallery/blue-hour/bh_05.jpg" alt="Blue Hour"></div>
+      <div class="g-slot tall" data-tags="amber"><img src="photos/gallery/amber/amb_01.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_05.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_09.jpg" alt="Amber"></div>
+      <div class="g-slot wide" data-tags="amber"><img src="photos/gallery/amber/amb_03.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_06.jpg" alt="Amber"></div>
+      <div class="g-slot tall" data-tags="amber"><img src="photos/gallery/amber/amb_08.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_02.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_07.jpg" alt="Amber"></div>
+      <div class="g-slot wide" data-tags="amber"><img src="photos/gallery/amber/amb_10.jpg" alt="Amber"></div>
+      <div class="g-slot" data-tags="amber"><img src="photos/gallery/amber/amb_04.jpg" alt="Amber"></div>
+      <div class="g-slot wide" data-tags="spark"><img src="photos/gallery/spark/sp_01.jpg" alt="Spark"></div>
+      <div class="g-slot tall" data-tags="spark"><img src="photos/gallery/spark/sp_05.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_03.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_07.jpg" alt="Spark"></div>
+      <div class="g-slot wide" data-tags="spark"><img src="photos/gallery/spark/sp_04.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_02.jpg" alt="Spark"></div>
+      <div class="g-slot" data-tags="spark"><img src="photos/gallery/spark/sp_06.jpg" alt="Spark"></div>
+      <div class="g-slot wide" data-tags="stage"><img src="photos/gallery/stage-dance/stage_01.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_05.jpg" alt="Stage Dance"></div>
+      <div class="g-slot tall" data-tags="stage"><img src="photos/gallery/stage-dance/stage_06.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_02.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_03.jpg" alt="Stage Dance"></div>
+      <div class="g-slot wide" data-tags="stage"><img src="photos/gallery/stage-dance/stage_04.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_07.jpg" alt="Stage Dance"></div>
+      <div class="g-slot tall" data-tags="stage"><img src="photos/gallery/stage-dance/stage_08.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_09.jpg" alt="Stage Dance"></div>
+      <div class="g-slot" data-tags="stage"><img src="photos/gallery/stage-dance/stage_10.jpg" alt="Stage Dance"></div>
+      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_01.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_14.jpg" alt="Stage Performance"></div>
+      <div class="g-slot tall" data-tags="perf"><img src="photos/gallery/stage-performance/perf_10.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_07.jpg" alt="Stage Performance"></div>
+      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_02.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_08.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_05.jpg" alt="Stage Performance"></div>
+      <div class="g-slot tall" data-tags="perf"><img src="photos/gallery/stage-performance/perf_11.jpg" alt="Stage Performance"></div>
+      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_04.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_09.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_06.jpg" alt="Stage Performance"></div>
+      <div class="g-slot wide" data-tags="perf"><img src="photos/gallery/stage-performance/perf_03.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_12.jpg" alt="Stage Performance"></div>
+      <div class="g-slot" data-tags="perf"><img src="photos/gallery/stage-performance/perf_13.jpg" alt="Stage Performance"></div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+(function() {
+  function navigate(id) {
+    document.querySelectorAll('section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('nav a').forEach(function(a) { a.classList.remove('active'); });
+    var sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
+    var link = document.querySelector('nav a[data-section="' + id + '"]');
+    if (link) link.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Gallery tabs
+  document.querySelectorAll('.gtab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.gtab').forEach(function(t){ t.classList.remove('active'); });
+      this.classList.add('active');
+      var cat = this.getAttribute('data-cat');
+      document.querySelectorAll('.gallery-grid .g-slot').forEach(function(slot) {
+        var tags = slot.getAttribute('data-tags') || '';
+        if (cat === 'all' || tags.indexOf(cat) !== -1) {
+          slot.classList.remove('hidden');
+        } else {
+          slot.classList.add('hidden');
+        }
+      });
+      // show series label if campus selected
+      var lbl = document.getElementById('label-campus');
+      if (lbl) lbl.style.display = (cat === 'campus') ? 'flex' : 'none';
+    });
+  });
+
+  // Language toggle
+  var currentLang = 'en';
+  function applyLang(lang) {
+    currentLang = lang;
+    document.getElementById('langBtn').textContent = lang === 'zh' ? 'EN' : '中文';
+    document.documentElement.lang = lang === 'zh' ? 'zh-TW' : 'en';
+    document.querySelectorAll('[data-zh][data-en]').forEach(function(el) {
+      // skip if a parent already has data-zh/data-en (avoid double processing)
+      if (el.closest('[data-zh]') !== el) return;
+      el.innerHTML = lang === 'zh' ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    });
+    // nav link text
+    var navMap = {about:'about',gallery:'gallery',thoughts:'thoughts',episodes:'episodes',projects:'projects',notes:'notes'};
+    document.querySelectorAll('nav a[data-section]').forEach(function(a){
+      a.textContent = navMap[a.getAttribute('data-section')] || a.getAttribute('data-section');
+    });
+  }
+  document.getElementById('langBtn').addEventListener('click', function() {
+    applyLang(currentLang === 'zh' ? 'en' : 'zh');
+  });
+  applyLang('en');
+
+  // Episodes expand/collapse
+  document.querySelectorAll('.ep-cover').forEach(function(cover) {
+    cover.addEventListener('click', function() {
+      var country = this.closest('.ep-country');
+      var isOpen = country.classList.contains('open');
+      document.querySelectorAll('.ep-country').forEach(function(c){ c.classList.remove('open'); });
+      if (!isOpen) country.classList.add('open');
+    });
+  });
+
+  document.addEventListener('click', function(e) {
+    var t = e.target.closest('[data-section]');
+    if (t) { e.preventDefault(); navigate(t.getAttribute('data-section')); return; }
+    var g = e.target.closest('[data-go]');
+    if (g) { e.preventDefault(); navigate(g.getAttribute('data-go')); return; }
+    var m = e.target.closest('[data-mail]');
+    if (m) { e.preventDefault(); window.location.href = 'mai' + 'lto:juliaangle61@gmai' + 'l.com'; }
+  });
+})();
+</script>
+</body>
+</html>
