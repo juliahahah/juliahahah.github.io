@@ -1224,69 +1224,86 @@
     main { padding: 56px 52px 80px; }
   }
 
-  /* Mobile: sidebar → top bar */
+  /* Mobile: sidebar → two-row top bar */
   @media(max-width:680px){
     body { flex-direction: column; }
     .content-wrap { margin-left: 0; }
 
+    /* Sidebar becomes a 2-row sticky header */
     .sidebar {
       position: sticky;
       top: 0;
       width: 100%;
       height: auto;
-      flex-direction: row;
-      align-items: center;
-      padding: 0 20px;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0;
       border-right: none;
       border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.97);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      gap: 0;
+      overflow: visible;
+      z-index: 200;
     }
+
+    /* ── Row 1: name  +  nav items (均分, no scroll) ── */
     .sidebar-name {
-      font-size: 15px;
-      margin-bottom: 0;
-      padding: 14px 0;
-      flex-shrink: 0;
+      display: none; /* hidden; name shows in nav row via ::before or just omit */
     }
     nav {
       flex-direction: row;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      flex: 1;
-      padding: 0 8px;
-      margin: 0 8px;
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
+      overflow-x: visible;
+      flex: unset;
+      width: 100%;
+      padding: 0 16px;
+      margin: 0;
+      border-left: none;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
       gap: 0;
+      justify-content: space-between;
     }
     nav::-webkit-scrollbar { display: none; }
     nav a {
-      flex-shrink: 0;
-      padding: 14px 14px;
-      font-size: 9px;
+      flex: 1;
+      text-align: center;
+      padding: 14px 0;
+      font-size: 10px;
       letter-spacing: 0.07em;
+      white-space: nowrap;
     }
     nav a::before { display: none; }
     nav a.active {
       color: var(--text);
       border-bottom: 2px solid var(--text);
     }
+
+    /* ── Row 2: lang picker (全寬, 均分) ── */
     .lang-picker {
       flex-direction: row;
       flex-wrap: nowrap;
+      width: 100%;
       margin-top: 0;
-      padding-top: 0;
+      padding: 0 16px;
       border-top: none;
-      border-left: 1px solid var(--border);
-      padding-left: 10px;
+      border-left: none;
       gap: 0;
-      flex-shrink: 0;
+      justify-content: space-between;
     }
-    .lp-btn { font-size: 8px; padding: 4px 6px; letter-spacing: 0.04em; }
+    .lp-btn {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      padding: 10px 0;
+      letter-spacing: 0.04em;
+    }
     .lp-btn::before { display: none; }
     .lp-btn.active { color: var(--text); border-bottom: 2px solid var(--text); }
-    main { padding: 40px 24px 80px; }
+
+    .sidebar-views { display: none; }
+    main { padding: 36px 20px 80px; }
     .site-footer { padding: 20px 24px; }
     #about, #thoughts, #projects, #notes { max-width: 100%; }
 
@@ -1311,8 +1328,9 @@
     .ab-cards { grid-template-columns: repeat(2,1fr); }
   }
 
-  @media(max-width:360px){
-    nav a { font-size: 8px; padding: 12px 10px; }
+  @media(max-width:400px){
+    nav a { font-size: 9px; padding: 13px 0; }
+    .lp-btn { font-size: 10px; }
     .about-name { font-size: 28px; }
   }
 </style>
