@@ -1051,6 +1051,30 @@
     color: var(--muted);
   }
 
+  /* ── TRAVELS HEADER ── */
+  .travels-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .travels-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .travels-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
   /* ── EPISODES EXPANDABLE ── */
   .ep-country-grid {
     display: grid;
@@ -1224,85 +1248,230 @@
     main { padding: 56px 52px 80px; }
   }
 
-  /* Mobile: sidebar → two-row top bar */
+  /* ── MOBILE TOPBAR (hamburger) ── */
+  .mob-topbar {
+    display: none; /* 手機才顯示 */
+  }
+
+  /* ── DRAWER OVERLAY ── */
+  .mob-drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    z-index: 299;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .mob-drawer-overlay.open {
+    display: block;
+    opacity: 1;
+  }
+
+  /* ── DRAWER PANEL (從右側滑出) ── */
+  .mob-drawer {
+    position: fixed;
+    top: 0; right: 0;
+    width: min(280px, 82vw);
+    height: 100dvh;
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    overflow-y: auto;
+  }
+  .mob-drawer.open {
+    transform: translateX(0);
+  }
+
+  /* Drawer header：名字 + 關閉按鈕 */
+  .mob-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .mob-drawer-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+  .mob-drawer-close {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .mob-drawer-close:hover { color: var(--text); }
+
+  /* Drawer nav links */
+  .mob-drawer nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 8px 0;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .mob-drawer nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, background 0.2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .mob-drawer nav a:last-child { border-bottom: none; }
+  .mob-drawer nav a:hover { color: var(--text); background: #fafafa; }
+  .mob-drawer nav a.active { color: var(--text); font-weight: 500; }
+  .mob-drawer nav a.active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--text);
+  }
+
+  /* Drawer lang picker */
+  .mob-drawer .lang-picker {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+    gap: 4px;
+    margin-top: 0;
+    border-top: none;
+    flex-shrink: 0;
+  }
+  .mob-drawer .lp-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    text-align: center;
+  }
+  .mob-drawer .lp-btn:hover { color: var(--text); border-color: #aaa; }
+  .mob-drawer .lp-btn.active { color: var(--text); border-color: var(--text); }
+  .mob-drawer .lp-btn::before { display: none; }
+
+  /* Drawer views */
+  .mob-drawer-views {
+    padding: 16px 24px 24px;
+    flex-shrink: 0;
+  }
+  .mob-drawer-views .sv-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .mob-drawer-views .sv-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .mob-drawer-views .sv-loc {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* ── MOBILE BREAKPOINT ── */
   @media(max-width:680px){
+    /* 桌面 sidebar 完全隱藏 */
+    .sidebar { display: none; }
+
     body { flex-direction: column; }
     .content-wrap { margin-left: 0; }
 
-    /* Sidebar becomes a 2-row sticky header */
-    .sidebar {
+    /* 顯示手機 topbar */
+    .mob-topbar {
+      display: flex;
       position: sticky;
       top: 0;
       width: 100%;
-      height: auto;
-      flex-direction: column;
-      align-items: stretch;
-      padding: 0;
-      border-right: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 52px;
       border-bottom: 1px solid var(--border);
       background: rgba(255,255,255,0.97);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      gap: 0;
-      overflow: visible;
       z-index: 200;
+      flex-shrink: 0;
     }
-
-    /* ── Row 1: name  +  nav items (均分, no scroll) ── */
-    .sidebar-name {
-      display: none; /* hidden; name shows in nav row via ::before or just omit */
-    }
-    nav {
-      flex-direction: row;
-      overflow-x: visible;
-      flex: unset;
-      width: 100%;
-      padding: 0 16px;
-      margin: 0;
-      border-left: none;
-      border-right: none;
-      border-bottom: 1px solid var(--border);
-      gap: 0;
-      justify-content: space-between;
-    }
-    nav::-webkit-scrollbar { display: none; }
-    nav a {
-      flex: 1;
-      text-align: center;
-      padding: 14px 0;
-      font-size: 10px;
-      letter-spacing: 0.07em;
-      white-space: nowrap;
-    }
-    nav a::before { display: none; }
-    nav a.active {
+    .mob-topbar-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-style: italic;
+      font-weight: 400;
       color: var(--text);
-      border-bottom: 2px solid var(--text);
+      letter-spacing: 0.01em;
+      cursor: pointer;
     }
+    /* 漢堡按鈕 */
+    .mob-hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 2px;
+      transition: opacity 0.2s;
+    }
+    .mob-hamburger:hover { opacity: 0.6; }
+    .mob-hamburger span {
+      display: block;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 1px;
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.2s;
+      transform-origin: center;
+    }
+    /* 開啟狀態：變成 × */
+    .mob-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mob-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mob-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-    /* ── Row 2: lang picker (全寬, 均分) ── */
-    .lang-picker {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      width: 100%;
-      margin-top: 0;
-      padding: 0 16px;
-      border-top: none;
-      border-left: none;
-      gap: 0;
-      justify-content: space-between;
-    }
-    .lp-btn {
-      flex: 1;
-      text-align: center;
-      font-size: 11px;
-      padding: 10px 0;
-      letter-spacing: 0.04em;
-    }
-    .lp-btn::before { display: none; }
-    .lp-btn.active { color: var(--text); border-bottom: 2px solid var(--text); }
-
-    .sidebar-views { display: none; }
     main { padding: 36px 20px 80px; }
     .site-footer { padding: 20px 24px; }
     #about, #thoughts, #projects, #notes { max-width: 100%; }
@@ -1324,13 +1493,12 @@
     .ep-album-grid { grid-template-columns: repeat(2, 1fr); }
     .ep-country.open .ep-cover { aspect-ratio: 4/3; }
     .ep-country.open .ep-cover-name { font-size: 20px; }
-    .visitor-badge { bottom: 12px; right: 12px; }
     .ab-cards { grid-template-columns: repeat(2,1fr); }
   }
 
   @media(max-width:400px){
-    nav a { font-size: 9px; padding: 13px 0; }
-    .lp-btn { font-size: 10px; }
+    .mob-topbar { padding: 0 14px; }
+    .mob-topbar-name { font-size: 15px; }
     .about-name { font-size: 28px; }
   }
 </style>
@@ -1342,9 +1510,9 @@
   <span class="sidebar-name" data-section="about">Julia Liu</span>
   <nav>
     <a class="active" data-section="about">about</a>
-    <a data-section="gallery">gallery</a>
-    <a data-section="thoughts">thoughts</a>
-    <a data-section="episodes">episodes</a>
+    <a data-section="gallery">portraits</a>
+    <a data-section="thoughts">journal</a>
+    <a data-section="episodes">travels</a>
     <a data-section="projects">projects</a>
     <a data-section="notes">tech notes</a>
   </nav>
@@ -1364,6 +1532,53 @@
     </div>
   </div>
 </aside>
+
+<!-- MOBILE TOPBAR（手機版才顯示） -->
+<header class="mob-topbar">
+  <span class="mob-topbar-name" data-section="about">Julia Liu</span>
+  <button class="mob-hamburger" id="mobHamburger" aria-label="開啟選單" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</header>
+
+<!-- DRAWER OVERLAY（點擊背景關閉） -->
+<div class="mob-drawer-overlay" id="mobOverlay"></div>
+
+<!-- DRAWER PANEL -->
+<div class="mob-drawer" id="mobDrawer" aria-hidden="true">
+  <div class="mob-drawer-head">
+    <span class="mob-drawer-title">Julia Liu</span>
+    <button class="mob-drawer-close" id="mobDrawerClose" aria-label="關閉選單">✕</button>
+  </div>
+  <!-- 導覽連結（與 sidebar 同步 active 狀態） -->
+  <nav id="mobNav">
+    <a class="active" data-section="about">About</a>
+    <a data-section="gallery">Portraits</a>
+    <a data-section="thoughts">Journal</a>
+    <a data-section="episodes">Travels</a>
+    <a data-section="projects">Projects</a>
+    <a data-section="notes">Tech Notes</a>
+  </nav>
+  <!-- 語言切換 -->
+  <div class="lang-picker" id="mobLangPicker">
+    <button class="lp-btn active" data-lang="en">EN</button>
+    <button class="lp-btn" data-lang="zh">中文</button>
+    <button class="lp-btn" data-lang="fr">FR</button>
+    <button class="lp-btn" data-lang="ja">日本語</button>
+    <button class="lp-btn" data-lang="ko">한국어</button>
+  </div>
+  <!-- 瀏覽數（drawer 內顯示） -->
+  <div class="mob-drawer-views">
+    <div class="sv-num" id="vbCountMob">—</div>
+    <div class="sv-label" data-zh="累計瀏覽" data-en="total views" data-fr="vues totales" data-ja="総閲覧数" data-ko="총 조회수">total views</div>
+    <div class="sv-loc">
+      <span id="vbFlagMob">🌐</span>
+      <span id="vbLocTextMob">—</span>
+    </div>
+  </div>
+</div>
 
 <!-- CONTENT WRAP -->
 <div class="content-wrap">
@@ -1397,7 +1612,7 @@
           <div class="ab-countries-tip">
             <span>🇹🇼 Taiwan</span><span>🇯🇵 Japan</span><span>🇫🇷 France</span>
             <span>🇸🇬 Singapore</span><span>🇲🇾 Malaysia</span><span>🇵🇭 Philippines</span>
-            <span>🇨🇳 China</span><span>🇲🇴 Macau</span><span>🇪🇸 Spain</span>
+            <span>🇨🇳 China</span><span>🇲🇴 Macau</span><span>🇮🇹 Italy</span>
             <span>🇺🇸 USA</span><span>🇭🇰 Hong Kong</span>
           </div>
         </span>
@@ -1506,6 +1721,12 @@
 
   <!-- EPISODES -->
   <section id="episodes">
+
+    <!-- 標題列 -->
+    <div class="travels-header">
+      <span class="travels-title" data-zh="旅行足跡" data-en="Travels" data-fr="Voyages" data-ja="旅" data-ko="여행">Travels</span>
+      <span class="travels-count"><span data-zh="8 個國家" data-en="8 countries" data-fr="8 pays" data-ja="8ヵ国" data-ko="8개국">8 countries</span></span>
+    </div>
 
     <!-- Country cards -->
     <div class="ep-country-grid">
@@ -2062,11 +2283,11 @@
   var currentLang = 'en';
 
   var navLabels = {
-    en: { about:'about',    gallery:'gallery',  thoughts:'thoughts', episodes:'episodes', projects:'projects', notes:'tech notes'   },
-    zh: { about:'關於',      gallery:'作品集',    thoughts:'文章',      episodes:'旅記',      projects:'專案',     notes:'技術筆記'    },
-    fr: { about:'à propos', gallery:'galerie',  thoughts:'réflexions',episodes:'épisodes', projects:'projets',  notes:'notes tech'  },
-    ja: { about:'自己紹介',   gallery:'ギャラリー', thoughts:'思考',      episodes:'エピソード', projects:'プロジェクト',notes:'技術ノート'  },
-    ko: { about:'소개',       gallery:'갤러리',   thoughts:'생각',      episodes:'에피소드',  projects:'프로젝트',  notes:'기술 노트'   }
+    en: { about:'about',    gallery:'portraits', thoughts:'journal',       episodes:'travels',      projects:'projects', notes:'tech notes'   },
+    zh: { about:'關於',      gallery:'作品集',    thoughts:'日誌',           episodes:'旅記',          projects:'專案',     notes:'技術筆記'    },
+    fr: { about:'à propos', gallery:'portraits', thoughts:'journal',        episodes:'voyages',      projects:'projets',  notes:'notes tech'  },
+    ja: { about:'自己紹介',   gallery:'ポートレート', thoughts:'ジャーナル',    episodes:'旅',            projects:'プロジェクト',notes:'技術ノート'  },
+    ko: { about:'소개',       gallery:'포트레이트', thoughts:'저널',          episodes:'여행',          projects:'프로젝트',  notes:'기술 노트'   }
   };
 
   function applyLang(lang) {
@@ -2361,6 +2582,68 @@
     // Ctrl/Cmd + A  (Select all)
     if ((e.ctrlKey || e.metaKey) && e.key === 'a') { e.preventDefault(); return false; }
   });
+
+  // ── WORLD MAP CANVAS ──
+  (function(){
+    var hamburger = document.getElementById('mobHamburger');
+    var drawer    = document.getElementById('mobDrawer');
+    var overlay   = document.getElementById('mobOverlay');
+    var closeBtn  = document.getElementById('mobDrawerClose');
+
+    function openDrawer() {
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden'; // 防止背景滾動
+    }
+    function closeDrawer() {
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', function(){
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+
+    // 點 drawer 內的 nav link 後自動關閉
+    document.getElementById('mobNav').addEventListener('click', function(e){
+      var a = e.target.closest('[data-section]');
+      if (a) { closeDrawer(); }
+    });
+
+    // ── 同步 drawer lang picker 的 active 狀態 ──
+    // lang-picker 有兩組（sidebar + drawer），統一由 data-lang click 驅動
+    document.getElementById('mobLangPicker').addEventListener('click', function(e){
+      var btn = e.target.closest('.lp-btn');
+      if (!btn) return;
+      var lang = btn.getAttribute('data-lang');
+      // 觸發原有的語言切換邏輯（直接操作所有 .lp-btn）
+      document.querySelectorAll('.lp-btn').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+      });
+      applyLang(lang); // 呼叫已存在的 applyLang 函數
+    });
+
+    // 同步 drawer views 數字（從 sidebar 複製）
+    function syncDrawerViews(){
+      var n = document.getElementById('vbCount').textContent;
+      var f = document.getElementById('vbFlag').textContent;
+      var l = document.getElementById('vbLocText').textContent;
+      document.getElementById('vbCountMob').textContent = n;
+      document.getElementById('vbFlagMob').textContent  = f;
+      document.getElementById('vbLocTextMob').textContent = l;
+    }
+    // 在 fetch 完成後同步（延遲等 fetch 跑完）
+    setTimeout(syncDrawerViews, 2000);
+  }());
 
 })();
 </script>
