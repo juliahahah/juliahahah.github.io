@@ -1118,6 +1118,7 @@
     position: relative;
     aspect-ratio: 3/2;
     overflow: hidden;
+    cursor: pointer;
   }
   .ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
   .ep-cover-info {
@@ -1718,7 +1719,7 @@
     <!-- 標題列 -->
     <div class="travels-header">
       <span class="travels-title" data-zh="旅行足跡" data-en="Travels" data-fr="Voyages" data-ja="旅" data-ko="여행">Travels</span>
-      <span class="travels-count"><span data-zh="9 個國家" data-en="9 countries" data-fr="9 pays" data-ja="9ヵ国" data-ko="9개국">9 countries</span></span>
+      <span class="travels-count" id="travelsCount"><span data-zh="9 個國家" data-en="9 countries" data-fr="9 pays" data-ja="9ヵ国" data-ko="9개국">9 countries</span></span>
     </div>
 
     <!-- Country Tabs -->
@@ -2352,23 +2353,49 @@
   applyLang('en');
 
   // Episodes country tabs
+  function switchEpTab(ep) {
+    document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(t) { t.classList.remove('active'); });
+    var target = document.querySelector('.ep-travels-tabs .gtab[data-ep="' + ep + '"]');
+    if (target) target.classList.add('active');
+    var coverGrid = document.getElementById('epCoverGrid');
+    if (ep === 'all') {
+      coverGrid.style.display = '';
+      document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
+    } else {
+      coverGrid.style.display = 'none';
+      document.querySelectorAll('.ep-photo-grid').forEach(function(g) {
+        g.classList.toggle('active', g.getAttribute('data-ep') === ep);
+      });
+    }
+  }
+
   document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(tab) {
     tab.addEventListener('click', function() {
-      document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(t) { t.classList.remove('active'); });
-      this.classList.add('active');
-      var ep = this.getAttribute('data-ep');
-      var coverGrid = document.getElementById('epCoverGrid');
-      if (ep === 'all') {
-        coverGrid.style.display = '';
-        document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
-      } else {
-        coverGrid.style.display = 'none';
-        document.querySelectorAll('.ep-photo-grid').forEach(function(g) {
-          g.classList.toggle('active', g.getAttribute('data-ep') === ep);
-        });
-      }
+      switchEpTab(this.getAttribute('data-ep'));
     });
   });
+
+  // Cover card click → jump to country tab
+  document.querySelectorAll('#epCoverGrid .ep-country').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var country = this.getAttribute('data-country');
+      switchEpTab(country);
+      window.scrollTo(0, 0);
+    });
+  });
+
+  // Dynamic country count
+  (function() {
+    var n = document.querySelectorAll('.ep-travels-tabs .gtab:not([data-ep="all"])').length;
+    var el = document.querySelector('#travelsCount > span');
+    if (el) {
+      el.setAttribute('data-zh', n + ' 個國家');
+      el.setAttribute('data-en', n + ' countries');
+      el.setAttribute('data-fr', n + ' pays');
+      el.setAttribute('data-ja', n + 'ヵ国');
+      el.setAttribute('data-ko', n + '개국');
+    }
+  })();
 
 
 
