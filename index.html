@@ -1119,14 +1119,10 @@
   .ep-photo-grid {
     columns: 3;
     column-gap: 4px;
-    visibility: hidden;
-    position: absolute;
-    pointer-events: none;
+    display: none;
   }
   .ep-photo-grid.active {
-    visibility: visible;
-    position: static;
-    pointer-events: auto;
+    display: block;
   }
   @media(max-width: 900px) { .ep-photo-grid { columns: 2; } }
   @media(max-width: 500px) { .ep-photo-grid { columns: 1; } }
@@ -1880,7 +1876,7 @@
     </div>
 
     <!-- Per-country photo grids (masonry) -->
-    <div class="ep-photo-grid" data-ep="japan" style="visibility:hidden;position:absolute">
+    <div class="ep-photo-grid" data-ep="japan">
       <div class="ep-slot"><img src="photos/episodes/japan/japan_01.jpg" alt="Japan" loading="lazy"></div>
       <div class="ep-slot"><img src="photos/episodes/japan/japan_02.jpg" alt="Japan" loading="lazy"></div>
       <div class="ep-slot"><img src="photos/episodes/japan/japan_03.jpg" alt="Japan" loading="lazy"></div>
@@ -2459,9 +2455,11 @@
       document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
     } else {
       coverGrid.style.display = 'none';
-      document.querySelectorAll('.ep-photo-grid').forEach(function(g) {
-        g.classList.toggle('active', g.getAttribute('data-ep') === ep);
-      });
+      // hide all first
+      document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
+      // show target on next frame so columns layout is fresh
+      var grid = document.querySelector('.ep-photo-grid[data-ep="' + ep + '"]');
+      if (grid) requestAnimationFrame(function() { grid.classList.add('active'); });
     }
   }
 
