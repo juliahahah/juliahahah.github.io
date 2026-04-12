@@ -10,7 +10,7 @@
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
   img-src 'self' data:;
-  connect-src https://api.countapi.xyz https://ipapi.co;
+  connect-src https://api.counterapi.dev https://ipapi.co;
 ">
 <title>Julia Liu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -2308,10 +2308,10 @@
   });
 
   // ── VISITOR COUNT ──
-  fetch('https://api.countapi.xyz/hit/juliahahah.github.io/page-visits-v1')
+  fetch('https://api.counterapi.dev/v1/juliahahah-github-io/page-visits-v1/up')
     .then(function(r){ return r.json(); })
     .then(function(d){
-      document.getElementById('vbCount').textContent = Number(d.value).toLocaleString();
+      document.getElementById('vbCount').textContent = Number(d.count).toLocaleString();
     })
     .catch(function(){ document.getElementById('vbCount').textContent = '—'; });
 
