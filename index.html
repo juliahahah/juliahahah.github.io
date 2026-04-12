@@ -1056,7 +1056,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
   .travels-title {
     font-family: 'Cormorant Garamond', serif;
@@ -1074,30 +1074,51 @@
     color: var(--muted);
     text-transform: uppercase;
   }
+  .ep-travels-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    margin-bottom: 24px;
+  }
+  .ep-country.ep-hidden { display: none; }
 
-  /* ── EPISODES EXPANDABLE ── */
+  /* ── EPISODES PHOTO GRID ── */
+  .ep-photo-grid {
+    display: none;
+    columns: 3;
+    column-gap: 4px;
+  }
+  .ep-photo-grid.active { display: block; }
+  @media(max-width: 900px) { .ep-photo-grid { columns: 2; } }
+  @media(max-width: 500px) { .ep-photo-grid { columns: 1; } }
+  .ep-slot {
+    break-inside: avoid;
+    margin-bottom: 4px;
+    background: #f0eeeb;
+    overflow: hidden;
+    position: relative;
+  }
+  .ep-slot img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    cursor: zoom-in;
+  }
+  .ep-slot:hover img { transform: scale(1.04); }
+
+  /* ── EPISODES COVER GRID (All tab) ── */
   .ep-country-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 4px;
   }
   .ep-country { display: flex; flex-direction: column; }
-
-  /* 展開時佔滿整行 */
-  .ep-country.open {
-    grid-column: 1 / -1;
-  }
-
   .ep-cover {
     position: relative;
     aspect-ratio: 3/2;
-    cursor: pointer;
     overflow: hidden;
-    transition: opacity 0.2s;
   }
-  .ep-country.open .ep-cover { aspect-ratio: 16/7; }
-
-  .ep-cover:hover { opacity: 0.88; }
   .ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
   .ep-cover-info {
     position: absolute;
@@ -1105,6 +1126,7 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    pointer-events: none;
   }
   .ep-cover-name {
     font-family: 'Cormorant Garamond', serif;
@@ -1112,53 +1134,12 @@
     font-style: italic;
     color: rgba(255,255,255,0.95);
   }
-  .ep-country.open .ep-cover-name { font-size: 28px; }
   .ep-cover-date {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
     color: rgba(255,255,255,0.55);
     letter-spacing: 0.06em;
   }
-  .ep-expand-hint {
-    position: absolute;
-    bottom: 16px; right: 18px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.5);
-    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), color 0.2s;
-    font-family: 'DM Mono', monospace;
-  }
-  .ep-country.open .ep-expand-hint {
-    transform: rotate(180deg);
-    color: rgba(255,255,255,0.9);
-  }
-  .ep-album {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.6s cubic-bezier(0.22,1,0.36,1);
-  }
-  .ep-country.open .ep-album { max-height: 20000px; }
-  .ep-album-grid {
-    columns: 3;
-    column-gap: 4px;
-    padding-top: 4px;
-  }
-  @media(max-width: 900px) { .ep-album-grid { columns: 2; } }
-  @media(max-width: 500px) { .ep-album-grid { columns: 1; } }
-  .ep-album-grid .img-wrap {
-    break-inside: avoid;
-    margin-bottom: 4px;
-    background: #f0eeeb;
-    overflow: hidden;
-    position: relative;
-  }
-  .ep-album-grid .img-wrap img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
-    cursor: zoom-in;
-  }
-  .ep-album-grid .img-wrap:hover img { transform: scale(1.04); }
 
   /* ── LIGHTBOX ── */
   .lightbox {
@@ -1740,266 +1721,262 @@
       <span class="travels-count"><span data-zh="9 個國家" data-en="9 countries" data-fr="9 pays" data-ja="9ヵ国" data-ko="9개국">9 countries</span></span>
     </div>
 
-    <!-- Country cards -->
-    <div class="ep-country-grid">
+    <!-- Country Tabs -->
+    <div class="ep-travels-tabs">
+      <button class="gtab active" data-ep="all" data-zh="All" data-en="All">All</button>
+      <button class="gtab" data-ep="japan" data-zh="日本" data-en="Japan">Japan</button>
+      <button class="gtab" data-ep="france" data-zh="法國" data-en="France">France</button>
+      <button class="gtab" data-ep="singapore" data-zh="新加坡" data-en="Singapore">Singapore</button>
+      <button class="gtab" data-ep="malaysia" data-zh="馬來西亞" data-en="Malaysia">Malaysia</button>
+      <button class="gtab" data-ep="china" data-zh="中國" data-en="China">China</button>
+      <button class="gtab" data-ep="macau" data-zh="澳門" data-en="Macau">Macau</button>
+      <button class="gtab" data-ep="philippines" data-zh="菲律賓" data-en="Philippines">Philippines</button>
+      <button class="gtab" data-ep="taiwan" data-zh="台灣" data-en="Taiwan">Taiwan</button>
+      <button class="gtab" data-ep="italy" data-zh="義大利" data-en="Italy">Italy</button>
+    </div>
+
+    <!-- Country cards (All tab) -->
+    <div class="ep-country-grid" id="epCoverGrid">
 
       <div class="ep-country" data-country="japan">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/japan/japan_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/japan/japan_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="日本" data-en="Japan">日本</span>
             <span class="ep-cover-date">2025.10</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-japan">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/japan/japan_01.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_02.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_03.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_04.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_05.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_06.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_07.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_08.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_09.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_10.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_11.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_12.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_13.jpg" alt="Japan">
-            <img src="photos/episodes/japan/japan_14.jpg" alt="Japan">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="france">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/france/france_08.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/france/france_08.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="法國" data-en="France">法國</span>
             <span class="ep-cover-date">2025.06</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-france">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/france/france_01.jpg" alt="France">
-            <img src="photos/episodes/france/france_02.jpg" alt="France">
-            <img src="photos/episodes/france/france_03.jpg" alt="France">
-            <img src="photos/episodes/france/france_04.jpg" alt="France">
-            <img src="photos/episodes/france/france_05.jpg" alt="France">
-            <img src="photos/episodes/france/france_06.jpg" alt="France">
-            <img src="photos/episodes/france/france_07.jpg" alt="France">
-            <img src="photos/episodes/france/france_08.jpg" alt="France">
-            <img src="photos/episodes/france/france_09.jpg" alt="France">
-            <img src="photos/episodes/france/france_10.jpg" alt="France">
-            <img src="photos/episodes/france/france_11.jpg" alt="France">
-            <img src="photos/episodes/france/france_12.jpg" alt="France">
-            <img src="photos/episodes/france/france_13.jpg" alt="France">
-            <img src="photos/episodes/france/france_14.jpg" alt="France">
-            <img src="photos/episodes/france/france_15.jpg" alt="France">
-            <img src="photos/episodes/france/france_16.jpg" alt="France">
-            <img src="photos/episodes/france/france_17.jpg" alt="France">
-            <img src="photos/episodes/france/france_18.jpg" alt="France">
-            <img src="photos/episodes/france/france_19.jpg" alt="France">
-            <img src="photos/episodes/france/france_20.jpg" alt="France">
-            <img src="photos/episodes/france/france_21.jpg" alt="France">
-            <img src="photos/episodes/france/france_22.jpg" alt="France">
-            <img src="photos/episodes/france/france_23.jpg" alt="France">
-            <img src="photos/episodes/france/france_24.jpg" alt="France">
-            <img src="photos/episodes/france/france_25.jpg" alt="France">
-            <img src="photos/episodes/france/france_26.jpg" alt="France">
-            <img src="photos/episodes/france/france_27.jpg" alt="France">
-            <img src="photos/episodes/france/france_28.jpg" alt="France">
-            <img src="photos/episodes/france/france_29.jpg" alt="France">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="singapore">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/singapore/singapore_05.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/singapore/singapore_05.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="新加坡" data-en="Singapore">新加坡</span>
             <span class="ep-cover-date">2025.11</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-singapore">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_02.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore">
-            <img src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="malaysia">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/malaysia/malaysia_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/malaysia/malaysia_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="馬來西亞" data-en="Malaysia">馬來西亞</span>
             <span class="ep-cover-date">2025.06</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-malaysia">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_02.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_08.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia">
-            <img src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia">
-          </div>
         </div>
       </div>
 
-
-
       <div class="ep-country" data-country="china">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/china/china_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/china/china_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="中國" data-en="China">中國</span>
             <span class="ep-cover-date">2023.07</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-china">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/china/china_01.jpg" alt="China">
-            <img src="photos/episodes/china/china_02.jpg" alt="China">
-            <img src="photos/episodes/china/china_03.jpg" alt="China">
-            <img src="photos/episodes/china/china_04.jpg" alt="China">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="macau">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/macau/macau_03.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/macau/macau_03.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="澳門" data-en="Macau">澳門</span>
             <span class="ep-cover-date">2025.02</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-macau">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/macau/macau_01.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_02.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_03.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_04.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_05.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_06.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_07.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_08.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_09.jpg" alt="Macau">
-            <img src="photos/episodes/macau/macau_10.jpg" alt="Macau">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="philippines">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/philippines/philippines_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/philippines/philippines_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="菲律賓" data-en="Philippines">菲律賓</span>
             <span class="ep-cover-date">2025.01</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-philippines">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/philippines/philippines_01.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_02.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_03.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_04.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_05.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_06.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_07.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_08.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_09.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_10.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_11.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_12.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_13.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_14.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_15.jpg" alt="Philippines">
-            <img src="photos/episodes/philippines/philippines_16.jpg" alt="Philippines">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="taiwan">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/taiwan/taiwan_01.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/taiwan/taiwan_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="台灣 · 各地" data-en="Taiwan · Various">台灣 · 各地</span>
             <span class="ep-cover-date">——</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-taiwan">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/taiwan/taiwan_01.jpg" alt="Taiwan">
-            <img src="photos/episodes/taiwan/taiwan_02.jpg" alt="Taiwan">
-            <img src="photos/episodes/taiwan/taiwan_03.jpg" alt="Taiwan">
-            <img src="photos/episodes/taiwan/taiwan_04.jpg" alt="Taiwan">
-          </div>
         </div>
       </div>
 
       <div class="ep-country" data-country="italy">
-        <div class="ep-cover" style="position:relative;aspect-ratio:3/2;overflow:hidden;">
-          <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_1.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+        <div class="ep-cover">
+          <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_1.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-zh="義大利" data-en="Italy">義大利</span>
             <span class="ep-cover-date">2025.07</span>
           </div>
-          <span class="ep-expand-hint">↓</span>
-        </div>
-        <div class="ep-album" id="album-italy">
-          <div class="ep-album-grid">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_1.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_2.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_3.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_4.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_5.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_6.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_7.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_8.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_9.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_10.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_11.jpg" alt="Italy">
-            <img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_12.jpg" alt="Italy">
-          </div>
         </div>
       </div>
 
     </div>
+
+    <!-- Per-country photo grids (masonry) -->
+    <div class="ep-photo-grid" data-ep="japan">
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_01.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_02.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_03.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_04.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_05.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_06.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_07.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_08.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_09.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_10.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_11.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_12.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_13.jpg" alt="Japan"></div>
+      <div class="ep-slot"><img src="photos/episodes/japan/japan_14.jpg" alt="Japan"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="france">
+      <div class="ep-slot"><img src="photos/episodes/france/france_01.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_02.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_03.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_04.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_05.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_06.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_07.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_08.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_09.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_10.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_11.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_12.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_13.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_14.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_15.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_16.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_17.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_18.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_19.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_20.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_21.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_22.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_23.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_24.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_25.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_26.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_27.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_28.jpg" alt="France"></div>
+      <div class="ep-slot"><img src="photos/episodes/france/france_29.jpg" alt="France"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="singapore">
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_02.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore"></div>
+      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="malaysia">
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_02.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_08.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia"></div>
+      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="china">
+      <div class="ep-slot"><img src="photos/episodes/china/china_01.jpg" alt="China"></div>
+      <div class="ep-slot"><img src="photos/episodes/china/china_02.jpg" alt="China"></div>
+      <div class="ep-slot"><img src="photos/episodes/china/china_03.jpg" alt="China"></div>
+      <div class="ep-slot"><img src="photos/episodes/china/china_04.jpg" alt="China"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="macau">
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_01.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_02.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_03.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_04.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_05.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_06.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_07.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_08.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_09.jpg" alt="Macau"></div>
+      <div class="ep-slot"><img src="photos/episodes/macau/macau_10.jpg" alt="Macau"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="philippines">
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_01.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_02.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_03.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_04.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_05.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_06.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_07.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_08.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_09.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_10.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_11.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_12.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_13.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_14.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_15.jpg" alt="Philippines"></div>
+      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_16.jpg" alt="Philippines"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="taiwan">
+      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_01.jpg" alt="Taiwan"></div>
+      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_02.jpg" alt="Taiwan"></div>
+      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_03.jpg" alt="Taiwan"></div>
+      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_04.jpg" alt="Taiwan"></div>
+    </div>
+
+    <div class="ep-photo-grid" data-ep="italy">
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_1.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_2.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_3.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_4.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_5.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_6.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_7.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_8.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_9.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_10.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_11.jpg" alt="Italy"></div>
+      <div class="ep-slot"><img src="photos/episodes/italy/LINE_ALBUM_西班牙_260412_12.jpg" alt="Italy"></div>
+    </div>
+
   </section>
 
   <!-- PROJECTS -->
@@ -2374,21 +2351,26 @@
   });
   applyLang('en');
 
-  // Episodes expand/collapse
-  document.querySelectorAll('.ep-cover').forEach(function(cover) {
-    cover.addEventListener('click', function() {
-      var country = this.closest('.ep-country');
-      var isOpen = country.classList.contains('open');
-      document.querySelectorAll('.ep-country').forEach(function(c){ c.classList.remove('open'); });
-      if (!isOpen) {
-        country.classList.add('open');
-        // 捲動到展開的卡片
-        setTimeout(function() {
-          country.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+  // Episodes country tabs
+  document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+      var ep = this.getAttribute('data-ep');
+      var coverGrid = document.getElementById('epCoverGrid');
+      if (ep === 'all') {
+        coverGrid.style.display = '';
+        document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
+      } else {
+        coverGrid.style.display = 'none';
+        document.querySelectorAll('.ep-photo-grid').forEach(function(g) {
+          g.classList.toggle('active', g.getAttribute('data-ep') === ep);
+        });
       }
     });
   });
+
+
 
   // ── LIGHTBOX ──
   var lbOverlay = document.getElementById('lightbox');
@@ -2440,33 +2422,20 @@
     var WM = 'juliahahah.github.io';
 
     // Gallery slots & episode covers → append wm-label span
-    document.querySelectorAll('.g-slot, .ep-cover').forEach(function(el) {
+    document.querySelectorAll('.g-slot, .ep-cover, .ep-slot').forEach(function(el) {
       var s = document.createElement('span');
       s.className = 'wm-label';
       s.textContent = WM;
       el.appendChild(s);
     });
 
-    // Album grid: wrap each img in .img-wrap, then add watermark
-    document.querySelectorAll('.ep-album-grid img').forEach(function(img) {
-      var wrap = document.createElement('div');
-      wrap.className = 'img-wrap';
-      img.parentNode.insertBefore(wrap, img);
-      wrap.appendChild(img);
-      var s = document.createElement('span');
-      s.className = 'wm-label';
-      s.textContent = WM;
-      wrap.appendChild(s);
-    });
-
-    // Re-bind lightbox to .img-wrap after wrapping
-    document.querySelectorAll('.ep-album-grid').forEach(function(grid) {
-      var wraps = Array.from(grid.querySelectorAll('.img-wrap'));
-      wraps.forEach(function(wrap, i) {
-        wrap.style.cursor = 'zoom-in';
-        wrap.addEventListener('click', function(e) {
+    // Lightbox for ep-slot
+    document.querySelectorAll('.ep-photo-grid').forEach(function(grid) {
+      var slots = Array.from(grid.querySelectorAll('.ep-slot'));
+      slots.forEach(function(slot, i) {
+        slot.addEventListener('click', function(e) {
           e.stopPropagation();
-          var imgs = wraps.map(function(w) { return w.querySelector('img'); });
+          var imgs = slots.map(function(s) { return s.querySelector('img'); });
           openLightbox(imgs, i);
         });
       });
@@ -2547,18 +2516,15 @@
 
 
 
-  // ── EPISODES: hide broken album cells & covers ──
-  document.querySelectorAll('.img-wrap img').forEach(function(img) {
-    function hideWrap() { var w = img.closest('.img-wrap'); if (w) w.style.display = 'none'; }
-    img.addEventListener('error', hideWrap);
-    if (img.complete && img.naturalWidth === 0) hideWrap();
+  // ── EPISODES: hide broken cells ──
+  document.querySelectorAll('.ep-slot img').forEach(function(img) {
+    function hideSlot() { var s = img.closest('.ep-slot'); if (s) s.style.display = 'none'; }
+    img.addEventListener('error', hideSlot);
+    if (img.complete && img.naturalWidth === 0) hideSlot();
   });
   document.querySelectorAll('.ep-cover img').forEach(function(img) {
-    function showPlaceholder() {
-      img.style.display = 'none'; // hide broken img icon, keep card visible
-    }
-    img.addEventListener('error', showPlaceholder);
-    if (img.complete && img.naturalWidth === 0) showPlaceholder();
+    img.addEventListener('error', function() { img.style.display = 'none'; });
+    if (img.complete && img.naturalWidth === 0) img.style.display = 'none';
   });
 
   // ── PROJECT TABS ──
