@@ -1136,17 +1136,29 @@
     overflow: hidden;
     transition: max-height 0.6s cubic-bezier(0.22,1,0.36,1);
   }
-  .ep-country.open .ep-album { max-height: 4000px; }
+  .ep-country.open .ep-album { max-height: 20000px; }
   .ep-album-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    columns: 3;
+    column-gap: 4px;
     padding-top: 4px;
   }
-  .ep-ph {
-    aspect-ratio: 4/3;
+  @media(max-width: 900px) { .ep-album-grid { columns: 2; } }
+  @media(max-width: 500px) { .ep-album-grid { columns: 1; } }
+  .ep-album-grid .img-wrap {
+    break-inside: avoid;
+    margin-bottom: 4px;
     background: #f0eeeb;
+    overflow: hidden;
+    position: relative;
   }
+  .ep-album-grid .img-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    cursor: zoom-in;
+  }
+  .ep-album-grid .img-wrap:hover img { transform: scale(1.04); }
 
   /* ── LIGHTBOX ── */
   .lightbox {
