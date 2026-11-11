@@ -53,11 +53,11 @@
   top: -14px; left: 50%;
   width: 92px; height: 26px;
   transform: translateX(-50%) rotate(-4deg);
-  background: rgba(220, 229, 240, 0.85);
+  background: var(--gingham-blue);
   clip-path: polygon(3% 0, 97% 4%, 100% 30%, 96% 55%, 100% 82%, 97% 100%, 4% 96%, 0 70%, 4% 45%, 0 18%);
   z-index: 2;
 }
-.tape-rose::before { background: rgba(232, 214, 208, 0.9); }
+.tape-rose::before { background: var(--gingham-rose); }
 
 /* section heading with a hand-drawn icon */
 .sec-head {
@@ -101,9 +101,13 @@
   transition: background 0.2s, color 0.2s;
 }
 .btn-pill span { transition: transform 0.25s; }
-.btn-pill:hover { background: var(--text); color: var(--bg); }
+.btn-pill:hover { background: var(--rose); border-color: #C49A92; }
 .btn-pill:hover span { transform: translateX(3px); }
 
 @media (prefers-reduced-motion: reduce) {
   .spark { animation: none; }
 }
+
+/* tiny hand-drawn hearts, used sparingly */
+.heart { width: 20px; height: 20px; opacity: 0.9; }
+.polaroid .heart { position: absolute; right: 10px; bottom: 12px; width: 16px; height: 16px; }

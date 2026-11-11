@@ -26,7 +26,7 @@
   margin-bottom: 26px;
 }
 .hero-tagline {
-  font-size: 32px;
+  font-size: 28px;
   transform: rotate(-3deg);
   transform-origin: left;
   margin-bottom: 34px;
@@ -50,9 +50,9 @@
 .hero-stamp { top: -8px; right: -2%; width: 150px; transform: rotate(9deg); opacity: 0.85; }
 .hero-note {
   position: absolute;
-  top: 190px; right: -2%;
-  font-size: 26px;
-  transform: rotate(-9deg);
+  top: 200px; right: -9%;
+  font-size: 21px;
+  transform: rotate(-8deg);
   z-index: 2;
 }
 .hero-camera { bottom: 18px; right: 16%; width: 84px; transform: rotate(-7deg); z-index: 2; }
@@ -77,7 +77,7 @@
 #about .ab-card:hover .ab-card-front,
 #about .ab-card:hover .ab-card-back { border-color: var(--taupe); }
 #about .about-tag {
-  background: var(--paper);
+  background: rgba(232, 214, 208, 0.35);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 5px 12px;
@@ -224,3 +224,6 @@ a.proof-item:hover { background: rgba(220, 229, 240, 0.35); }
   .now-card { flex-direction: column; gap: 6px; }
   .tl-more { margin-left: 22px; }
 }
+
+.now-heart { width: 14px; height: 14px; vertical-align: -1px; }
+.hero-photo .heart { left: 14px; right: auto; }

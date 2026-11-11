@@ -95,11 +95,19 @@
   top: -12px; left: 50%;
   width: 78px; height: 22px;
   transform: translateX(-50%) rotate(-5deg);
-  background: rgba(220, 229, 240, 0.88);
+  background: var(--gingham-blue);
   clip-path: polygon(3% 0, 97% 4%, 100% 30%, 96% 55%, 100% 82%, 97% 100%, 4% 96%, 0 70%, 4% 45%, 0 18%);
   z-index: 2;
 }
-.ep-country:nth-child(2n)::before { background: rgba(232, 214, 208, 0.92); transform: translateX(-50%) rotate(4deg); }
+.ep-country:nth-child(2n)::before { background: var(--gingham-rose); transform: translateX(-50%) rotate(4deg); }
+/* a little heart on every third polaroid */
+.ep-country:nth-child(3n+2)::after {
+  content: '';
+  position: absolute;
+  right: 12px; bottom: 16px;
+  width: 15px; height: 15px;
+  background: url('/illustrations/heart.svg') center / contain no-repeat;
+}
 .ep-cover {
   position: relative;
   display: flex;
