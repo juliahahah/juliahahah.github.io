@@ -210,18 +210,10 @@ a.proof-item:hover { background: rgba(220, 229, 240, 0.35); }
 .tl-more[open] summary::after { content: ' −'; }
 .tl-more .ab-timeline { margin-top: 8px; }
 
-/* ── LIFE ── */
-.life { margin-top: 80px; }
-.life-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.life-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-.life-strip .polaroid:nth-child(odd) { transform: rotate(-1.6deg); }
-.life-strip .polaroid:nth-child(even) { transform: rotate(1.8deg); }
-
 @media (max-width: 960px) {
   .proof { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .proof-item:nth-child(3) { border-left: none; }
   .proof-item:nth-child(n+3) { border-top: 1px dashed var(--border); }
-  .life-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 680px) {
   .hero-lead { font-size: 18px; }
