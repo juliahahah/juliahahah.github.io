@@ -10,7 +10,7 @@
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
   img-src 'self' data:;
-  connect-src https://api.counterapi.dev https://ipapi.co;
+  connect-src https://abacus.jasoncameron.dev https://ipapi.co;
 ">
 <title>Julia Liu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1147,6 +1147,9 @@
     cursor: zoom-in;
   }
   .ep-slot:hover img { transform: scale(1.04); }
+  .ep-slot img { opacity: 0; transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+  .ep-slot img.is-loaded { opacity: 1; }
+
 
   /* ── EPISODES COVER GRID (All tab) ── */
   .ep-country-grid {
@@ -1768,7 +1771,7 @@
 
       <div class="ep-country" data-country="japan">
         <div class="ep-cover">
-          <img src="photos/episodes/japan/japan_01.jpg">
+          <img width="960" height="1280" src="photos/episodes/japan/japan_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Japan">日本</span>
@@ -1779,7 +1782,7 @@
 
       <div class="ep-country" data-country="france">
         <div class="ep-cover">
-          <img src="photos/episodes/france/france_08.jpg">
+          <img width="1280" height="960" src="photos/episodes/france/france_08.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="France">法國</span>
@@ -1790,7 +1793,7 @@
 
       <div class="ep-country" data-country="singapore">
         <div class="ep-cover">
-          <img src="photos/episodes/singapore/singapore_05.jpg">
+          <img width="1477" height="1108" src="photos/episodes/singapore/singapore_05.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Singapore">新加坡</span>
@@ -1801,7 +1804,7 @@
 
       <div class="ep-country" data-country="malaysia">
         <div class="ep-cover">
-          <img src="photos/episodes/malaysia/malaysia_01.jpg">
+          <img width="1280" height="960" src="photos/episodes/malaysia/malaysia_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Malaysia">馬來西亞</span>
@@ -1812,7 +1815,7 @@
 
       <div class="ep-country" data-country="china">
         <div class="ep-cover">
-          <img src="photos/episodes/china/china_01.jpg">
+          <img width="960" height="1280" src="photos/episodes/china/china_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="China">中國</span>
@@ -1823,7 +1826,7 @@
 
       <div class="ep-country" data-country="macau">
         <div class="ep-cover">
-          <img src="photos/episodes/macau/macau_03.jpg">
+          <img width="852" height="1280" src="photos/episodes/macau/macau_03.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Macau">澳門</span>
@@ -1834,7 +1837,7 @@
 
       <div class="ep-country" data-country="philippines">
         <div class="ep-cover">
-          <img src="photos/episodes/philippines/philippines_01.jpg">
+          <img width="1567" height="1045" src="photos/episodes/philippines/philippines_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Philippines">菲律賓</span>
@@ -1845,7 +1848,7 @@
 
       <div class="ep-country" data-country="taiwan">
         <div class="ep-cover">
-          <img src="photos/episodes/taiwan/taiwan_01.jpg">
+          <img width="720" height="1280" src="photos/episodes/taiwan/taiwan_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Taiwan · Various">台灣 · 各地</span>
@@ -1856,7 +1859,7 @@
 
       <div class="ep-country" data-country="italy">
         <div class="ep-cover">
-          <img src="photos/episodes/italy/italy_03.jpg">
+          <img width="1280" height="960" src="photos/episodes/italy/italy_03.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Italy">義大利</span>
@@ -1867,7 +1870,7 @@
 
       <div class="ep-country" data-country="usa">
         <div class="ep-cover">
-          <img src="photos/episodes/usa/usa_01.jpg">
+          <img width="900" height="1600" src="photos/episodes/usa/usa_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="USA">USA</span>
@@ -1878,7 +1881,7 @@
 
       <div class="ep-country" data-country="thailand">
         <div class="ep-cover">
-          <img src="photos/episodes/thailand/thailand_01.jpg">
+          <img width="1108" height="1477" src="photos/episodes/thailand/thailand_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Thailand">Thailand</span>
@@ -1889,7 +1892,7 @@
 
       <div class="ep-country" data-country="korea">
         <div class="ep-cover">
-          <img src="photos/episodes/korea/korea_01.jpg">
+          <img width="900" height="1600" src="photos/episodes/korea/korea_01.jpg">
           <div class="ep-overlay"></div>
           <div class="ep-cover-info">
             <span class="ep-cover-name" data-en="Korea">Korea</span>
@@ -1902,175 +1905,175 @@
 
     <!-- Per-country photo grids (masonry) -->
     <div class="ep-photo-grid" data-ep="japan">
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_01.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_02.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_03.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_04.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_05.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_06.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_07.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_08.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_09.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_10.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_11.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_12.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_13.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/japan/japan_14.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/japan/japan_01.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_02.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_03.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_04.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_05.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/japan/japan_06.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1478" src="photos/episodes/japan/japan_07.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1478" src="photos/episodes/japan/japan_08.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_09.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/japan/japan_10.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/japan/japan_11.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_12.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/japan/japan_13.jpg" alt="Japan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_14.jpg" alt="Japan" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="france">
-      <div class="ep-slot"><img src="photos/episodes/france/france_01.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_02.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_03.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_04.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_05.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_06.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_07.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_08.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_10.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_11.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_12.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_13.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_14.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_15.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_16.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_17.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_18.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_19.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_20.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_21.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_22.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_23.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_24.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_25.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_26.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_27.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_28.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/france/france_29.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_01.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_02.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_03.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_04.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_05.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="837" height="1280" src="photos/episodes/france/france_06.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_07.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_08.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_10.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="2000" height="1125" src="photos/episodes/france/france_11.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_12.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_13.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="837" height="1280" src="photos/episodes/france/france_14.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_15.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_16.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_17.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_18.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_19.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_20.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_21.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_22.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_23.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_24.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/france/france_25.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1152" height="2048" src="photos/episodes/france/france_26.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/france/france_27.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_28.jpg" alt="France" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_29.jpg" alt="France" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="singapore">
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="malaysia">
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="964" height="1280" src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="china">
-      <div class="ep-slot"><img src="photos/episodes/china/china_01.jpg" alt="China" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/china/china_03.jpg" alt="China" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/china/china_04.jpg" alt="China" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/china/china_01.jpg" alt="China" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/china/china_03.jpg" alt="China" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/china/china_04.jpg" alt="China" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="macau">
-      <div class="ep-slot"><img src="photos/episodes/macau/macau_01.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/macau/macau_02.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/macau/macau_03.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/macau/macau_04.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/macau/macau_05.jpg" alt="Macau" loading="lazy"></div>
+      <div class="ep-slot"><img width="852" height="1280" src="photos/episodes/macau/macau_01.jpg" alt="Macau" loading="lazy"></div>
+      <div class="ep-slot"><img width="853" height="1280" src="photos/episodes/macau/macau_02.jpg" alt="Macau" loading="lazy"></div>
+      <div class="ep-slot"><img width="852" height="1280" src="photos/episodes/macau/macau_03.jpg" alt="Macau" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="852" src="photos/episodes/macau/macau_04.jpg" alt="Macau" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="852" src="photos/episodes/macau/macau_05.jpg" alt="Macau" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="philippines">
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_01.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_02.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_03.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_04.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_05.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_06.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_07.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_08.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_09.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_10.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_11.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_12.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_13.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_14.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_15.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/philippines/philippines_16.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_01.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_02.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1045" height="1567" src="photos/episodes/philippines/philippines_03.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_04.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_05.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_06.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_07.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_08.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1045" height="1567" src="photos/episodes/philippines/philippines_09.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_10.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/philippines/philippines_11.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_12.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_13.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/philippines/philippines_14.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_15.jpg" alt="Philippines" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_16.jpg" alt="Philippines" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="taiwan">
-      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_01.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_02.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_03.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/taiwan/taiwan_04.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/taiwan/LINE_ALBUM_2024116⛰️_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/taiwan/LINE_ALBUM_202419_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="720" height="1280" src="photos/episodes/taiwan/taiwan_01.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/taiwan/taiwan_02.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/taiwan_03.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/taiwan/taiwan_04.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/LINE_ALBUM_2024116⛰️_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/LINE_ALBUM_202419_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="italy">
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_01.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_02.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_03.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_04.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_05.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_06.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_07.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_08.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_09.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_10.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_11.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/italy/italy_12.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_01.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_02.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_03.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_04.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_05.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_06.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_07.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_08.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_09.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_10.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_11.jpg" alt="Italy" loading="lazy"></div>
+      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_12.jpg" alt="Italy" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="usa">
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_01.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_02.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_03.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_04.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_05.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_06.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_07.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_08.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_09.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_10.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_11.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/usa/usa_12.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_01.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/usa/usa_02.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_03.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_04.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_05.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/usa/usa_06.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_07.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="1440" height="1080" src="photos/episodes/usa/usa_08.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_09.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/usa/usa_10.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_11.jpg" alt="USA" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_12.jpg" alt="USA" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="thailand">
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_01.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_02.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_03.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_04.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_05.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_06.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_07.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_08.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_09.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/thailand/thailand_10.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_01.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_02.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_03.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_04.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_05.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_06.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_07.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1084" height="1448" src="photos/episodes/thailand/thailand_08.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_09.jpg" alt="Thailand" loading="lazy"></div>
+      <div class="ep-slot"><img width="1476" height="1108" src="photos/episodes/thailand/thailand_10.jpg" alt="Thailand" loading="lazy"></div>
     </div>
 
     <div class="ep-photo-grid" data-ep="korea">
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_01.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_02.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_03.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_04.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_05.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_06.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_07.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_08.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_09.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_10.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_11.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img src="photos/episodes/korea/korea_12.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_01.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_02.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_03.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_04.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_05.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_06.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_07.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_08.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_09.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_10.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_11.jpg" alt="Korea" loading="lazy"></div>
+      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_12.jpg" alt="Korea" loading="lazy"></div>
     </div>
 
   </section>
@@ -2753,6 +2756,26 @@
   })();
 
 
+  // ── EPISODES: fade in each photo once loaded (no pop-in) ──
+  document.querySelectorAll('.ep-slot img').forEach(function(img) {
+    function done() { img.classList.add('is-loaded'); }
+    if (img.complete && img.naturalWidth > 0) done();
+    else img.addEventListener('load', done);
+  });
+  // start downloading a country's photos when the pointer reaches its tab or cover
+  function warmEp(ep) {
+    var g = document.querySelector('.ep-photo-grid[data-ep="' + ep + '"]');
+    if (!g || g.dataset.warm) return;
+    g.dataset.warm = '1';
+    g.querySelectorAll('img[loading="lazy"]').forEach(function(img) { img.loading = 'eager'; });
+  }
+  document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(tab) {
+    tab.addEventListener('pointerenter', function() { warmEp(tab.getAttribute('data-ep')); });
+  });
+  document.querySelectorAll('#epCoverGrid .ep-country').forEach(function(card) {
+    card.addEventListener('pointerenter', function() { warmEp(card.getAttribute('data-country')); });
+  });
+
   // ── EPISODES: hide broken cells ──
   document.querySelectorAll('.ep-slot img').forEach(function(img) {
     function hideSlot() { var s = img.closest('.ep-slot'); if (s) s.style.display = 'none'; }
@@ -2785,10 +2808,14 @@
   });
 
   // ── VISITOR COUNT ──
-  fetch('https://api.counterapi.dev/v1/juliahahah-github-io/page-visits-v1/up')
-    .then(function(r){ return r.json(); })
+  fetch('https://abacus.jasoncameron.dev/hit/juliahahah-github-io/visits')
+    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function(d){
-      document.getElementById('vbCount').textContent = Number(d.count).toLocaleString();
+      var n = Number(d.value);
+      if (!isFinite(n)) throw new Error('bad count');
+      var s = n.toLocaleString();
+      document.getElementById('vbCount').textContent = s;
+      var m = document.getElementById('vbCountMob'); if (m) m.textContent = s;
     })
     .catch(function(){ document.getElementById('vbCount').textContent = '—'; });
 
