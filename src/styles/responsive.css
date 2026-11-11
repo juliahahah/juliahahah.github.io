@@ -85,13 +85,12 @@
   border-bottom: 1px solid var(--border);
 }
 .mob-drawer nav a {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  letter-spacing: 0.01em;
   color: var(--muted);
   text-decoration: none;
-  padding: 16px 24px;
+  padding: 10px 24px;
   border-bottom: 1px solid var(--border);
   transition: color 0.2s, background 0.2s;
   cursor: pointer;
