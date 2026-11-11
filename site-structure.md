@@ -72,7 +72,7 @@ juliahahah.github.io/
 | About     | 自我介紹、身份卡片、時間軸            |
 | Gallery   | 外拍照片集，分系列 tab 切換           |
 | Thoughts  | 個人文章（法國、AWS、鴻海）           |
-| Episodes  | 旅遊紀錄（12 個國家分頁；About 寫 13 國，香港還沒有照片） |
+| Episodes  | 旅遊紀錄（12 個國家分頁，和 About 的 12 國一致；香港已拿掉） |
 | Projects  | 作品集（研究 / 個人專案兩類）         |
 | Community | 活動與社群（校園大使、工作坊、助教、黑客松、志工），照片在 photos/community/ |
 
