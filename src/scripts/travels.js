@@ -18,7 +18,8 @@ function coverHtml(c) {
           <div class="ep-cover-info">
             <span class="ep-cover-name">${esc(c.label)}</span>
             <span class="ep-cover-date">${esc(c.date)}</span>
-          </div>
+          </div>${c.note ? `
+          <div class="ep-cover-note">${esc(c.note)}</div>` : ''}
         </div>
       </div>`;
 }

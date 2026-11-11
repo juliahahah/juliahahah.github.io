@@ -170,7 +170,8 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
     if (hit.visited) {
       const c = hit.visited;
       const when = /\d/.test(c.date) ? ` · ${c.date}` : '';
-      tip.innerHTML = `<strong>${c.label}</strong><span>${c.photos.length} photos${when}</span>`;
+      const note = c.note ? `<em>${c.note}</em>` : '';
+      tip.innerHTML = `<strong>${c.label}</strong>${note}<span>${c.photos.length} photos${when}</span>`;
     } else {
       tip.innerHTML = `<strong>${hit.name}</strong><span>not visited yet</span>`;
     }

@@ -279,3 +279,12 @@
   .ep-country-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 18px; }
   .ep-photo-grid { column-gap: 10px; }
 }
+.ep-cover-note {
+  margin: -8px 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.globe-tip em { font-family: var(--font-mono); font-style: normal; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }

@@ -92,6 +92,7 @@
     "name": "France",
     "label": "France",
     "date": "2025.06",
+    "note": "UN Ocean Conference",
     "iso": "250",
     "at": [
       2.3,
@@ -195,6 +196,7 @@
     "name": "Singapore",
     "label": "Singapore",
     "date": "2025.11",
+    "note": "Singapore FinTech Festival",
     "iso": "702",
     "at": [
       103.82,
@@ -397,6 +399,7 @@
     "name": "Philippines",
     "label": "Philippines",
     "date": "2025.01",
+    "note": "International volunteer",
     "iso": "608",
     "at": [
       121.8,
@@ -621,6 +624,7 @@
     "name": "USA",
     "label": "USA",
     "date": "2026.06",
+    "note": "CVPR 2026 · APALI leadership program",
     "iso": "840",
     "at": [
       -98.5,
