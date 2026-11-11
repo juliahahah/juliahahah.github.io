@@ -12,7 +12,7 @@
 .project + .divider, .proj-group .divider, #community .divider { display: none; }
 
 .project-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: 28px;
   font-weight: 400;
   letter-spacing: -0.01em;
@@ -20,7 +20,7 @@
   margin-bottom: 3px;
 }
 .project-meta {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.08em;
@@ -37,7 +37,7 @@
 }
 .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
 .ptag {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   border: 1px solid #ddd;
   padding: 5px 13px;
@@ -48,7 +48,7 @@
 
 /* ── PROJECT AUTHORS ── */
 .project-authors {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
   line-height: 1.7;
@@ -74,7 +74,7 @@
   gap: 16px;
 }
 .ps-style-label {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -96,7 +96,7 @@
   flex-shrink: 0;
 }
 .ps-style-note {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text2);
   letter-spacing: 0.03em;
@@ -117,7 +117,7 @@
 }
 .ps-row:last-child { border-bottom: none; }
 .ps-label {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -130,7 +130,7 @@
   background: #fafafa;
 }
 .ps-value {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text2);
   letter-spacing: 0.04em;
@@ -142,7 +142,7 @@
 .project-link {
   display: inline-block;
   margin-top: 14px;
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text);
   text-decoration: none;
@@ -186,13 +186,13 @@
 .ptab:hover { opacity: 0.7; }
 .ptab.active::after { transform: scaleX(1); }
 .ptab-num {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--muted);
 }
 .ptab-name {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -211,7 +211,7 @@
 
 /* PROJECT CATEGORY ── */
 .proj-cat {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -232,7 +232,7 @@
   flex-wrap: wrap;
 }
 .proj-badge {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;

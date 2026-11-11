@@ -55,7 +55,7 @@
   flex-shrink: 0;
 }
 .mob-drawer-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: 17px;
   font-style: italic;
   font-weight: 400;
@@ -63,7 +63,7 @@
   letter-spacing: 0.01em;
 }
 .mob-drawer-close {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 18px;
   color: var(--muted);
   background: none;
@@ -85,7 +85,7 @@
   border-bottom: 1px solid var(--border);
 }
 .mob-drawer nav a {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -114,7 +114,7 @@
   flex-shrink: 0;
 }
 .mob-drawer-views .sv-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 300;
   color: var(--text);
@@ -122,7 +122,7 @@
   margin-bottom: 4px;
 }
 .mob-drawer-views .sv-label {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -130,7 +130,7 @@
   margin-bottom: 6px;
 }
 .mob-drawer-views .sv-loc {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   color: var(--muted);
   letter-spacing: 0.04em;
@@ -164,7 +164,7 @@
     flex-shrink: 0;
   }
   .mob-topbar-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-display);
     font-size: 17px;
     font-style: italic;
     font-weight: 400;

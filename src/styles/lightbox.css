@@ -24,7 +24,7 @@
 .lb-close {
   position: fixed;
   top: 20px; right: 24px;
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 20px;
   color: rgba(255,255,255,0.5);
   cursor: pointer;
@@ -36,7 +36,7 @@
 .lb-nav {
   position: fixed;
   top: 50%; transform: translateY(-50%);
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 20px;
   color: rgba(255,255,255,0.45);
   cursor: pointer;
@@ -51,7 +51,7 @@
 .lb-counter {
   position: fixed;
   bottom: 22px; left: 50%; transform: translateX(-50%);
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: rgba(255,255,255,0.4);
   letter-spacing: 0.1em;
@@ -60,7 +60,7 @@
 
 /* visit-count badge text (top bar + mobile drawer) */
 .sv-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 300;
   color: var(--text);
@@ -68,7 +68,7 @@
   margin-bottom: 4px;
 }
 .sv-label {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -76,7 +76,7 @@
   margin-bottom: 6px;
 }
 .sv-loc {
-  font-family: 'DM Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   color: var(--muted);
   letter-spacing: 0.04em;
