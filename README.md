@@ -79,4 +79,4 @@ Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site 
 
 Portraits (`#gallery`) and Journal (`#thoughts`) are commented out in `index.html`, and their nav links too. Uncomment both to bring them back; their scripts and styles are still in place.
 
-Portrait series: GreenPath (`gallery/green-path-nycu`), Blue Hour (`blue-hour`), Amber (`amber`), Spark (`spark`), Off Stage (`stage-dance`), Renaissance (`stage-performance`), Clearing (`clearing`).
+Portrait series: GreenPath (`gallery/green-path`), Blue Hour (`blue-hour`), Amber (`amber`), Spark (`spark`), Off Stage (`stage-dance`), Renaissance (`stage-performance`), Clearing (`clearing`).
