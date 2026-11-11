@@ -22,7 +22,10 @@ juliahahah.github.io/
         ├── philippines/        ← 菲律賓 2025.01
         ├── china/              ← 中國 2023.07
         ├── macau/              ← 澳門 2025.02
-        └── taiwan/             ← 台灣 各地
+        ├── taiwan/             ← 台灣 各地
+        ├── usa/                ← 美國 2026.06（CVPR Denver＋矽谷，12張）
+        ├── thailand/           ← 泰國 2026.08（曼谷，10張）
+        └── korea/              ← 韓國 2026.09（釜山＋首爾，12張）
 ```
 
 ## Gallery Tab 對照
@@ -69,7 +72,7 @@ juliahahah.github.io/
 | About     | 自我介紹、身份卡片、時間軸            |
 | Gallery   | 外拍照片集，分系列 tab 切換           |
 | Thoughts  | 個人文章（法國、AWS、鴻海）           |
-| Episodes  | 旅遊紀錄（日本、法國、新加坡等 8 國） |
+| Episodes  | 旅遊紀錄（12 個國家分頁；About 寫 13 國，香港還沒有照片） |
 | Projects  | 作品集（研究 / 個人專案兩類）         |
 | Community | 活動與社群（校園大使、工作坊、助教、黑客松、志工），照片在 photos/community/ |
 
@@ -89,3 +92,8 @@ juliahahah.github.io/
 
 目標：`juliahahah.github.io`
 方式：GitHub Pages（main branch）
+
+
+## 語言
+
+2026-11-11 起網站只保留英文：語言切換按鈕已拿掉，data-zh/fr/ja/ko 屬性都刪了，只留 data-en。
