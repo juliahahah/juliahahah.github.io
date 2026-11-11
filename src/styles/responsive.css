@@ -1,10 +1,8 @@
 /* ── RESPONSIVE ── */
 
 /* Tablet: narrow sidebar */
-@media(max-width:960px){
-  .sidebar { width: 140px; padding: 40px 24px 36px; }
-  .content-wrap { margin-left: 140px; }
-  main { padding: 56px 52px 80px; }
+@media(max-width:1100px){
+  .sidebar-views .sv-loc { display: none; }
 }
 
 /* ── MOBILE TOPBAR (hamburger) ── */
@@ -146,8 +144,7 @@
   /* 桌面 sidebar 完全隱藏 */
   .sidebar { display: none; }
 
-  body { flex-direction: column; }
-  .content-wrap { margin-left: 0; }
+  .content-wrap { padding-top: 0; }
 
   /* 顯示手機 topbar */
   .mob-topbar {
@@ -160,7 +157,7 @@
     padding: 0 20px;
     height: 52px;
     border-bottom: 1px solid var(--border);
-    background: rgba(255,255,255,0.97);
+    background: rgba(247,241,233,0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 200;

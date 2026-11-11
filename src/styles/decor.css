@@ -1,0 +1,109 @@
+/* ── DECOR: hand-drawn illustrations, polaroids, tape, section headings ── */
+.content-wrap { overflow-x: clip; } /* illustrations may peek past the edges */
+
+.deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+.spark { width: 18px; height: 18px; opacity: 0.75; animation: twinkle 4s ease-in-out infinite; }
+.spark:nth-of-type(2n) { width: 13px; height: 13px; animation-delay: -1.6s; }
+.spark:nth-of-type(3n) { animation-delay: -2.8s; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.75; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.35; transform: scale(0.82) rotate(12deg); }
+}
+.cloud { width: 280px; height: auto; opacity: 0.9; }
+
+/* handwriting */
+.hand {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.15;
+}
+
+/* polaroid print */
+.polaroid {
+  position: relative;
+  margin: 0;
+  background: var(--paper);
+  padding: 10px 10px 0;
+  box-shadow: var(--shadow);
+  z-index: 1;
+}
+.polaroid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.polaroid figcaption {
+  font-size: 22px;
+  text-align: center;
+  padding: 8px 4px 12px;
+}
+
+/* washi tape: a translucent strip with torn ends */
+.tape::before {
+  content: '';
+  position: absolute;
+  top: -14px; left: 50%;
+  width: 92px; height: 26px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(220, 229, 240, 0.85);
+  clip-path: polygon(3% 0, 97% 4%, 100% 30%, 96% 55%, 100% 82%, 97% 100%, 4% 96%, 0 70%, 4% 45%, 0 18%);
+  z-index: 2;
+}
+.tape-rose::before { background: rgba(232, 214, 208, 0.9); }
+
+/* section heading with a hand-drawn icon */
+.sec-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.sec-icon { width: 28px; height: 28px; margin-top: 8px; flex-shrink: 0; }
+.sec-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text);
+}
+.sec-sub {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+/* pill button */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-pill span { transition: transform 0.25s; }
+.btn-pill:hover { background: var(--text); color: var(--bg); }
+.btn-pill:hover span { transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none; }
+}

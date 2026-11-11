@@ -1,6 +1,7 @@
 // Interactive travel globe (orthographic projection drawn on a canvas).
 // Visited countries come straight from travels.json, so adding a country there
-// marks it on the globe automatically. Loaded on demand from travels.js.
+// marks it, pins it and draws a flight trail from home automatically.
+// Loaded on demand from travels.js.
 import { geoOrthographic, geoPath, geoGraticule10, geoContains, geoCentroid, geoDistance, geoInterpolate } from 'd3-geo';
 import { feature } from 'topojson-client';
 import world from 'world-atlas/countries-110m.json';
@@ -8,18 +9,24 @@ import countries from '../data/travels.json';
 import { TOTAL_COUNTRIES } from '../config.js';
 
 const COLORS = {
-  ocean: '#f7f6f3',
-  graticule: '#ebe8e2',
-  land: '#dedad3',
-  border: '#ffffff',
-  visited: '#5a5a5a',
-  hover: '#262626',
-  selected: '#000000',
-  rim: '#d6d2ca',
+  ocean: '#DCE5F0', // dusty blue
+  graticule: 'rgba(255, 255, 255, 0.6)',
+  land: '#F7F1E9', // warm ivory
+  border: '#D3C9BB',
+  visited: '#E2C4BA', // muted rose
+  hover: '#D2A99C',
+  selected: '#34312F', // soft charcoal
+  rim: '#B9B0A2',
+  trail: 'rgba(52, 49, 47, 0.5)',
+  pin: '#34312F',
+  pinSelected: '#B5776A',
+  pinDot: '#F7F1E9',
 };
+const HOME = [121, 23.7]; // trails start from Taiwan
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 6;
-const PIN_RADIUS = 4.5;
+const PIN_HEAD = 5; // teardrop pin: head radius, tip sits on the location
+const PIN_LIFT = 11;
 
 const land = feature(world, world.objects.countries).features;
 const visitedByIso = new Map(countries.map((c) => [c.iso, c]));
@@ -46,7 +53,9 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
   // ---------- geometry helpers ----------
   const center = () => [-rotation[0], -rotation[1]];
   const onFront = (lonLat) => geoDistance(lonLat, center()) < Math.PI / 2 - 0.02;
-  const anchorOf = (c) => c.pin || geoCentroid(land.find((f) => f.id === c.iso));
+  const anchorOf = (c) => c.at || geoCentroid(land.find((f) => f.id === c.iso));
+  const anchors = new Map(countries.map((c) => [c, anchorOf(c)]));
+  let dashOffset = 0;
 
   function resize() {
     const w = stage.clientWidth;
@@ -94,17 +103,39 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // small countries (not in the 110m map) are drawn as pins
+    // hand-drawn style flight trails from home to every visited place
+    ctx.save();
+    ctx.setLineDash([2.5, 4.5]);
+    ctx.lineDashOffset = -dashOffset;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = COLORS.trail;
+    ctx.lineWidth = 1.1;
     for (const c of countries) {
-      if (!c.pin || !onFront(c.pin)) continue;
-      const [x, y] = projection(c.pin);
+      const to = anchors.get(c);
+      if (geoDistance(HOME, to) < 0.02) continue;
       ctx.beginPath();
-      ctx.arc(x, y, PIN_RADIUS, 0, Math.PI * 2);
-      ctx.fillStyle = c.iso === selectedIso ? COLORS.selected : hovered === c ? COLORS.hover : COLORS.visited;
-      ctx.fill();
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = COLORS.border;
+      path({ type: 'LineString', coordinates: [HOME, to] });
       ctx.stroke();
+    }
+    ctx.restore();
+
+    // a teardrop pin on every visited place facing us
+    for (const c of countries) {
+      const at = anchors.get(c);
+      if (!onFront(at)) continue;
+      const [x, y] = projection(at);
+      const cy = y - PIN_LIFT;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - 3.5, cy + 6, x - PIN_HEAD, cy + 3, x - PIN_HEAD, cy);
+      ctx.arc(x, cy, PIN_HEAD, Math.PI, 0);
+      ctx.bezierCurveTo(x + PIN_HEAD, cy + 3, x + 3.5, cy + 6, x, y);
+      ctx.fillStyle = c.iso === selectedIso ? COLORS.pinSelected : COLORS.pin;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x, cy, 1.9, 0, Math.PI * 2);
+      ctx.fillStyle = COLORS.pinDot;
+      ctx.fill();
     }
 
     ctx.beginPath();
@@ -122,9 +153,10 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
 
   function hitTest(pt) {
     for (const c of countries) {
-      if (!c.pin || !onFront(c.pin)) continue;
-      const [x, y] = projection(c.pin);
-      if (Math.hypot(x - pt[0], y - pt[1]) <= PIN_RADIUS + 5) return { visited: c };
+      const at = anchors.get(c);
+      if (!onFront(at)) continue;
+      const [x, y] = projection(at);
+      if (Math.hypot(x - pt[0], y - PIN_LIFT - pt[1]) <= PIN_HEAD + 4) return { visited: c };
     }
     const lonLat = projection.invert(pt);
     if (!lonLat || !onFront(lonLat)) return null;
@@ -175,6 +207,7 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
     if (canvas.isConnected && canvas.offsetParent !== null) {
       if (animation) animation(now);
       else if (!interacting && !dragging && !reducedMotion && !selectedIso) rotation[0] += 0.06;
+      if (!reducedMotion) dashOffset = (dashOffset + 0.12) % 7;
       draw();
     }
     requestAnimationFrame(frame);
@@ -226,7 +259,7 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
     const hit = hitTest(localPoint(e));
     if (hit && hit.visited) {
       selectedIso = hit.visited.iso;
-      rotateTo(anchorOf(hit.visited));
+      rotateTo(anchors.get(hit.visited));
       onSelect(hit.visited.id);
     }
   }
@@ -245,7 +278,7 @@ export function mountGlobe({ stage, canvas, tip, countEl, zoomButtons, onSelect 
   document.addEventListener('travels:select', (e) => {
     const c = countries.find((x) => x.id === e.detail);
     selectedIso = c ? c.iso : null;
-    if (c) rotateTo(anchorOf(c));
+    if (c) rotateTo(anchors.get(c));
   });
 
   new ResizeObserver(resize).observe(stage);

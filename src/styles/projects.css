@@ -1,5 +1,15 @@
 /* ── PROJECTS ── */
-.project { margin-bottom: 52px; }
+.project {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 28px 32px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.project:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.project + .divider, .proj-group .divider, #community .divider { display: none; }
 
 .project-name {
   font-family: 'Cormorant Garamond', serif;

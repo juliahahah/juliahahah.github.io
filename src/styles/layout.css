@@ -1,99 +1,111 @@
-/* ── SIDEBAR LAYOUT ── */
-body {
-  display: flex;
-  min-height: 100vh;
-  align-items: flex-start;
-}
+/* ── PAGE LAYOUT: journal-style top bar + centered content ── */
+body { min-height: 100vh; }
 
 .content-wrap {
-  margin-left: 160px;
-  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: 68px; /* height of the top bar */
 }
 
 .sidebar {
   position: fixed;
-  top: 0; left: 0;
-  width: 160px;
-  height: 100vh;
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  padding: 48px 32px 40px;
+  top: 0; left: 0; right: 0;
+  height: 68px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 0 clamp(24px, 5vw, 64px);
+  background: rgba(247, 241, 233, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px dashed var(--border);
   z-index: 100;
-  background: var(--bg);
 }
 
 .sidebar-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px;
-  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
   font-weight: 400;
   color: var(--text);
-  letter-spacing: 0.01em;
   cursor: pointer;
-  margin-bottom: 48px;
-  line-height: 1.2;
+  justify-self: start;
 }
+.brand-mark { width: 18px; height: 18px; transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+.sidebar-name:hover .brand-mark { transform: rotate(90deg); }
 
-nav {
+.sidebar nav {
   display: flex;
-  flex-direction: column;
-  gap: 0;
-  flex: 1;
+  gap: clamp(20px, 3vw, 44px);
 }
 
 nav a {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   color: var(--muted);
   text-decoration: none;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color 0.2s;
   cursor: pointer;
-  padding: 9px 0;
+  padding: 8px 0;
   position: relative;
 }
-nav a::before {
+/* hand-drawn underline under the current page */
+.sidebar nav a::after {
   content: '';
   position: absolute;
-  left: -12px;
-  top: 50%; transform: translateY(-50%);
-  width: 3px; height: 3px;
-  border-radius: 50%;
-  background: var(--text);
+  left: -2px; right: -2px; bottom: 0;
+  height: 6px;
+  background: url('/illustrations/squiggle.svg') center / 100% 100% no-repeat;
   opacity: 0;
-  transition: opacity 0.2s;
+  transform: scaleX(0.6);
+  transition: opacity 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1);
 }
 nav a:hover { color: var(--text); }
 nav a.active { color: var(--text); }
-nav a.active::before { opacity: 1; }
+.sidebar nav a.active::after { opacity: 0.8; transform: scaleX(1); }
+
+/* views + location, compact on the right */
+.sidebar-views {
+  justify-self: end;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.sidebar-views .sv-num { font-family: var(--font-display); font-size: 18px; color: var(--text); letter-spacing: 0; margin: 0; }
+.sidebar-views .sv-label { text-transform: uppercase; margin: 0; font-size: 9px; }
+.sidebar-views .sv-loc { font-size: 9px; }
+.sidebar-views .sv-loc { margin-left: 8px; padding-left: 10px; border-left: 1px solid var(--border); }
 
 /* ── MAIN ── */
 main {
   flex: 1;
-  padding: 64px 80px 80px;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px clamp(24px, 5vw, 64px) 96px;
   min-width: 0;
 }
 
 /* text-heavy sections get a comfortable reading width */
-#about, #thoughts, #community {
-  max-width: 680px;
-}
+#thoughts, #community { max-width: 760px; }
 
 section { display: none; }
 section.active {
   display: block;
-  animation: fadeUp 0.3s cubic-bezier(0.22,1,0.36,1);
+  animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1);
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-/* ── MOBILE TOPBAR (kept for reference, activated below) ── */
-.mobile-topbar { display: none; }

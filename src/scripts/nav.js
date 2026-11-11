@@ -1,6 +1,6 @@
 // Section switching (sidebar + mobile drawer) and the mobile drawer itself.
 import { switchGalleryTab, rebuildGalleryLayout } from './gallery.js';
-import { switchEpTab } from './travels.js';
+import { switchEpTab, ensureGlobe } from './travels.js';
 
 export function navigate(id) {
   document.querySelectorAll('section').forEach((s) => s.classList.toggle('active', s.id === id));
@@ -15,6 +15,7 @@ export function navigate(id) {
   if (id === 'episodes') {
     const tab = document.querySelector('.ep-travels-tabs .gtab.active');
     if (tab) switchEpTab(tab.dataset.ep);
+    ensureGlobe();
   }
 }
 

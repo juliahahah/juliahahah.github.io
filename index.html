@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Julia Liu</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <span class="sidebar-name" data-section="about">Julia Liu</span>
+  <span class="sidebar-name" data-section="about"><img class="brand-mark" src="illustrations/sparkle.svg" alt="">Julia Liu</span>
   <nav>
     <a class="active" data-section="about">about</a>
     <!-- <a data-section="gallery">portraits</a> -->
@@ -75,17 +75,44 @@
   <!-- ABOUT -->
   <section id="about" class="active">
 
-    <!-- ── Block A: Identity ── -->
-    <div class="ab-name-row">
-      <div class="about-name">Julia Liu</div>
-      <div class="ab-social-mini">
-        <a href="https://github.com/juliahahah" target="_blank" class="ab-slink">GitHub</a>
-        <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="ab-slink">LinkedIn</a>
-        <a href="#" data-mail="1" class="ab-slink">Email</a>
+    <!-- ── Hero ── -->
+    <div class="hero">
+      <img class="deco hero-path" src="illustrations/flight-path.svg" alt="">
+      <img class="deco hero-plane" src="illustrations/plane.svg" alt="">
+      <img class="deco spark sp1" src="illustrations/sparkle.svg" alt="">
+      <img class="deco spark sp2" src="illustrations/sparkle.svg" alt="">
+      <img class="deco spark sp3" src="illustrations/sparkle.svg" alt="">
+      <img class="deco spark sp4" src="illustrations/sparkle.svg" alt="">
+
+      <div class="hero-text">
+        <h1 class="about-name">Julia Liu</h1>
+        <div class="about-sub">AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan</div>
+        <p class="hand hero-tagline">Finding the rhythm<br><span>between code and the lens ♡</span></p>
+        <div class="hero-actions">
+          <a class="btn-pill" href="#" data-go="episodes">See my travels <span aria-hidden="true">→</span></a>
+          <div class="ab-social-mini">
+            <a href="https://github.com/juliahahah" target="_blank" class="ab-slink">GitHub</a>
+            <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="ab-slink">LinkedIn</a>
+            <a href="#" data-mail="1" class="ab-slink">Email</a>
+          </div>
+        </div>
       </div>
+
+      <div class="hero-art">
+        <img class="deco hero-stamp" src="illustrations/stamp.svg" alt="">
+        <figure class="polaroid tape hero-photo">
+          <img src="photos/episodes/korea/korea_01.jpg" width="900" height="1200" alt="Julia on the beach in Busan">
+          <figcaption class="hand">Busan · 2026</figcaption>
+        </figure>
+        <p class="hand hero-note">Travel more,<br>learn more,<br>be a better me ♡</p>
+        <img class="deco hero-camera" src="illustrations/camera.svg" alt="">
+        <img class="deco hero-sprig" src="illustrations/sprig.svg" alt="">
+      </div>
+
+      <img class="deco cloud cl1" src="illustrations/cloud.svg" alt="">
+      <img class="deco cloud cl2" src="illustrations/cloud.svg" alt="">
     </div>
-    <div class="about-sub"><span>AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan</span></div>
-    <p class="ab-tagline"><span>Finding my rhythm between code and the lens.</span></p>
+
 
     <!-- ── Block B: Personal stamps ── -->
     <div class="ab-block-b">
@@ -164,34 +191,48 @@
       </div>
     </div>
 
-    <!-- Timeline -->
-    <div class="ab-timeline">
-      <div class="ab-tl-item">
-        <div class="ab-tl-year">2026.01</div>
-        <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text">UC Capital — Asst. Engineer</div>
-      </div>
-      <div class="ab-tl-item">
-        <div class="ab-tl-year">2025.09</div>
-        <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text">Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span></div>
-      </div>
-      <div class="ab-tl-item">
-        <div class="ab-tl-year">2025.06</div>
-        <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text">UN Ocean Conference · Exchange in France</div>
-      </div>
-      <div class="ab-tl-item">
-        <div class="ab-tl-year">2025.01</div>
-        <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text">AWS Campus Ambassador</div>
-      </div>
-      <div class="ab-tl-item">
-        <div class="ab-tl-year">2024.12</div>
-        <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text">Foxconn — AI Engineer Intern (1 yr 2 mo)</div>
-      </div>
+    <!-- Experience -->
+    <div class="exp">
+      <div class="exp-main">
+        <div class="sec-head">
+          <img class="sec-icon" src="illustrations/icon-case.svg" alt="">
+          <div><h2 class="sec-title">Experience</h2><p class="sec-sub">Exploring, learning and growing</p></div>
+        </div>
+        <div class="ab-timeline">
+          <div class="ab-tl-item">
+            <div class="ab-tl-year">2026.01</div>
+            <div class="ab-tl-dot"></div>
+            <div class="ab-tl-text">UC Capital — Asst. Engineer</div>
+          </div>
+          <div class="ab-tl-item">
+            <div class="ab-tl-year">2025.09</div>
+            <div class="ab-tl-dot"></div>
+            <div class="ab-tl-text">Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span></div>
+          </div>
+          <div class="ab-tl-item">
+            <div class="ab-tl-year">2025.06</div>
+            <div class="ab-tl-dot"></div>
+            <div class="ab-tl-text">UN Ocean Conference · Exchange in France</div>
+          </div>
+          <div class="ab-tl-item">
+            <div class="ab-tl-year">2025.01</div>
+            <div class="ab-tl-dot"></div>
+            <div class="ab-tl-text">AWS Campus Ambassador</div>
+          </div>
+          <div class="ab-tl-item">
+            <div class="ab-tl-year">2024.12</div>
+            <div class="ab-tl-dot"></div>
+            <div class="ab-tl-text">Foxconn — AI Engineer Intern (1 yr 2 mo)</div>
+          </div>
 
+        </div>
+      </div>
+      <div class="exp-aside">
+        <p class="hand exp-note">Keep exploring<br>new possibilities ♡</p>
+        <img class="deco spark sp5" src="illustrations/sparkle.svg" alt="">
+        <figure class="polaroid tape exp-ph1"><img src="photos/episodes/france/france_05.jpg" width="960" height="1280" alt="Arc de Triomphe, Paris" loading="lazy"><figcaption class="hand">Paris</figcaption></figure>
+        <figure class="polaroid exp-ph2"><img src="photos/episodes/italy/italy_03.jpg" width="1600" height="1200" alt="Marina in Italy" loading="lazy"><figcaption class="hand">Liguria</figcaption></figure>
+      </div>
     </div>
 
   </section>
@@ -207,18 +248,23 @@
   <!-- EPISODES -->
   <section id="episodes">
 
-    <div class="travels-header">
-      <span class="travels-title">Travels</span>
-      <span class="travels-count" id="travelsCount"></span>
+    <div class="sec-head">
+      <img class="sec-icon" src="illustrations/icon-pin.svg" alt="">
+      <div><h2 class="sec-title">Travels</h2><p class="sec-sub">A journey across <span id="travelsCount"></span></p></div>
     </div>
 
     <!-- travel globe: an entry point into the country albums (src/scripts/globe.js) -->
-    <button class="globe-toggle" id="globeToggle" type="button" aria-expanded="false" aria-controls="globePanel">
+    <button class="globe-toggle open" id="globeToggle" type="button" aria-expanded="true" aria-controls="globePanel">
       <span class="globe-toggle-icon" aria-hidden="true"></span>
-      <span>Explore on the globe</span>
+      <span class="globe-toggle-label">Hide the globe</span>
     </button>
-    <div class="globe-panel" id="globePanel" hidden>
+    <div class="globe-panel" id="globePanel">
       <div class="globe-stage">
+        <img class="deco spark sp6" src="illustrations/sparkle.svg" alt="">
+        <img class="deco spark sp7" src="illustrations/sparkle.svg" alt="">
+        <img class="deco cloud cl3" src="illustrations/cloud.svg" alt="">
+        <p class="hand globe-note">Explore<br>the world ♡</p>
+        <div class="globe-badge"><span id="globeBadgeNum"></span><small>countries</small></div>
         <canvas id="globeCanvas" role="img" aria-label="Interactive globe. Dark countries are ones I have visited; click one to open its photos."></canvas>
         <div class="globe-tip" id="globeTip" hidden></div>
         <div class="globe-zoom">
@@ -239,6 +285,11 @@
 
   <!-- PROJECTS -->
   <section id="projects">
+
+    <div class="sec-head">
+      <img class="sec-icon" src="illustrations/icon-laptop.svg" alt="">
+      <div><h2 class="sec-title">Projects</h2><p class="sec-sub">Building ideas with AI and beyond</p></div>
+    </div>
 
     <!-- Tabs — all 3 visible at once -->
     <div class="proj-tabs">
@@ -374,7 +425,10 @@
 
   <!-- COMMUNITY -->
   <section id="community">
-    <p class="comm-intro">Events I have organised, taught at, and helped grow.</p>
+    <div class="sec-head">
+      <img class="sec-icon" src="illustrations/icon-heart.svg" alt="">
+      <div><h2 class="sec-title">Community</h2><p class="sec-sub">Events I have organised, taught at, and helped grow</p></div>
+    </div>
 
       <div class="project">
         <div class="project-header">

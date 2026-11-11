@@ -65,31 +65,40 @@ function warm(ep) {
   g.querySelectorAll('img[loading="lazy"]').forEach((img) => { img.loading = 'eager'; });
 }
 
-// The globe panel opens from the button above the country tabs. Its code
-// (and the world map data) is only downloaded the first time it is opened.
+// The globe is open by default on Travels. Its code (and the world map data)
+// is only downloaded the first time the Travels section is shown.
+let globeMounted = false;
+
+export async function ensureGlobe() {
+  const panel = document.getElementById('globePanel');
+  if (globeMounted || panel.hidden) return;
+  globeMounted = true;
+  const { mountGlobe } = await import('./globe.js');
+  mountGlobe({
+    stage: panel.querySelector('.globe-stage'),
+    canvas: document.getElementById('globeCanvas'),
+    tip: document.getElementById('globeTip'),
+    countEl: document.getElementById('globeCount'),
+    zoomButtons: panel.querySelectorAll('[data-zoom]'),
+    onSelect: (id) => {
+      switchEpTab(id);
+      document.getElementById('epTabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+  });
+}
+
 function initGlobeToggle() {
   const toggle = document.getElementById('globeToggle');
   const panel = document.getElementById('globePanel');
-  let mounted = false;
-  toggle.addEventListener('click', async () => {
+  const label = toggle.querySelector('.globe-toggle-label');
+  document.getElementById('globeBadgeNum').textContent = countries.length;
+  toggle.addEventListener('click', () => {
     const open = panel.hidden;
     panel.hidden = !open;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.classList.toggle('open', open);
-    if (!open || mounted) return;
-    mounted = true;
-    const { mountGlobe } = await import('./globe.js');
-    mountGlobe({
-      stage: panel.querySelector('.globe-stage'),
-      canvas: document.getElementById('globeCanvas'),
-      tip: document.getElementById('globeTip'),
-      countEl: document.getElementById('globeCount'),
-      zoomButtons: panel.querySelectorAll('[data-zoom]'),
-      onSelect: (id) => {
-        switchEpTab(id);
-        document.getElementById('epTabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      },
-    });
+    label.textContent = open ? 'Hide the globe' : 'Explore on the globe';
+    if (open) ensureGlobe();
   });
 }
 

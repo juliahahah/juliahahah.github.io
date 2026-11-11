@@ -1,0 +1,128 @@
+/* ── ABOUT: hero ── */
+#about { max-width: none; }
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  min-height: 540px;
+  margin: -24px 0 64px;
+  padding: 40px 0 72px;
+}
+.hero-text { position: relative; z-index: 2; padding-left: 4%; }
+.hero .about-name {
+  font-size: clamp(64px, 8.4vw, 116px);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  margin-bottom: 18px;
+}
+.hero .about-sub {
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 26px;
+}
+.hero-tagline {
+  font-size: 32px;
+  transform: rotate(-3deg);
+  transform-origin: left;
+  margin-bottom: 34px;
+}
+.hero-tagline span { display: inline-block; margin-left: 42px; }
+.hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px 26px;
+}
+.hero .ab-social-mini { margin: 0; }
+
+.hero-art { position: relative; height: 500px; }
+.hero-photo {
+  position: absolute;
+  top: 18px; left: 14%;
+  width: min(330px, 60%);
+  transform: rotate(3deg);
+}
+.hero-stamp { top: -8px; right: -2%; width: 150px; transform: rotate(9deg); opacity: 0.85; }
+.hero-note {
+  position: absolute;
+  top: 190px; right: -2%;
+  font-size: 26px;
+  transform: rotate(-9deg);
+  z-index: 2;
+}
+.hero-camera { bottom: 18px; right: 16%; width: 84px; transform: rotate(-7deg); z-index: 2; }
+.hero-sprig { right: -7%; bottom: -36px; height: 300px; z-index: 0; }
+
+.hero-path { top: -18px; left: -3%; width: min(560px, 50%); opacity: 0.85; }
+.hero-plane { top: 4px; left: 2%; width: 56px; transform: rotate(-10deg); z-index: 1; }
+.sp1 { top: 20%; left: 47%; }
+.sp2 { top: 58%; left: 44%; }
+.sp3 { top: 4%;  left: 34%; }
+.sp4 { bottom: 20%; left: 0; }
+.cl1 { bottom: -18px; left: -7%; width: 320px; }
+.cl2 { bottom: 4px; left: 38%; width: 240px; opacity: 0.7; }
+
+/* stats + tags row and identity cards sit on paper */
+#about .ab-block-b { position: relative; z-index: 1; }
+#about .ab-card-front,
+#about .ab-card-back {
+  background: var(--paper);
+  border-radius: 14px;
+}
+#about .ab-card:hover .ab-card-front,
+#about .ab-card:hover .ab-card-back { border-color: var(--taupe); }
+#about .about-tag {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* ── ABOUT: experience + polaroids ── */
+.exp {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 48px;
+  margin-top: 72px;
+}
+.exp .ab-timeline { border-left: 1px dashed var(--taupe); padding-left: 22px; margin-left: 13px; }
+.exp-aside { position: relative; min-height: 400px; }
+.exp-note {
+  position: absolute;
+  top: 0; left: 6%;
+  font-size: 28px;
+  transform: rotate(-6deg);
+}
+.exp-ph1 { position: absolute; top: 96px; left: 10%; width: 200px; transform: rotate(-6deg); }
+.exp-ph2 { position: absolute; top: 60px; left: 46%; width: 230px; transform: rotate(4deg); }
+.sp5 { top: 30px; right: 10%; }
+
+/* ── tablet / phone ── */
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-bottom: 40px; }
+  .hero-art { height: 460px; max-width: 520px; width: 100%; margin: 0 auto; }
+  .hero-path { width: 80%; }
+  .exp { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 680px) {
+  .hero { margin-top: -8px; padding-top: 24px; gap: 8px; }
+  .hero .about-name { font-size: 58px; }
+  .hero-tagline { font-size: 26px; }
+  .hero-text { padding-left: 0; }
+  .hero-art { height: 440px; }
+  .hero-photo { left: 8%; width: 230px; }
+  .hero-stamp { width: 110px; right: -4%; }
+  .hero-note { top: auto; bottom: 6px; right: auto; left: 4%; font-size: 21px; transform: rotate(-4deg); }
+  .hero-note br { display: none; }
+  .hero-camera { width: 64px; right: 6%; bottom: 8px; }
+  .hero-sprig { height: 210px; right: -14%; }
+  .hero-plane { width: 44px; }
+  .exp-aside { min-height: 360px; }
+  .exp-ph1 { left: 2%; width: 160px; }
+  .exp-ph2 { left: 40%; width: 180px; }
+}

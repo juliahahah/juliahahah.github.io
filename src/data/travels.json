@@ -5,6 +5,10 @@
     "label": "Japan",
     "date": "2025.10",
     "iso": "392",
+    "at": [
+      138.5,
+      36.2
+    ],
     "cover": {
       "src": "photos/episodes/japan/japan_01.jpg",
       "w": 960,
@@ -89,6 +93,10 @@
     "label": "France",
     "date": "2025.06",
     "iso": "250",
+    "at": [
+      2.3,
+      46.6
+    ],
     "cover": {
       "src": "photos/episodes/france/france_08.jpg",
       "w": 1280,
@@ -188,7 +196,7 @@
     "label": "Singapore",
     "date": "2025.11",
     "iso": "702",
-    "pin": [
+    "at": [
       103.82,
       1.35
     ],
@@ -246,6 +254,10 @@
     "label": "Malaysia",
     "date": "2025.06",
     "iso": "458",
+    "at": [
+      101.7,
+      3.6
+    ],
     "cover": {
       "src": "photos/episodes/malaysia/malaysia_01.jpg",
       "w": 1280,
@@ -310,6 +322,10 @@
     "label": "China",
     "date": "2023.07",
     "iso": "156",
+    "at": [
+      104,
+      35
+    ],
     "cover": {
       "src": "photos/episodes/china/china_01.jpg",
       "w": 960,
@@ -339,7 +355,7 @@
     "label": "Macau",
     "date": "2025.02",
     "iso": "446",
-    "pin": [
+    "at": [
       113.55,
       22.19
     ],
@@ -382,6 +398,10 @@
     "label": "Philippines",
     "date": "2025.01",
     "iso": "608",
+    "at": [
+      121.8,
+      13
+    ],
     "cover": {
       "src": "photos/episodes/philippines/philippines_01.jpg",
       "w": 1567,
@@ -476,6 +496,10 @@
     "label": "Taiwan · Various",
     "date": "——",
     "iso": "158",
+    "at": [
+      121,
+      23.7
+    ],
     "cover": {
       "src": "photos/episodes/taiwan/taiwan_01.jpg",
       "w": 720,
@@ -520,6 +544,10 @@
     "label": "Italy",
     "date": "2025.07",
     "iso": "380",
+    "at": [
+      12.5,
+      42.8
+    ],
     "cover": {
       "src": "photos/episodes/italy/italy_03.jpg",
       "w": 1280,
@@ -594,6 +622,10 @@
     "label": "USA",
     "date": "2026.06",
     "iso": "840",
+    "at": [
+      -98.5,
+      39.5
+    ],
     "cover": {
       "src": "photos/episodes/usa/usa_01.jpg",
       "w": 900,
@@ -668,6 +700,10 @@
     "label": "Thailand",
     "date": "2026.08",
     "iso": "764",
+    "at": [
+      100.9,
+      15.4
+    ],
     "cover": {
       "src": "photos/episodes/thailand/thailand_01.jpg",
       "w": 1108,
@@ -732,6 +768,10 @@
     "label": "Korea",
     "date": "2026.09",
     "iso": "410",
+    "at": [
+      127.8,
+      36.4
+    ],
     "cover": {
       "src": "photos/episodes/korea/korea_01.jpg",
       "w": 900,

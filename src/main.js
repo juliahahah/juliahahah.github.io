@@ -7,6 +7,8 @@ import './styles/community.css';
 import './styles/gallery.css';
 import './styles/travels.css';
 import './styles/lightbox.css';
+import './styles/decor.css';
+import './styles/hero.css';
 import './styles/responsive.css';
 
 import { renderTravels, initTravels } from './scripts/travels.js';

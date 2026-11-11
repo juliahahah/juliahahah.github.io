@@ -1,13 +1,24 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #ffffff;
-  --text:    #111111;
-  --text2:   #444444;
-  --muted:   #999999;
-  --border:  #e8e8e8;
-  --dot:     #cccccc;
-  --accent:  #111111;
+  /* Editorial black / ivory base */
+  --bg:      #F7F1E9; /* warm ivory */
+  --paper:   #FDFAF5; /* cards, polaroids */
+  --text:    #34312F; /* soft charcoal */
+  --text2:   #57524D;
+  --muted:   #8E867C;
+  --border:  #E6DDD1;
+  --dot:     #CFC5B7;
+  --accent:  #34312F;
+  /* soft travel tints, used sparingly */
+  --mist:    #DCE5F0; /* dusty blue */
+  --rose:    #E8D6D0; /* muted rose */
+  --taupe:   #B9B0A2; /* warm taupe */
+  --shadow:  0 1px 2px rgba(52, 49, 47, 0.06), 0 8px 24px rgba(52, 49, 47, 0.08);
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-hand: 'Caveat', 'Segoe Print', cursive;
 }
 
 /* ── WATERMARK ── */
@@ -91,7 +102,7 @@ body {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
