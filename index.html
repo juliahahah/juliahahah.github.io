@@ -77,8 +77,18 @@
 
     <!-- ── Hero ── -->
     <div class="hero">
-      <img class="deco hero-path" src="illustrations/flight-path.svg" alt="">
-      <img class="deco hero-plane" src="illustrations/plane.svg" alt="">
+      <!-- flight path drawn inline so the plane can fly along it (src/scripts/hero.js) -->
+      <svg class="deco hero-flight" id="heroFlight" viewBox="0 0 520 120" fill="none" aria-hidden="true">
+        <defs>
+          <mask id="flightReveal" maskUnits="userSpaceOnUse" x="-20" y="-40" width="560" height="200">
+            <path id="flightMaskPath" d="M4 92c38 18 84 22 112-4 22-20 6-44-14-34-20 10-8 40 22 44 60 8 120-70 210-74 70-3 120 30 182 26" stroke="#fff" stroke-width="6"/>
+          </mask>
+        </defs>
+        <path id="flightPath" mask="url(#flightReveal)" d="M4 92c38 18 84 22 112-4 22-20 6-44-14-34-20 10-8 40 22 44 60 8 120-70 210-74 70-3 120 30 182 26" stroke="#9C9385" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="5 6"/>
+        <g id="flightPlane" stroke="#34312F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="scale(0.78) translate(-31 -24)"><path d="M6 27.5c9.5-2.2 26-6.8 42.8-14.4 4.3-1.9 8.6-1.6 8.9.1.3 1.8-3 4.1-7.5 6.2C33.5 27.3 17.6 31 8.4 32.4"/><path d="M8.4 32.4 4 29.6l2-2.1"/><path d="M27.6 22.3 19.4 9.1l4.6-.6 13.5 9.6"/><path d="M30.9 26.7l1.6 13.4 4.2-1.7 3.3-15.2"/><path d="M8.9 27 6.2 19.6l3.3-.3 5.3 6"/><path d="M50.6 15.3l3.2-.9"/></g>
+        </g>
+      </svg>
       <img class="deco spark sp1" src="illustrations/sparkle.svg" alt="">
       <img class="deco spark sp2" src="illustrations/sparkle.svg" alt="">
       <img class="deco spark sp3" src="illustrations/sparkle.svg" alt="">
@@ -101,10 +111,25 @@
 
       <div class="hero-art">
         <img class="deco hero-stamp" src="illustrations/stamp.svg" alt="">
-        <figure class="polaroid tape hero-photo">
-          <img src="photos/episodes/korea/korea_01.jpg" width="900" height="1200" alt="Julia on the beach in Busan">
-          <img class="heart" src="illustrations/heart.svg" alt=""><figcaption class="hand">Busan · 2026<span class="coord">35.16°N 129.16°E</span></figcaption>
-        </figure>
+        <!-- a little stack of trip polaroids that flips by itself; click opens that album -->
+        <div class="hero-stack" id="heroStack">
+          <figure class="polaroid tape hero-card" data-ep="korea" tabindex="0" aria-label="Busan · 2026 — open the album">
+            <img src="photos/episodes/korea/korea_01.jpg" width="900" height="1600" alt="Julia on the beach in Busan">
+            <img class="heart" src="illustrations/heart.svg" alt=""><figcaption class="hand">Busan · 2026<span class="coord">35.16°N 129.16°E</span></figcaption>
+          </figure>
+          <figure class="polaroid tape hero-card" data-ep="usa" tabindex="0" aria-label="San Francisco · 2026 — open the album">
+            <img src="photos/episodes/usa/usa_01.jpg" width="900" height="1600" alt="Julia at the Golden Gate Bridge" loading="lazy">
+            <img class="heart" src="illustrations/heart.svg" alt=""><figcaption class="hand">San Francisco · 2026<span class="coord">37.82°N 122.48°W</span></figcaption>
+          </figure>
+          <figure class="polaroid tape hero-card" data-ep="thailand" tabindex="0" aria-label="Bangkok · 2026 — open the album">
+            <img src="photos/episodes/thailand/thailand_05.jpg" width="1108" height="1476" alt="Julia at a temple window in Bangkok" loading="lazy">
+            <img class="heart" src="illustrations/heart.svg" alt=""><figcaption class="hand">Bangkok · 2026<span class="coord">13.75°N 100.49°E</span></figcaption>
+          </figure>
+          <figure class="polaroid tape hero-card" data-ep="france" tabindex="0" aria-label="Paris · 2025 — open the album">
+            <img src="photos/episodes/france/france_05.jpg" width="960" height="1280" alt="Arc de Triomphe, Paris" loading="lazy">
+            <img class="heart" src="illustrations/heart.svg" alt=""><figcaption class="hand">Paris · 2025<span class="coord">48.87°N 2.29°E</span></figcaption>
+          </figure>
+        </div>
         <p class="hand hero-note">Travel more,<br>learn more,<br>be a better me ♡</p>
         <img class="deco hero-camera" src="illustrations/camera.svg" alt="">
         <img class="deco hero-sprig" src="illustrations/sprig.svg" alt="">

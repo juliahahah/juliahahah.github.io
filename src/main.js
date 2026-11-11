@@ -20,12 +20,14 @@ import { initAbout } from './scripts/about.js';
 import { initProjects } from './scripts/projects.js';
 import { initVisitorBadge } from './scripts/visitor-badge.js';
 import { initProtection } from './scripts/protection.js';
+import { initHero } from './scripts/hero.js';
 
 renderTravels(); // must run before anything that looks for travel elements
 initLightbox();
 initGallery();
 initTravels();
 initNav();
+initHero();
 initWatermark();
 initAbout();
 initProjects();

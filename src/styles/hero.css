@@ -41,12 +41,33 @@
 .hero .ab-social-mini { margin: 0; }
 
 .hero-art { position: relative; height: 500px; }
-.hero-photo {
+/* stack of trip polaroids (src/scripts/hero.js cycles the classes) */
+.hero-stack {
   position: absolute;
   top: 18px; left: 14%;
   width: min(330px, 60%);
-  transform: rotate(3deg);
+  aspect-ratio: 0.7;
+  z-index: 1;
 }
+.hero-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(-10px, 12px) rotate(-5deg) scale(0.94);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+  z-index: 0;
+}
+.hero-card img:first-child { flex: 1; min-height: 0; aspect-ratio: auto; height: 100%; }
+.hero-card.is-top  { opacity: 1; z-index: 3; transform: rotate(3deg); }
+.hero-card.is-next { opacity: 1; z-index: 2; transform: translate(16px, 8px) rotate(8deg) scale(0.97); }
+.hero-card.is-back { opacity: 1; z-index: 1; transform: translate(-14px, 10px) rotate(-4deg) scale(0.95); }
+.hero-card.is-leaving { opacity: 0; z-index: 4; transform: translate(70%, -24px) rotate(18deg); }
+.hero-card.is-top:hover { transform: rotate(1deg) translateY(-4px); }
+.hero-card:focus-visible { outline: 2px solid var(--taupe); outline-offset: 4px; }
+.hero-card .heart { left: 14px; right: auto; }
 .hero-stamp { top: -8px; right: -2%; width: 150px; transform: rotate(9deg); opacity: 0.85; }
 .hero-note {
   position: absolute;
@@ -58,8 +79,7 @@
 .hero-camera { bottom: 18px; right: 16%; width: 84px; transform: rotate(-7deg); z-index: 2; }
 .hero-sprig { right: -7%; bottom: -36px; height: 300px; z-index: 0; }
 
-.hero-path { top: -18px; left: -3%; width: min(560px, 50%); opacity: 0.85; }
-.hero-plane { top: 4px; left: 2%; width: 56px; transform: rotate(-10deg); z-index: 1; }
+.hero-flight { top: -30px; left: -3%; width: min(560px, 50%); overflow: visible; z-index: 1; }
 .sp1 { top: 20%; left: 47%; }
 .sp2 { top: 58%; left: 44%; }
 .sp3 { top: 4%;  left: 34%; }
@@ -106,7 +126,7 @@
 @media (max-width: 960px) {
   .hero { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-bottom: 40px; }
   .hero-art { height: 460px; max-width: 520px; width: 100%; margin: 0 auto; }
-  .hero-path { width: 80%; }
+  .hero-flight { width: 80%; }
   .exp { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 680px) {
@@ -115,13 +135,12 @@
   .hero-tagline { font-size: 26px; }
   .hero-text { padding-left: 0; }
   .hero-art { height: 440px; }
-  .hero-photo { left: 8%; width: 230px; }
+  .hero-stack { left: 8%; width: 230px; }
   .hero-stamp { width: 110px; right: -4%; }
   .hero-note { top: auto; bottom: 6px; right: auto; left: 4%; font-size: 21px; transform: rotate(-4deg); }
   .hero-note br { display: none; }
   .hero-camera { width: 64px; right: 6%; bottom: 8px; }
   .hero-sprig { height: 210px; right: -14%; }
-  .hero-plane { width: 44px; }
   .exp-aside { min-height: 360px; }
   .exp-ph1 { left: 2%; width: 160px; }
   .exp-ph2 { left: 40%; width: 180px; }
@@ -226,4 +245,3 @@ a.proof-item:hover { background: rgba(220, 229, 240, 0.35); }
 }
 
 .now-heart { width: 14px; height: 14px; vertical-align: -1px; }
-.hero-photo .heart { left: 14px; right: auto; }
