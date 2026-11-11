@@ -13,6 +13,7 @@ juliahahah.github.io/
     │   ├── spark/              ← Spark（仙女棒夜拍，7張）
     │   ├── stage-dance/        ← Off Stage（停車場外拍，10張）
     │   └── stage-performance/  ← Renaissance（成發演出，14張）
+    ├── community/              ← Community 分頁活動照（aws_01/02 = AWS Taiwan 2026.05、dream_01 = 圓夢成果活動 2025.12）
     └── episodes/
         ├── japan/              ← 日本 2025.10
         ├── france/             ← 法國 2025.06
@@ -69,15 +70,14 @@ juliahahah.github.io/
 | Gallery   | 外拍照片集，分系列 tab 切換           |
 | Thoughts  | 個人文章（法國、AWS、鴻海）           |
 | Episodes  | 旅遊紀錄（日本、法國、新加坡等 8 國） |
-| Projects  | 作品集（6 個專案，依影響力分三類）    |
-| Notes     | 技術筆記（AI Agent、RAG、Robotics）  |
+| Projects  | 作品集（研究 / 個人專案兩類）         |
+| Community | 活動與社群（校園大使、工作坊、助教、黑客松、志工），照片在 photos/community/ |
 
 ## 待補內容
 
 - [ ] Episodes 各國旅遊封面照
 - [ ] About 頁照片
 - [ ] Thoughts 文章內文
-- [ ] Notes 筆記內文
 - [ ] Off Stage / Renaissance tab 名稱已確認
 
 ## 語言設定

@@ -233,7 +233,7 @@
   }
 
   /* text-heavy sections get a comfortable reading width */
-  #about, #thoughts, #notes {
+  #about, #thoughts, #community {
     max-width: 680px;
   }
 
@@ -686,6 +686,12 @@
 
   /* ── PROJECTS ── */
   .project { margin-bottom: 52px; }
+  .comm-intro { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--muted); margin-bottom:40px; }
+  .comm-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px; margin-top:18px; }
+  .comm-photos figure { margin:0; }
+  .comm-photos img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+  .comm-photos figcaption { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; color:var(--muted); margin-top:6px; }
+
   .project-name {
     font-family: 'Cormorant Garamond', serif;
     font-size: 28px;
@@ -1503,7 +1509,7 @@
 
     main { padding: 36px 20px 80px; }
     .site-footer { padding: 20px 24px; }
-    #about, #thoughts, #projects, #notes { max-width: 100%; }
+    #about, #thoughts, #projects, #community { max-width: 100%; }
 
     .about-name { font-size: 36px; }
     .about-bio { font-size: 17px; }
@@ -1543,7 +1549,7 @@
     <!-- <a data-section="thoughts">journal</a> -->
     <a data-section="episodes">travels</a>
     <a data-section="projects">projects</a>
-    <a data-section="notes">tech notes</a>
+    <a data-section="community">community</a>
   </nav>
   <div class="lang-picker">
     <button class="lp-btn active" data-lang="en">EN</button>
@@ -1588,7 +1594,7 @@
     <!-- <a data-section="thoughts">Journal</a> -->
     <a data-section="episodes">Travels</a>
     <a data-section="projects">Projects</a>
-    <a data-section="notes">Tech Notes</a>
+    <a data-section="community">Community</a>
   </nav>
   <!-- 語言切換 -->
   <div class="lang-picker" id="mobLangPicker">
@@ -1739,7 +1745,7 @@
   <!-- THOUGHTS (暫時註解隱藏)
   <section id="thoughts">
     <div class="list-item"><span class="item-title"><span data-zh="在法國與聯合國之間，我看見了什麼" data-en="What I Saw Between France and the UN">在法國與聯合國之間，我看見了什麼</span></span><span class="dots"></span><span class="item-date">2025.06</span></div>
-    <div class="list-item"><span class="item-title"><span data-zh="AWS Campus Ambassador — 八個月的回望" data-en="AWS Campus Ambassador — Looking Back on 8 Months">AWS Campus Ambassador — 八個月的回望</span></span><span class="dots"></span><span class="item-date">2025.07</span></div>
+    <div class="list-item"><span class="item-title"><span data-zh="AWS Campus Ambassador — 七個月的回望" data-en="AWS Campus Ambassador — Looking Back on 7 Months">AWS Campus Ambassador — 七個月的回望</span></span><span class="dots"></span><span class="item-date">2025.07</span></div>
     <div class="list-item"><span class="item-title"><span data-zh="鴻海實習：2% 錄取率背後的那一年" data-en="Foxconn Internship: The Year Behind a 2% Acceptance Rate">鴻海實習：2% 錄取率背後的那一年</span></span><span class="dots"></span><span class="item-date">2025.01</span></div>
   </section>
   END THOUGHTS -->
@@ -2012,12 +2018,8 @@
         <span class="ptab-num">01</span>
         <span class="ptab-name" data-zh="學術研究 · 業界" data-en="Academic Research" data-fr="Recherche Académique" data-ja="学術研究・業界" data-ko="학술 연구 & 산업">Academic Research</span>
       </button>
-      <button class="ptab" data-pcat="community">
-        <span class="ptab-num">02</span>
-        <span class="ptab-name" data-zh="社群影響力" data-en="Community Impact" data-fr="Impact Communautaire" data-ja="コミュニティ影響力" data-ko="커뮤니티 영향력">Community Impact</span>
-      </button>
       <button class="ptab" data-pcat="side">
-        <span class="ptab-num">03</span>
+        <span class="ptab-num">02</span>
         <span class="ptab-name" data-zh="個人專案" data-en="Side Projects" data-fr="Projets Personnels" data-ja="個人プロジェクト" data-ko="개인 프로젝트">Side Projects</span>
       </button>
     </div>
@@ -2073,26 +2075,6 @@
 
     </div><!-- /group research -->
 
-    <!-- Group 02 -->
-    <div class="proj-group" data-pcat="community">
-
-      <div class="project">
-        <div class="project-header">
-          <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
-          <span class="proj-badge badge-aws">AWS</span>
-        </div>
-        <div class="project-meta" data-zh="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · <strong>Julia Liu</strong></div>
-        <p class="project-desc" data-zh="使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
-        <div class="project-tags">
-          <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
-        </div>
-        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
-          <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
-          <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-zh="AIF 重點整理衝刺班 →" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
-        </div>
-      </div>
-
-    </div><!-- /group community -->
 
     <!-- Group 03 -->
     <div class="proj-group" data-pcat="side">
@@ -2103,7 +2085,7 @@
           <span class="proj-badge badge-side">Side Project</span>
         </div>
         <div class="project-meta" data-zh="2025 · <strong>Julia Liu</strong> · 設計 &amp; 開發" data-en="2025 · <strong>Julia Liu</strong> · Design &amp; Development">2025 &nbsp;·&nbsp; <strong>Julia Liu</strong> &nbsp;·&nbsp; Design &amp; Development</div>
-        <p class="project-desc" data-zh="從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與技術筆記，支援中英雙語切換。" data-en="A personal portfolio built from scratch with zero frameworks — pure HTML / CSS / JavaScript in a single file. Features a photography gallery, travel episodes, project showcase, and technical notes with bilingual EN/ZH support.">從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與技術筆記，支援中英雙語切換。</p>
+        <p class="project-desc" data-zh="從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與活動社群紀錄，支援多語切換。" data-en="A personal portfolio built from scratch with zero frameworks — pure HTML / CSS / JavaScript in a single file. Features a photography gallery, travel episodes, project showcase, and a community log, with multilingual support.">從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與活動社群紀錄，支援多語切換。</p>
 
         <!-- Colour & Style -->
         <div class="proj-style">
@@ -2162,23 +2144,105 @@
 
 
 
-    <!-- NOTES -->
-  <section id="notes">
-    <div class="notes-cat" data-zh="AI Agent" data-en="AI Agent">AI Agent</div>
-    <div class="list-item"><span class="item-title" data-zh="AI Agent 的工具選擇與記憶機制" data-en="AI Agent — Tool Selection &amp; Memory">AI Agent 的工具選擇與記憶機制</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="Agentic RAG vs. RAG：從被動檢索到主動推理" data-en="Agentic RAG vs. RAG: From Passive to Active Retrieval">Agentic RAG vs. RAG：從被動檢索到主動推理</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="Multi-agent 協作框架初探" data-en="Intro to Multi-agent Collaboration Frameworks">Multi-agent 協作框架初探</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="notes-cat" data-zh="RAG" data-en="RAG">RAG</div>
-    <div class="list-item"><span class="item-title" data-zh="向量檢索 vs. 結構化檢索" data-en="Vector Retrieval vs. Structured Retrieval">向量檢索 vs. 結構化檢索</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="Embedding 模型選擇筆記" data-en="Notes on Choosing Embedding Models">Embedding 模型選擇筆記</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="Chunking 策略與 Context Loss" data-en="Chunking Strategies &amp; Context Loss">Chunking 策略與 Context Loss</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="notes-cat" data-zh="Robotics" data-en="Robotics">Robotics</div>
-    <div class="list-item"><span class="item-title" data-zh="SceneFoundry 論文閱讀筆記" data-en="SceneFoundry — Paper Reading Notes">SceneFoundry 論文閱讀筆記</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="NVIDIA Isaac — Jetson Nano 入門" data-en="NVIDIA Isaac — Getting Started with Jetson Nano">NVIDIA Isaac — Jetson Nano 入門</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="具身智慧（Embodied AI）概念整理" data-en="Embodied AI — Concept Overview">具身智慧（Embodied AI）概念整理</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="notes-cat" data-zh="雲端 / 工具" data-en="Cloud / Tools" data-fr="Cloud / Outils" data-ja="クラウド / ツール" data-ko="클라우드 / 도구">Cloud / Tools</div>
-    <div class="list-item"><span class="item-title" data-zh="AWS Lambda + AI Agent 實作記錄" data-en="AWS Lambda + AI Agent — Implementation Notes">AWS Lambda + AI Agent 實作記錄</span><span class="dots"></span><span class="item-date">——</span></div>
-    <div class="list-item"><span class="item-title" data-zh="AWS AIF 考試準備心得" data-en="AWS AIF Exam Preparation Notes">AWS AIF 考試準備心得</span><span class="dots"></span><span class="item-date">——</span></div>
+  <!-- COMMUNITY -->
+  <section id="community">
+    <p class="comm-intro" data-zh="我辦過、教過、一起經營過的活動與社群。" data-en="Events I have organised, taught at, and helped grow.">Events I have organised, taught at, and helped grow.</p>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">AWS Tech Campus Ambassador</div>
+          <span class="proj-badge badge-aws">AWS</span>
+        </div>
+        <div class="project-meta" data-zh="2025.01 – 2025.07 · Amazon Web Services · 7 個月" data-en="2025.01 – 2025.07 · Amazon Web Services · 7 months">2025.01 – 2025.07 · Amazon Web Services · 7 months</div>
+        <p class="project-desc" data-zh="在校園推廣 AWS Educate 雲端學習資源，並與其他大使共同策劃 3 場以上技術活動，主題涵蓋 AI 證照讀書會與 AI Agent 實作工作坊。" data-en="Promoted AWS Educate cloud-learning resources on campus and co-organised 3+ technical events, from AI certification study sessions to hands-on AI Agent workshops.">Promoted AWS Educate cloud-learning resources on campus and co-organised 3+ technical events, from AI certification study sessions to hands-on AI Agent workshops.</p>
+        <div class="project-tags"><span class="ptag">Campus Ambassador</span><span class="ptag">Event Planning</span><span class="ptag">Cloud</span><span class="ptag">AI</span></div>
+        <div class="comm-photos">
+          <figure><img src="photos/community/aws_01.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption data-zh="AWS Taiwan · 2026.05" data-en="AWS Taiwan · 2026.05">AWS Taiwan · 2026.05</figcaption></figure>
+          <figure><img src="photos/community/aws_02.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption data-zh="AWS Taiwan · 2026.05" data-en="AWS Taiwan · 2026.05">AWS Taiwan · 2026.05</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
+          <span class="proj-badge badge-aws">AWS</span>
+        </div>
+        <div class="project-meta" data-zh="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · <strong>Julia Liu</strong></div>
+        <p class="project-desc" data-zh="使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
+        <div class="project-tags">
+          <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+          <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
+          <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-zh="AIF 重點整理衝刺班 →" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">“Yaha!” AI Agent Workshop &amp; AIF Study Session</div>
+          <span class="proj-badge badge-aws">AWS</span>
+        </div>
+        <div class="project-meta" data-zh="2025.04 · 講者 · API Tool 範例開發" data-en="2025.04 · Speaker · API Tool demo">2025.04 · Speaker · API Tool demo</div>
+        <p class="project-desc" data-zh="負責上台講解，並實作讓 Agent 呼叫外部 API 的工具（API Tool）範例。前期報名人數少，我提出和系上社團合作宣傳，並把主題改成生活化的「AI 愛情問答機器人」，讓沒寫過程式的同學也願意來試試看。" data-en="Spoke on stage and built the API Tool demo that lets the agent call external APIs. When early sign-ups were low, I proposed partnering with student clubs and reframing the topic as an “AI love-advice bot”, so students who had never coded would want to try it.">Spoke on stage and built the API Tool demo that lets the agent call external APIs. When early sign-ups were low, I proposed partnering with student clubs and reframing the topic as an “AI love-advice bot”, so students who had never coded would want to try it.</p>
+        <div class="project-tags"><span class="ptag">Amazon Bedrock</span><span class="ptag">AI Agent</span><span class="ptag">Public Speaking</span><span class="ptag">Promotion</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">Teaching Assistant — Computer Vision</div>
+          <span class="proj-badge badge-research">Teaching</span>
+        </div>
+        <div class="project-meta" data-zh="2026 春季 · 全英語授課" data-en="2026 Spring · English-taught course">2026 Spring · English-taught course</div>
+        <p class="project-desc" data-zh="擔任全英語授課「電腦視覺」課程助教：批改作業、主持答疑時間、以英文回覆學生來信並協助分組，每月約 5 位同學透過助教窗口提問。" data-en="TA for an English-taught Computer Vision course: grading, office hours, answering student emails in English and organising project groups. About five students a month came through the TA channel.">TA for an English-taught Computer Vision course: grading, office hours, answering student emails in English and organising project groups. About five students a month came through the TA channel.</p>
+        <div class="project-tags"><span class="ptag">Teaching</span><span class="ptag">Computer Vision</span><span class="ptag">English</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">Dream Grant — France</div>
+          <span class="proj-badge badge-side">Grant</span>
+        </div>
+        <div class="project-meta" data-zh="2025.06 法國 · 2025.12 成果活動" data-en="2025.06 France · 2025.12 Showcase">2025.06 France · 2025.12 Showcase</div>
+        <p class="project-desc" data-zh="獲教育部圓夢基金補助赴法國，參與聯合國海洋大會相關行程，並於 2025 年 12 月的圓夢成果活動與其他獲補助青年交流。" data-en="Funded by a Ministry of Education Dream Grant to travel to France for the UN Ocean Conference, then joined fellow grantees at the December 2025 showcase.">Funded by a Ministry of Education Dream Grant to travel to France for the UN Ocean Conference, then joined fellow grantees at the December 2025 showcase.</p>
+        <div class="project-tags"><span class="ptag">Grant</span><span class="ptag">International</span><span class="ptag">UN Ocean Conference</span></div>
+        <div class="comm-photos">
+          <figure><img src="photos/community/dream_01.jpg" alt="Dream Grant showcase group photo" loading="lazy"><figcaption data-zh="圓夢成果活動 · 2025.12" data-en="Dream Grant showcase · 2025.12">Dream Grant showcase · 2025.12</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">Hsinchu Policy Hackathon</div>
+          <span class="proj-badge badge-side">Hackathon</span>
+        </div>
+        <div class="project-meta" data-zh="2025.11 · 新竹市政府 · 16 小時" data-en="2025.11 · Hsinchu City Government · 16 hours">2025.11 · Hsinchu City Government · 16 hours</div>
+        <p class="project-desc" data-zh="參加新竹市政府 114 年度政策黑客松，兩天 16 小時與隊友針對市政議題提出解決方案。" data-en="Two days and 16 hours with a team, proposing solutions to city-policy challenges at the Hsinchu City Government Policy Hackathon.">Two days and 16 hours with a team, proposing solutions to city-policy challenges at the Hsinchu City Government Policy Hackathon.</p>
+        <div class="project-tags"><span class="ptag">Hackathon</span><span class="ptag">Civic Tech</span><span class="ptag">Teamwork</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="project">
+        <div class="project-header">
+          <div class="project-name">Volunteering &amp; Service</div>
+          <span class="proj-badge badge-side">Service</span>
+        </div>
+        <div class="project-meta" data-zh="2022 – 2025" data-en="2022 – 2025">2022 – 2025</div>
+        <p class="project-desc" data-zh="菲律賓國際志工（2025.01）、弱勢國小生課業輔導 43 小時、薪傳 100 課輔計畫；2022 年擔任緬甸華文教育服務團校園大使，負責活動推廣。" data-en="International volunteer in the Philippines (2025.01), 43 hours tutoring under-resourced primary-school students, and the Xinchuan 100 tutoring programme. In 2022, campus ambassador for a Myanmar Chinese-education service team, promoting its activities.">International volunteer in the Philippines (2025.01), 43 hours tutoring under-resourced primary-school students, and the Xinchuan 100 tutoring programme. In 2022, campus ambassador for a Myanmar Chinese-education service team, promoting its activities.</p>
+        <div class="project-tags"><span class="ptag">Volunteering</span><span class="ptag">Tutoring</span><span class="ptag">Campus Ambassador</span></div>
+      </div>
+
   </section>
 
 
@@ -2403,11 +2467,11 @@
   var currentLang = 'en';
 
   var navLabels = {
-    en: { about:'about',    gallery:'portraits', thoughts:'journal',       episodes:'travels',      projects:'projects', notes:'tech notes'   },
-    zh: { about:'關於',      gallery:'作品集',    thoughts:'日誌',           episodes:'旅記',          projects:'專案',     notes:'技術筆記'    },
-    fr: { about:'à propos', gallery:'portraits', thoughts:'journal',        episodes:'voyages',      projects:'projets',  notes:'notes tech'  },
-    ja: { about:'自己紹介',   gallery:'ポートレート', thoughts:'ジャーナル',    episodes:'旅',            projects:'プロジェクト',notes:'技術ノート'  },
-    ko: { about:'소개',       gallery:'포트레이트', thoughts:'저널',          episodes:'여행',          projects:'프로젝트',  notes:'기술 노트'   }
+    en: { about:'about',    gallery:'portraits', thoughts:'journal',       episodes:'travels',      projects:'projects', community:'community'   },
+    zh: { about:'關於',      gallery:'作品集',    thoughts:'日誌',           episodes:'旅記',          projects:'專案',     community:'活動與社群'    },
+    fr: { about:'à propos', gallery:'portraits', thoughts:'journal',        episodes:'voyages',      projects:'projets',  community:'communauté'  },
+    ja: { about:'自己紹介',   gallery:'ポートレート', thoughts:'ジャーナル',    episodes:'旅',            projects:'プロジェクト',community:'コミュニティ'  },
+    ko: { about:'소개',       gallery:'포트레이트', thoughts:'저널',          episodes:'여행',          projects:'프로젝트',  community:'커뮤니티'   }
   };
 
   function applyLang(lang) {
