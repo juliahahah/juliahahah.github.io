@@ -1,1545 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Content Security Policy -->
-<meta http-equiv="Content-Security-Policy" content="
-  default-src 'self';
-  script-src 'self' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src https://fonts.gstatic.com;
-  img-src 'self' data:;
-  connect-src https://abacus.jasoncameron.dev https://ipapi.co;
-">
 <title>Julia Liu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:      #ffffff;
-    --text:    #111111;
-    --text2:   #444444;
-    --muted:   #999999;
-    --border:  #e8e8e8;
-    --dot:     #cccccc;
-    --accent:  #111111;
-  }
-
-  /* ── WATERMARK ── */
-  .wm-label {
-    position: absolute;
-    bottom: 8px; right: 10px;
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.07em;
-    pointer-events: none;
-    z-index: 5;
-    -webkit-user-select: none;
-    user-select: none;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-    white-space: nowrap;
-  }
-  /* album grid images need their own wrapper */
-  .img-wrap {
-    position: relative;
-    overflow: hidden;
-    display: block;
-  }
-  .img-wrap img {
-    width: 100%; aspect-ratio: 4/3;
-    object-fit: cover; display: block;
-    transition: opacity 0.2s, transform 0.4s cubic-bezier(0.22,1,0.36,1);
-    cursor: zoom-in;
-  }
-  .img-wrap:hover img { opacity: 0.88; transform: scale(1.02); }
-
-  /* ── FOOTER ── */
-  .site-footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .site-footer-copy {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-  .site-footer-copy a {
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .site-footer-copy a:hover { color: var(--text); }
-  @media(max-width:680px) {
-    .site-footer { margin-left: 0; padding: 20px 24px; }
-  }
-  img {
-    -webkit-user-drag: none;
-    user-drag: none;
-    -webkit-user-select: none;
-    user-select: none;
-    pointer-events: none; /* blocks right-click on images */
-  }
-  /* Re-enable pointer for lightbox trigger (handled via parent) */
-  .g-slot, .ep-album-grid, .ep-cover { pointer-events: auto; }
-
-  body {
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  /* Allow text selection only on readable content */
-  .project-desc, .about-bio, .ab-tl-text, .item-title {
-    -webkit-user-select: text;
-    user-select: text;
-  }
-
-  @media print {
-    body { display: none !important; }
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
-
-  /* ── SIDEBAR LAYOUT ── */
-  body {
-    display: flex;
-    min-height: 100vh;
-    align-items: flex-start;
-  }
-
-  .content-wrap {
-    margin-left: 160px;
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0; left: 0;
-    width: 160px;
-    height: 100vh;
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    padding: 48px 32px 40px;
-    z-index: 100;
-    background: var(--bg);
-  }
-
-  .sidebar-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: 0.01em;
-    cursor: pointer;
-    margin-bottom: 48px;
-    line-height: 1.2;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    flex: 1;
-  }
-
-  nav a {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-    cursor: pointer;
-    padding: 9px 0;
-    position: relative;
-  }
-  nav a::before {
-    content: '';
-    position: absolute;
-    left: -12px;
-    top: 50%; transform: translateY(-50%);
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--text);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  nav a:hover { color: var(--text); }
-  nav a.active { color: var(--text); }
-  nav a.active::before { opacity: 1; }
-
-  /* ── LANG PICKER ── */
-  .lang-picker {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-  .lp-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    background: none;
-    border: none;
-    padding: 7px 0;
-    cursor: pointer;
-    text-align: left;
-    transition: color 0.2s;
-    position: relative;
-  }
-  .lp-btn::before {
-    content: '';
-    position: absolute;
-    left: -12px;
-    top: 50%; transform: translateY(-50%);
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--text);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .lp-btn:hover { color: var(--text); }
-  .lp-btn.active { color: var(--text); }
-  .lp-btn.active::before { opacity: 1; }
-
-  /* ── MAIN ── */
-  main {
-    flex: 1;
-    padding: 64px 80px 80px;
-    min-width: 0;
-  }
-
-  /* text-heavy sections get a comfortable reading width */
-  #about, #thoughts, #community {
-    max-width: 680px;
-  }
-
-  section { display: none; }
-  section.active {
-    display: block;
-    animation: fadeUp 0.3s cubic-bezier(0.22,1,0.36,1);
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── MOBILE TOPBAR (kept for reference, activated below) ── */
-  .mobile-topbar { display: none; }
-
-  /* ── ABOUT REDESIGN ── */
-  .ab-hero {
-    display: grid;
-    grid-template-columns: 1fr 200px;
-    gap: 40px;
-    align-items: start;
-    margin-bottom: 48px;
-  }
-  .ab-oneliner {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 28px;
-    text-transform: uppercase;
-  }
-  .ab-bio {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--text2);
-    margin: 12px 0 24px;
-    line-height: 1.6;
-  }
-  .r-hero { aspect-ratio: 3/4; background: #f0eeeb; }
-
-  /* ── FLIP CARDS ── */
-  .ab-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 32px;
-  }
-  .ab-card {
-    height: 160px;
-    perspective: 800px;
-    cursor: pointer;
-  }
-  .ab-card-inner {
-    position: relative;
-    width: 100%; height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .ab-card.flipped .ab-card-inner { transform: rotateY(180deg); }
-  .ab-card-front,
-  .ab-card-back {
-    position: absolute;
-    inset: 0;
-    border: 1px solid var(--border);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    padding: 18px 16px;
-    transition: border-color 0.2s;
-  }
-  .ab-card:hover .ab-card-front,
-  .ab-card:hover .ab-card-back { border-color: #aaa; }
-  .ab-card-back {
-    transform: rotateY(180deg);
-    justify-content: center;
-    background: var(--bg);
-  }
-  .ab-card-icon {
-    font-size: 18px;
-    color: #bbb;
-    margin-bottom: 10px;
-    line-height: 1;
-  }
-  .ab-card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .ab-card-hint {
-    font-size: 14px;
-    color: var(--text);
-    margin-top: auto;
-    transition: transform 0.2s;
-  }
-  .ab-card:hover .ab-card-hint { transform: rotate(90deg); }
-  .ab-card-desc {
-    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    line-height: 1.65;
-    color: var(--text2);
-    font-weight: 400;
-  }
-
-  @media(max-width:600px) {
-    .ab-cards { grid-template-columns: repeat(2,1fr); }
-    .ab-card { height: 140px; }
-  }
-
-  /* stats */
-  .ab-stats {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 24px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 40px;
-  }
-  .ab-stat { flex: 1; text-align: center; }
-  .ab-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .ab-stat-num span { font-size: 18px; color: var(--muted); }
-  .ab-stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .ab-stat-div { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
-
-  /* timeline */
-  .ab-timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 8px; }
-  .ab-tl-item {
-    display: grid;
-    grid-template-columns: 64px 16px 1fr;
-    align-items: start;
-    gap: 0;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .ab-tl-item:last-child { border-bottom: none; }
-  .ab-tl-year {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    padding-top: 2px;
-  }
-  .ab-tl-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #ccc;
-    margin: 5px auto 0;
-  }
-  .ab-tl-text {
-    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--text);
-    padding-left: 12px;
-    line-height: 1.5;
-  }
-
-  @media(max-width:600px) {
-    .ab-hero { grid-template-columns: 1fr; }
-    .ab-hero-right { display: none; }
-    .ab-cards { grid-template-columns: repeat(2,1fr); }
-    .ab-stats { flex-wrap: wrap; gap: 16px; }
-    .ab-stat-div { display: none; }
-    .ab-stat { flex: 0 0 45%; }
-  }
-
-  /* ── SHARED ── */
-  .divider { width: 40px; height: 1px; background: #ddd; margin: 44px 0; }
-
-  /* ── ABOUT NAME ROW ── */
-  .ab-name-row {
-    display: flex;
-    align-items: baseline;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-  }
-  .ab-social-mini {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-bottom: 4px;
-  }
-  .ab-slink {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .ab-slink:hover { color: var(--text); border-color: #aaa; }
-  .ab-sdot { font-size: 9px; color: #ddd; }
-
-  /* ── ABOUT BLOCK B ── */
-  .ab-block-b {
-    border-top: 1px solid var(--border);
-    padding-top: 24px;
-    margin-top: 40px;
-    margin-bottom: 48px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .ab-stamps {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-  }
-  .ab-stat-item {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .ab-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px;
-    font-weight: 500;
-    font-style: italic;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    line-height: 1;
-    vertical-align: middle;
-  }
-
-  /* Countries tooltip */
-  .ab-stat-countries {
-    position: relative;
-    cursor: default;
-    display: inline-block;
-  }
-  .ab-countries-tip {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 12px 14px;
-    min-width: 180px;
-    z-index: 500;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
-    pointer-events: none;
-  }
-  .ab-countries-tip span {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.04em;
-    color: var(--text2);
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  .ab-stat-countries:hover .ab-countries-tip {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-  .ab-stamps-sep {
-    width: 1px;
-    height: 11px;
-    background: var(--border);
-    flex-shrink: 0;
-    margin: 0 4px;
-  }
-  .about-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 56px;
-    font-weight: 300;
-    font-style: italic;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .about-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 44px;
-  }
-  .about-bio {
-    font-size: 19px;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--text2);
-    margin-bottom: 20px;
-    max-width: 560px;
-  }
-  .about-bio a {
-    color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: #ccc;
-    transition: text-decoration-color 0.2s;
-  }
-  .about-bio a:hover { text-decoration-color: var(--text); }
-
-  .about-social {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 40px;
-  }
-  .social-link {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .social-link:hover { color: var(--text); }
-  .social-sep { color: #ddd; font-size: 10px; }
-
-  .about-flags {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 48px;
-  }
-  .af-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    flex-shrink: 0;
-  }
-  .af-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .af-code {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    transition: color 0.2s;
-    cursor: default;
-  }
-  .af-code:hover { color: var(--text2); }
-  .af-code + .af-code::before {
-    content: '·';
-    margin-right: 6px;
-    color: var(--border);
-  }
-
-  /* social link arrow indicator */
-  .social-link::after {
-    content: ' ↗';
-    font-size: 9px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .social-link:hover::after { opacity: 1; }
-  .about-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text2);
-    letter-spacing: 0.05em;
-    cursor: default;
-  }
-  .about-tags {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  /* photo grid */
-  .photo-grid   { display: grid; grid-template-columns: 1.1fr 2fr 1.1fr; gap: 4px; }
-  .photo-grid-b { display: grid; grid-template-columns: 2fr 1.3fr 1fr;   gap: 4px; margin-top: 4px; }
-  .photo-slot {
-    background: #f0eeeb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.5s ease; }
-  .photo-slot:hover img { transform: scale(1.04); }
-  .photo-slot .ph { font-family:'DM Mono',monospace; font-size:9px; color:#bbb; letter-spacing:0.05em; }
-  .r1{aspect-ratio:2/3;} .r2{aspect-ratio:4/3;} .r3{aspect-ratio:2/3;}
-  .r4{aspect-ratio:3/2;} .r5{aspect-ratio:5/3;} .r6{aspect-ratio:1/1;}
-
-  /* ── LIST ── */
-  .list-item {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 10px;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    transition: opacity 0.15s;
-  }
-  .list-item:hover { opacity: 0.45; }
-  .item-title { font-size: 17px; font-weight: 300; color: var(--text); white-space: nowrap; }
-  .dots { flex:1; border-bottom:1px dotted var(--dot); margin:0 12px; position:relative; top:-3px; min-width:16px; }
-  .item-date { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); white-space:nowrap; letter-spacing:0.06em; }
-
-  /* ── EPISODES ── */
-  .ep-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-top:44px; }
-  .ep-card { position:relative; aspect-ratio:3/2; background:#f0eeeb; overflow:hidden; cursor:pointer; }
-  .ep-card:nth-child(5),.ep-card:nth-child(8){aspect-ratio:3/4;}
-  .ep-inner { width:100%; height:100%; transition:transform 0.5s cubic-bezier(0.22,1,0.36,1); }
-  .ep-card:hover .ep-inner { transform:scale(1.05); }
-  .ep-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,0.35) 0%,transparent 55%); }
-  .ep-label { position:absolute; bottom:11px; left:13px; font-family:'Cormorant Garamond',serif; font-size:14px; font-style:italic; color:rgba(255,255,255,0.95); }
-  .ep-date  { position:absolute; bottom:12px; right:11px; font-family:'DM Mono',monospace; font-size:9px; color:rgba(255,255,255,0.55); letter-spacing:0.05em; }
-  .s1{background:#dddad4;}.s2{background:#d4d8dc;}.s3{background:#d8dcd4;}
-  .s4{background:#dcd4d0;}.s5{background:#d0d8dc;}.s6{background:#d8d4d0;}
-  .s7{background:#d4d0dc;}.s8{background:#dcd8d4;}
-
-  /* ── PROJECTS ── */
-  .project { margin-bottom: 52px; }
-  .comm-intro { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--muted); margin-bottom:40px; }
-  .comm-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px; margin-top:18px; }
-  .comm-photos figure { margin:0; }
-  .comm-photos img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
-  .comm-photos figcaption { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; color:var(--muted); margin-top:6px; }
-
-  .project-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--text);
-    margin-bottom: 3px;
-  }
-  .project-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .project-desc {
-    font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.75;
-    color: var(--text2);
-    max-width: 520px;
-  }
-  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
-  .ptag {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    border: 1px solid #ddd;
-    padding: 5px 13px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* ── PROJECT AUTHORS ── */
-  .project-authors {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-top: 10px;
-    max-width: 520px;
-  }
-  .project-meta strong {
-    color: var(--text);
-    font-weight: 700;
-  }
-  .project-authors span { font-size: 10px; opacity: 0.7; }
-
-  /* ── PROJECT STYLE / COLOUR BLOCK ── */
-  .proj-style {
-    margin-top: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .ps-style-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  .ps-style-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    flex-shrink: 0;
-    width: 52px;
-    padding-top: 3px;
-  }
-  .ps-swatches {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .swatch {
-    display: inline-block;
-    width: 18px; height: 18px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .ps-style-note {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text2);
-    letter-spacing: 0.03em;
-    line-height: 1.6;
-  }
-
-  /* ── PROJECT STACK BREAKDOWN ── */
-  .proj-stack {
-    margin-top: 20px;
-    border: 1px solid var(--border);
-  }
-  .ps-row {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    align-items: baseline;
-  }
-  .ps-row:last-child { border-bottom: none; }
-  .ps-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 10px 14px;
-    border-right: 1px solid var(--border);
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    background: #fafafa;
-  }
-  .ps-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text2);
-    letter-spacing: 0.04em;
-    padding: 10px 16px;
-    line-height: 1.6;
-  }
-
-  /* ── PROJECT LINK ── */
-  .project-link {
-    display: inline-block;
-    margin-top: 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 1px;
-    transition: border-color 0.2s;
-  }
-  .project-link:hover { border-color: var(--text); }
-
-  /* ── NOTES ── */
-  .notes-cat {
-    font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em;
-    color:var(--muted); text-transform:uppercase;
-    margin-bottom:14px; margin-top:36px;
-    display:flex; align-items:center; gap:10px;
-  }
-  .notes-cat::after { content:''; flex:1; height:1px; background:var(--border); max-width:40px; }
-  .notes-cat:first-of-type { margin-top:0; }
-
-  /* ── PROJECT TABS ── */
-  .proj-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 44px;
-  }
-  .ptab {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 14px 28px 12px 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-    position: relative;
-    margin-bottom: -1px;
-    text-align: left;
-    transition: opacity 0.2s;
-  }
-  .ptab::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 100%; height: 1px;
-    background: var(--text);
-    transform: scaleX(0);
-    transition: transform 0.2s;
-  }
-  .ptab:hover { opacity: 0.7; }
-  .ptab.active::after { transform: scaleX(1); }
-  .ptab-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-  }
-  .ptab-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transition: color 0.2s;
-  }
-  .ptab.active .ptab-name,
-  .ptab.active .ptab-num { color: var(--text); }
-
-  /* project groups */
-  .proj-group { display: none; }
-  .proj-group.active {
-    display: block;
-    animation: fadeUp 0.25s cubic-bezier(0.22,1,0.36,1);
-  }
-
-  /* PROJECT CATEGORY ── */
-  .proj-cat {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .proj-cat::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-  .project-header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 3px;
-    flex-wrap: wrap;
-  }
-  .proj-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 3px 9px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .badge-research { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
-  .badge-corp     { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
-  .badge-aws      { background: #f0f0f0; color: #333; border: 1px solid #ccc; }
-  .badge-side     { background: #f0f0f0; color: #777; border: 1px solid #ddd; }
-
-  /* ── GALLERY SERIES LABEL ── */
-  .gallery-series-label {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-  }
-  .series-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--text);
-  }
-  .series-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  /* ── GALLERY TABS ── */
-  .gallery-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0;
-    margin-bottom: 28px;
-    border-bottom: 1px solid var(--border);
-  }
-  .gtab {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: none;
-    border: none;
-    padding: 10px 24px 10px 0;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.2s;
-    white-space: nowrap;
-  }
-  .gtab::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 100%; height: 1px;
-    background: var(--text);
-    transform: scaleX(0);
-    transition: transform 0.2s;
-  }
-  .gtab:hover { color: var(--text); }
-  .gtab.active { color: var(--text); }
-  .gtab.active::after { transform: scaleX(1); }
-  .g-slot.hidden { display: none; }
-
-  /* Gallery cover grid (All tab) */
-  .gallery-cover-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-    margin-bottom: 0;
-  }
-  .gc-card {
-    position: relative;
-    aspect-ratio: 3/2;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .gc-card img { width:100%; height:100%; object-fit:cover; display:block;
-    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
-  }
-  .gc-card:hover img { transform: scale(1.04); }
-  .gc-card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);
-    pointer-events: none;
-  }
-  .gc-card-label {
-    position: absolute;
-    bottom: 14px; left: 16px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-style: italic;
-    color: rgba(255,255,255,0.95);
-    pointer-events: none;
-  }
-
-  /* ── GALLERY ── */
-  .gallery-intro {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
-  .gallery-grid {
-    columns: 3;
-    column-gap: 4px;
-  }
-  @media(max-width: 900px) { .gallery-grid { columns: 2; } }
-  @media(max-width: 500px) { .gallery-grid { columns: 1; } }
-  .g-slot {
-    break-inside: avoid;
-    margin-bottom: 4px;
-    background: #f0eeeb;
-    overflow: hidden;
-    position: relative;
-  }
-  .g-slot img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
-    cursor: pointer;
-  }
-  .g-slot:hover img { transform: scale(1.04); }
-  .gph {
-    width: 100%; height: 100%;
-    background: #ece9e4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    color: #ccc;
-    letter-spacing: 0.05em;
-  }
-  .gph::after { content: 'photo'; }
-
-  .gallery-empty {
-    display: none;
-    padding: 80px 0;
-    text-align: center;
-  }
-  .gallery-empty.visible { display: block; }
-  .gallery-empty-icon {
-    font-size: 32px;
-    margin-bottom: 16px;
-    opacity: 0.3;
-  }
-  .gallery-empty-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  /* ── TRAVELS HEADER ── */
-  .travels-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .travels-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .travels-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .ep-travels-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 24px;
-    margin-bottom: 24px;
-  }
-  .ep-country.ep-hidden { display: none; }
-
-  /* ── EPISODES PHOTO GRID ── */
-  .ep-photo-grid {
-    columns: 3;
-    column-gap: 4px;
-    display: none;
-  }
-  .ep-photo-grid.active {
-    display: block;
-  }
-  @media(max-width: 900px) { .ep-photo-grid { columns: 2; } }
-  @media(max-width: 500px) { .ep-photo-grid { columns: 1; } }
-  .ep-slot {
-    break-inside: avoid;
-    margin-bottom: 4px;
-    background: #f0eeeb;
-    overflow: hidden;
-    position: relative;
-  }
-  .ep-slot img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
-    cursor: zoom-in;
-  }
-  .ep-slot:hover img { transform: scale(1.04); }
-  .ep-slot img { opacity: 0; transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1); }
-  .ep-slot img.is-loaded { opacity: 1; }
-
-
-  /* ── EPISODES COVER GRID (All tab) ── */
-  .ep-country-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
-  }
-  .ep-country { display: flex; flex-direction: column; }
-  .ep-cover {
-    position: relative;
-    aspect-ratio: 3/2;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
-  .ep-cover-info {
-    position: absolute;
-    bottom: 16px; left: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    pointer-events: none;
-  }
-  .ep-cover-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-style: italic;
-    color: rgba(255,255,255,0.95);
-  }
-  .ep-cover-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.55);
-    letter-spacing: 0.06em;
-  }
-
-  /* ── LIGHTBOX ── */
-  .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    cursor: zoom-out;
-  }
-  .lightbox.active { display: flex; }
-  .lightbox img {
-    max-width: 92vw;
-    max-height: 92vh;
-    object-fit: contain;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    animation: lbIn 0.25s cubic-bezier(0.22,1,0.36,1);
-  }
-  @keyframes lbIn {
-    from { opacity:0; transform: scale(0.93); }
-    to   { opacity:1; transform: scale(1); }
-  }
-  .lb-close {
-    position: fixed;
-    top: 20px; right: 24px;
-    font-family: 'DM Mono', monospace;
-    font-size: 20px;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    line-height: 1;
-    transition: color 0.2s;
-    z-index: 10000;
-  }
-  .lb-close:hover { color: #fff; }
-  .lb-nav {
-    position: fixed;
-    top: 50%; transform: translateY(-50%);
-    font-family: 'DM Mono', monospace;
-    font-size: 20px;
-    color: rgba(255,255,255,0.45);
-    cursor: pointer;
-    padding: 20px 16px;
-    transition: color 0.2s;
-    z-index: 10000;
-    user-select: none;
-  }
-  .lb-nav:hover { color: #fff; }
-  .lb-prev { left: 8px; }
-  .lb-next { right: 8px; }
-  .lb-counter {
-    position: fixed;
-    bottom: 22px; left: 50%; transform: translateX(-50%);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 0.1em;
-    z-index: 10000;
-  }
-
-  .sidebar-views {
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-  .sv-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 300;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .sv-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .sv-loc {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  /* ── RESPONSIVE ── */
-
-  /* Tablet: narrow sidebar */
-  @media(max-width:960px){
-    .sidebar { width: 140px; padding: 40px 24px 36px; }
-    .content-wrap { margin-left: 140px; }
-    main { padding: 56px 52px 80px; }
-  }
-
-  /* ── MOBILE TOPBAR (hamburger) ── */
-  .mob-topbar {
-    display: none; /* 手機才顯示 */
-  }
-
-  /* ── DRAWER OVERLAY ── */
-  .mob-drawer-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.25);
-    z-index: 299;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .mob-drawer-overlay.open {
-    display: block;
-    opacity: 1;
-  }
-
-  /* ── DRAWER PANEL (從右側滑出) ── */
-  .mob-drawer {
-    position: fixed;
-    top: 0; right: 0;
-    width: min(280px, 82vw);
-    height: 100dvh;
-    background: var(--bg);
-    border-left: 1px solid var(--border);
-    z-index: 300;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
-    overflow-y: auto;
-  }
-  .mob-drawer.open {
-    transform: translateX(0);
-  }
-
-  /* Drawer header：名字 + 關閉按鈕 */
-  .mob-drawer-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .mob-drawer-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: 0.01em;
-  }
-  .mob-drawer-close {
-    font-family: 'DM Mono', monospace;
-    font-size: 18px;
-    color: var(--muted);
-    background: none;
-    border: none;
-    cursor: pointer;
-    line-height: 1;
-    padding: 4px;
-    transition: color 0.2s;
-  }
-  .mob-drawer-close:hover { color: var(--text); }
-
-  /* Drawer nav links */
-  .mob-drawer nav {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 8px 0;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .mob-drawer nav a {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-    transition: color 0.2s, background 0.2s;
-    cursor: pointer;
-    position: relative;
-  }
-  .mob-drawer nav a:last-child { border-bottom: none; }
-  .mob-drawer nav a:hover { color: var(--text); background: #fafafa; }
-  .mob-drawer nav a.active { color: var(--text); font-weight: 500; }
-  .mob-drawer nav a.active::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--text);
-  }
-
-  /* Drawer lang picker */
-  .mob-drawer .lang-picker {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 16px 20px;
-    gap: 4px;
-    margin-top: 0;
-    border-top: none;
-    flex-shrink: 0;
-  }
-  .mob-drawer .lp-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    background: none;
-    border: 1px solid var(--border);
-    padding: 7px 14px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    text-align: center;
-  }
-  .mob-drawer .lp-btn:hover { color: var(--text); border-color: #aaa; }
-  .mob-drawer .lp-btn.active { color: var(--text); border-color: var(--text); }
-  .mob-drawer .lp-btn::before { display: none; }
-
-  /* Drawer views */
-  .mob-drawer-views {
-    padding: 16px 24px 24px;
-    flex-shrink: 0;
-  }
-  .mob-drawer-views .sv-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .mob-drawer-views .sv-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .mob-drawer-views .sv-loc {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  /* ── MOBILE BREAKPOINT ── */
-  @media(max-width:680px){
-    /* 桌面 sidebar 完全隱藏 */
-    .sidebar { display: none; }
-
-    body { flex-direction: column; }
-    .content-wrap { margin-left: 0; }
-
-    /* 顯示手機 topbar */
-    .mob-topbar {
-      display: flex;
-      position: sticky;
-      top: 0;
-      width: 100%;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      height: 52px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 200;
-      flex-shrink: 0;
-    }
-    .mob-topbar-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 17px;
-      font-style: italic;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.01em;
-      cursor: pointer;
-    }
-    /* 漢堡按鈕 */
-    .mob-hamburger {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 36px;
-      height: 36px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 2px;
-      transition: opacity 0.2s;
-    }
-    .mob-hamburger:hover { opacity: 0.6; }
-    .mob-hamburger span {
-      display: block;
-      height: 1.5px;
-      background: var(--text);
-      border-radius: 1px;
-      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.2s;
-      transform-origin: center;
-    }
-    /* 開啟狀態：變成 × */
-    .mob-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .mob-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .mob-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-    main { padding: 36px 20px 80px; }
-    .site-footer { padding: 20px 24px; }
-    #about, #thoughts, #projects, #community { max-width: 100%; }
-
-    .about-name { font-size: 36px; }
-    .about-bio { font-size: 17px; }
-    .about-sub { font-size: 9px; }
-    .photo-grid { grid-template-columns: 1fr 1fr; }
-    .photo-grid-b { grid-template-columns: 1fr 1fr; }
-    .photo-grid .r1,.photo-grid .r3 { display: none; }
-    .item-title { font-size: 15px; white-space: normal; }
-    .project-name { font-size: 22px; }
-    .project-desc { font-size: 15px; }
-    .about-tags { gap: 12px; }
-    .about-tag { font-size: 10px; }
-    .project-tags { gap: 5px; }
-    .ptag { font-size: 10px; padding: 4px 10px; }
-    .about-social { flex-wrap: wrap; gap: 12px; }
-    .ep-album-grid { grid-template-columns: repeat(2, 1fr); }
-    .ep-country.open .ep-cover { aspect-ratio: 4/3; }
-    .ep-country.open .ep-cover-name { font-size: 20px; }
-    .ab-cards { grid-template-columns: repeat(2,1fr); }
-  }
-
-  @media(max-width:400px){
-    .mob-topbar { padding: 0 14px; }
-    .mob-topbar-name { font-size: 15px; }
-    .about-name { font-size: 28px; }
-  }
-</style>
 </head>
 <body>
 
@@ -1556,7 +21,7 @@
   </nav>
   <div class="sidebar-views">
     <div class="sv-num" id="vbCount">—</div>
-    <div class="sv-label" data-en="total views">total views</div>
+    <div class="sv-label">total views</div>
     <div class="sv-loc">
       <span id="vbFlag">🌐</span>
       <span id="vbLocText">—</span>
@@ -1567,7 +32,7 @@
 <!-- MOBILE TOPBAR（手機版才顯示） -->
 <header class="mob-topbar">
   <span class="mob-topbar-name" data-section="about">Julia Liu</span>
-  <button class="mob-hamburger" id="mobHamburger" aria-label="開啟選單" aria-expanded="false">
+  <button class="mob-hamburger" id="mobHamburger" aria-label="Open menu" aria-expanded="false">
     <span></span>
     <span></span>
     <span></span>
@@ -1581,22 +46,21 @@
 <div class="mob-drawer" id="mobDrawer" aria-hidden="true">
   <div class="mob-drawer-head">
     <span class="mob-drawer-title">Julia Liu</span>
-    <button class="mob-drawer-close" id="mobDrawerClose" aria-label="關閉選單">✕</button>
+    <button class="mob-drawer-close" id="mobDrawerClose" aria-label="Close menu">✕</button>
   </div>
   <!-- 導覽連結（與 sidebar 同步 active 狀態） -->
   <nav id="mobNav">
-    <a class="active" data-section="about">About</a>
+    <a class="active" data-section="about">about</a>
     <!-- <a data-section="gallery">Portraits</a> -->
     <!-- <a data-section="thoughts">Journal</a> -->
-    <a data-section="episodes">Travels</a>
-    <a data-section="projects">Projects</a>
-    <a data-section="community">Community</a>
+    <a data-section="episodes">travels</a>
+    <a data-section="projects">projects</a>
+    <a data-section="community">community</a>
   </nav>
-  <!-- 語言切換 -->
   <!-- 瀏覽數（drawer 內顯示） -->
   <div class="mob-drawer-views">
     <div class="sv-num" id="vbCountMob">—</div>
-    <div class="sv-label" data-en="total views">total views</div>
+    <div class="sv-label">total views</div>
     <div class="sv-loc">
       <span id="vbFlagMob">🌐</span>
       <span id="vbLocTextMob">—</span>
@@ -1615,24 +79,24 @@
     <div class="ab-name-row">
       <div class="about-name">Julia Liu</div>
       <div class="ab-social-mini">
-        <a href="https://github.com/juliahahah" target="_blank" class="ab-slink" data-en="GitHub">GitHub</a>
-        <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="ab-slink" data-en="LinkedIn">LinkedIn</a>
-        <a href="#" data-mail="1" class="ab-slink" data-en="Email">Email</a>
+        <a href="https://github.com/juliahahah" target="_blank" class="ab-slink">GitHub</a>
+        <a href="https://www.linkedin.com/in/julia-l-38a365213" target="_blank" class="ab-slink">LinkedIn</a>
+        <a href="#" data-mail="1" class="ab-slink">Email</a>
       </div>
     </div>
-    <div class="about-sub"><span data-en="AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan">AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan</span></div>
-    <p class="ab-tagline"><span data-en="Finding my rhythm between code and the lens.">Finding my rhythm between code and the lens.</span></p>
+    <div class="about-sub"><span>AI Researcher &nbsp;·&nbsp; Multipotentialite &nbsp;·&nbsp; Taiwan</span></div>
+    <p class="ab-tagline"><span>Finding my rhythm between code and the lens.</span></p>
 
     <!-- ── Block B: Personal stamps ── -->
     <div class="ab-block-b">
       <div class="ab-stamps">
-        <span class="about-tag" data-en="#Heartbroken Puppy">#心碎小狗</span>
-        <span class="about-tag" data-en="#Overthinker">#內耗達人</span>
-        <span class="about-tag" data-en="#Workaholic">#工作狂</span>
+        <span class="about-tag">#Heartbroken Puppy</span>
+        <span class="about-tag">#Overthinker</span>
+        <span class="about-tag">#Workaholic</span>
       </div>
       <div class="ab-stamps">
         <span class="ab-stat-item ab-stat-countries">
-          <span class="ab-stat-num">12</span>&nbsp;<span class="ab-stat-label-text" data-en="countries">countries</span>
+          <span class="ab-stat-num">12</span>&nbsp;<span class="ab-stat-label-text">countries</span>
           <div class="ab-countries-tip">
             <span>🇹🇼 Taiwan</span><span>🇯🇵 Japan</span><span>🇫🇷 France</span>
             <span>🇸🇬 Singapore</span><span>🇲🇾 Malaysia</span><span>🇵🇭 Philippines</span>
@@ -1642,9 +106,9 @@
           </div>
         </span>
         <span class="ab-sdot">·</span>
-        <span class="ab-stat-item"><span class="ab-stat-num">5+</span>&nbsp;<span data-en="projects">projects</span></span>
+        <span class="ab-stat-item"><span class="ab-stat-num">5+</span>&nbsp;<span>projects</span></span>
         <span class="ab-sdot">·</span>
-        <span class="ab-stat-item"><span class="ab-stat-num">50+</span>&nbsp;<span data-en="photos">photos</span></span>
+        <span class="ab-stat-item"><span class="ab-stat-num">50+</span>&nbsp;<span>photos</span></span>
       </div>
     </div>
 
@@ -1654,11 +118,11 @@
         <div class="ab-card-inner">
           <div class="ab-card-front">
             <div class="ab-card-icon">⬡</div>
-            <div class="ab-card-label" data-en="Research">Research</div>
+            <div class="ab-card-label">Research</div>
             <div class="ab-card-hint">↻</div>
           </div>
           <div class="ab-card-back">
-            <div class="ab-card-desc" data-en="AI Agent · Robotics · RAG">AI Agent · Robotics · RAG</div>
+            <div class="ab-card-desc">AI Agent · Robotics · RAG</div>
           </div>
         </div>
       </div>
@@ -1666,11 +130,11 @@
         <div class="ab-card-inner">
           <div class="ab-card-front">
             <div class="ab-card-icon">◎</div>
-            <div class="ab-card-label" data-en="Industry">Industry</div>
+            <div class="ab-card-label">Industry</div>
             <div class="ab-card-hint">↻</div>
           </div>
           <div class="ab-card-back">
-            <div class="ab-card-desc" data-en="Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor">Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor</div>
+            <div class="ab-card-desc">Foxconn AI Engineer<br>UC Capital Asst. Engineer<br>Cake Taiwan Instructor</div>
           </div>
         </div>
       </div>
@@ -1678,11 +142,11 @@
         <div class="ab-card-inner">
           <div class="ab-card-front">
             <div class="ab-card-icon">△</div>
-            <div class="ab-card-label" data-en="Global">Global</div>
+            <div class="ab-card-label">Global</div>
             <div class="ab-card-hint">↻</div>
           </div>
           <div class="ab-card-back">
-            <div class="ab-card-desc" data-en="UN Ocean Conference<br>France Exchange · Int'l Volunteer">UN Ocean Conference<br>France Exchange · Int'l Volunteer</div>
+            <div class="ab-card-desc">UN Ocean Conference<br>France Exchange · Int'l Volunteer</div>
           </div>
         </div>
       </div>
@@ -1690,11 +154,11 @@
         <div class="ab-card-inner">
           <div class="ab-card-front">
             <div class="ab-card-icon">○</div>
-            <div class="ab-card-label" data-en="Life">Life</div>
+            <div class="ab-card-label">Life</div>
             <div class="ab-card-hint">↻</div>
           </div>
           <div class="ab-card-back">
-            <div class="ab-card-desc" data-en="Photography · Modeling<br>Baking · Traveled 12 countries">Photography · Modeling<br>Baking · Traveled 12 countries</div>
+            <div class="ab-card-desc">Photography · Modeling<br>Baking · Traveled 12 countries</div>
           </div>
         </div>
       </div>
@@ -1705,27 +169,27 @@
       <div class="ab-tl-item">
         <div class="ab-tl-year">2026.01</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-en="UC Capital — Asst. Engineer">UC Capital — Asst. Engineer</div>
+        <div class="ab-tl-text">UC Capital — Asst. Engineer</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.09</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-en="Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span>">Technical Teaching Consultant · Cake Taiwan<br><span style="font-size:13px;color:var(--muted);">Supported 400+ participants for AWS AIF exam</span></div>
+        <div class="ab-tl-text">Technical Teaching Consultant · Cake Taiwan<br><span style='font-size:13px;color:var(--muted)'>Supported 400+ participants for AWS AIF exam</span></div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.06</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-en="UN Ocean Conference · Exchange in France">UN Ocean Conference · Exchange in France</div>
+        <div class="ab-tl-text">UN Ocean Conference · Exchange in France</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2025.01</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-en="AWS Campus Ambassador">AWS Campus Ambassador</div>
+        <div class="ab-tl-text">AWS Campus Ambassador</div>
       </div>
       <div class="ab-tl-item">
         <div class="ab-tl-year">2024.12</div>
         <div class="ab-tl-dot"></div>
-        <div class="ab-tl-text" data-en="Foxconn — AI Engineer Intern (1 yr 2 mo)">Foxconn — AI Engineer Intern (1 yr 2 mo)</div>
+        <div class="ab-tl-text">Foxconn — AI Engineer Intern (1 yr 2 mo)</div>
       </div>
 
     </div>
@@ -1734,337 +198,43 @@
 
   <!-- THOUGHTS (暫時註解隱藏)
   <section id="thoughts">
-    <div class="list-item"><span class="item-title"><span data-en="What I Saw Between France and the UN">在法國與聯合國之間，我看見了什麼</span></span><span class="dots"></span><span class="item-date">2025.06</span></div>
-    <div class="list-item"><span class="item-title"><span data-en="AWS Campus Ambassador — Looking Back on 7 Months">AWS Campus Ambassador — 七個月的回望</span></span><span class="dots"></span><span class="item-date">2025.07</span></div>
-    <div class="list-item"><span class="item-title"><span data-en="Foxconn Internship: The Year Behind a 2% Acceptance Rate">鴻海實習：2% 錄取率背後的那一年</span></span><span class="dots"></span><span class="item-date">2025.01</span></div>
+    <div class="list-item"><span class="item-title"><span>What I Saw Between France and the UN</span></span><span class="dots"></span><span class="item-date">2025.06</span></div>
+    <div class="list-item"><span class="item-title"><span>AWS Campus Ambassador — Looking Back on 7 Months</span></span><span class="dots"></span><span class="item-date">2025.07</span></div>
+    <div class="list-item"><span class="item-title"><span>Foxconn Internship: The Year Behind a 2% Acceptance Rate</span></span><span class="dots"></span><span class="item-date">2025.01</span></div>
   </section>
   END THOUGHTS -->
 
   <!-- EPISODES -->
   <section id="episodes">
 
-    <!-- 標題列 -->
     <div class="travels-header">
-      <span class="travels-title" data-en="Travels">Travels</span>
-      <span class="travels-count" id="travelsCount"><span data-en="12 countries">12 countries</span></span>
+      <span class="travels-title">Travels</span>
+      <span class="travels-count" id="travelsCount"></span>
     </div>
 
-    <!-- Country Tabs -->
-    <div class="ep-travels-tabs">
-      <button class="gtab active" data-ep="all" data-en="All">All</button>
-      <button class="gtab" data-ep="japan" data-en="Japan">Japan</button>
-      <button class="gtab" data-ep="france" data-en="France">France</button>
-      <button class="gtab" data-ep="singapore" data-en="Singapore">Singapore</button>
-      <button class="gtab" data-ep="malaysia" data-en="Malaysia">Malaysia</button>
-      <button class="gtab" data-ep="china" data-en="China">China</button>
-      <button class="gtab" data-ep="macau" data-en="Macau">Macau</button>
-      <button class="gtab" data-ep="philippines" data-en="Philippines">Philippines</button>
-      <button class="gtab" data-ep="taiwan" data-en="Taiwan">Taiwan</button>
-      <button class="gtab" data-ep="italy" data-en="Italy">Italy</button>
-      <button class="gtab" data-ep="usa" data-en="USA">USA</button>
-      <button class="gtab" data-ep="thailand" data-en="Thailand">Thailand</button>
-      <button class="gtab" data-ep="korea" data-en="Korea">Korea</button>
-    </div>
-
-    <!-- Country cards (All tab) -->
-    <div class="ep-country-grid" id="epCoverGrid">
-
-      <div class="ep-country" data-country="japan">
-        <div class="ep-cover">
-          <img width="960" height="1280" src="photos/episodes/japan/japan_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Japan">日本</span>
-            <span class="ep-cover-date">2025.10</span>
-          </div>
+    <!-- travel globe: an entry point into the country albums (src/scripts/globe.js) -->
+    <button class="globe-toggle" id="globeToggle" type="button" aria-expanded="false" aria-controls="globePanel">
+      <span class="globe-toggle-icon" aria-hidden="true"></span>
+      <span>Explore on the globe</span>
+    </button>
+    <div class="globe-panel" id="globePanel" hidden>
+      <div class="globe-stage">
+        <canvas id="globeCanvas" role="img" aria-label="Interactive globe. Dark countries are ones I have visited; click one to open its photos."></canvas>
+        <div class="globe-tip" id="globeTip" hidden></div>
+        <div class="globe-zoom">
+          <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+          <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
         </div>
       </div>
-
-      <div class="ep-country" data-country="france">
-        <div class="ep-cover">
-          <img width="1280" height="960" src="photos/episodes/france/france_08.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="France">法國</span>
-            <span class="ep-cover-date">2025.06</span>
-          </div>
-        </div>
+      <div class="globe-meta">
+        <span class="globe-count" id="globeCount"></span>
+        <span class="globe-hint">Drag to spin · scroll to zoom · click a dark country</span>
       </div>
-
-      <div class="ep-country" data-country="singapore">
-        <div class="ep-cover">
-          <img width="1477" height="1108" src="photos/episodes/singapore/singapore_05.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Singapore">新加坡</span>
-            <span class="ep-cover-date">2025.11</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="malaysia">
-        <div class="ep-cover">
-          <img width="1280" height="960" src="photos/episodes/malaysia/malaysia_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Malaysia">馬來西亞</span>
-            <span class="ep-cover-date">2025.06</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="china">
-        <div class="ep-cover">
-          <img width="960" height="1280" src="photos/episodes/china/china_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="China">中國</span>
-            <span class="ep-cover-date">2023.07</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="macau">
-        <div class="ep-cover">
-          <img width="852" height="1280" src="photos/episodes/macau/macau_03.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Macau">澳門</span>
-            <span class="ep-cover-date">2025.02</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="philippines">
-        <div class="ep-cover">
-          <img width="1567" height="1045" src="photos/episodes/philippines/philippines_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Philippines">菲律賓</span>
-            <span class="ep-cover-date">2025.01</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="taiwan">
-        <div class="ep-cover">
-          <img width="720" height="1280" src="photos/episodes/taiwan/taiwan_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Taiwan · Various">台灣 · 各地</span>
-            <span class="ep-cover-date">——</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="italy">
-        <div class="ep-cover">
-          <img width="1280" height="960" src="photos/episodes/italy/italy_03.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Italy">義大利</span>
-            <span class="ep-cover-date">2025.07</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="usa">
-        <div class="ep-cover">
-          <img width="900" height="1600" src="photos/episodes/usa/usa_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="USA">USA</span>
-            <span class="ep-cover-date">2026.06</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="thailand">
-        <div class="ep-cover">
-          <img width="1108" height="1477" src="photos/episodes/thailand/thailand_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Thailand">Thailand</span>
-            <span class="ep-cover-date">2026.08</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="ep-country" data-country="korea">
-        <div class="ep-cover">
-          <img width="900" height="1600" src="photos/episodes/korea/korea_01.jpg">
-          <div class="ep-overlay"></div>
-          <div class="ep-cover-info">
-            <span class="ep-cover-name" data-en="Korea">Korea</span>
-            <span class="ep-cover-date">2026.09</span>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Per-country photo grids (masonry) -->
-    <div class="ep-photo-grid" data-ep="japan">
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/japan/japan_01.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_02.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_03.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_04.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_05.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/japan/japan_06.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1478" src="photos/episodes/japan/japan_07.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1478" src="photos/episodes/japan/japan_08.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/japan/japan_09.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/japan/japan_10.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/japan/japan_11.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_12.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/japan/japan_13.jpg" alt="Japan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/japan/japan_14.jpg" alt="Japan" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="france">
-      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_01.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_02.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_03.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_04.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_05.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="837" height="1280" src="photos/episodes/france/france_06.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/france/france_07.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/france/france_08.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_10.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="2000" height="1125" src="photos/episodes/france/france_11.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="1125" height="2000" src="photos/episodes/france/france_12.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_20.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_23.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_24.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/france/france_25.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_28.jpg" alt="France" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/france/france_29.jpg" alt="France" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="singapore">
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_01.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_03.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_04.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_05.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_06.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_07.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/singapore/singapore_08.jpg" alt="Singapore" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/singapore/singapore_09.jpg" alt="Singapore" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="malaysia">
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_01.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_03.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_04.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="964" height="1280" src="photos/episodes/malaysia/malaysia_05.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/malaysia/malaysia_06.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_07.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_09.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_10.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_11.jpg" alt="Malaysia" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/malaysia/malaysia_12.jpg" alt="Malaysia" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="china">
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/china/china_01.jpg" alt="China" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/china/china_03.jpg" alt="China" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/china/china_04.jpg" alt="China" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="macau">
-      <div class="ep-slot"><img width="852" height="1280" src="photos/episodes/macau/macau_01.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img width="853" height="1280" src="photos/episodes/macau/macau_02.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img width="852" height="1280" src="photos/episodes/macau/macau_03.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="852" src="photos/episodes/macau/macau_04.jpg" alt="Macau" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="852" src="photos/episodes/macau/macau_05.jpg" alt="Macau" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="philippines">
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_01.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_02.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1045" height="1567" src="photos/episodes/philippines/philippines_03.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_04.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_05.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_06.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_07.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1567" height="1045" src="photos/episodes/philippines/philippines_08.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1045" height="1567" src="photos/episodes/philippines/philippines_09.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_10.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/philippines/philippines_11.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_12.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_13.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1477" height="1108" src="photos/episodes/philippines/philippines_14.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_15.jpg" alt="Philippines" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/philippines/philippines_16.jpg" alt="Philippines" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="taiwan">
-      <div class="ep-slot"><img width="720" height="1280" src="photos/episodes/taiwan/taiwan_01.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/taiwan/taiwan_02.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/taiwan_03.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/taiwan/taiwan_04.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/LINE_ALBUM_2024116⛰️_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/taiwan/LINE_ALBUM_202419_260412_1.jpg" alt="Taiwan" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="italy">
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_01.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_02.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_03.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_04.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_05.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_06.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_07.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_08.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_09.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="1280" height="960" src="photos/episodes/italy/italy_10.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_11.jpg" alt="Italy" loading="lazy"></div>
-      <div class="ep-slot"><img width="960" height="1280" src="photos/episodes/italy/italy_12.jpg" alt="Italy" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="usa">
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_01.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/usa/usa_02.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_03.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_04.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_05.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/usa/usa_06.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_07.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="1440" height="1080" src="photos/episodes/usa/usa_08.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_09.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/usa/usa_10.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_11.jpg" alt="USA" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/usa/usa_12.jpg" alt="USA" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="thailand">
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_01.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_02.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_03.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1477" src="photos/episodes/thailand/thailand_04.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_05.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_06.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_07.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1084" height="1448" src="photos/episodes/thailand/thailand_08.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1108" height="1476" src="photos/episodes/thailand/thailand_09.jpg" alt="Thailand" loading="lazy"></div>
-      <div class="ep-slot"><img width="1476" height="1108" src="photos/episodes/thailand/thailand_10.jpg" alt="Thailand" loading="lazy"></div>
-    </div>
-
-    <div class="ep-photo-grid" data-ep="korea">
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_01.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_02.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_03.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_04.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_05.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_06.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_07.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_08.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_09.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_10.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="1600" height="900" src="photos/episodes/korea/korea_11.jpg" alt="Korea" loading="lazy"></div>
-      <div class="ep-slot"><img width="900" height="1600" src="photos/episodes/korea/korea_12.jpg" alt="Korea" loading="lazy"></div>
-    </div>
-
+    <!-- tabs, cover cards and photo grids are rendered from src/data/travels.json -->
+    <div class="ep-travels-tabs" id="epTabs"></div>
+    <div class="ep-country-grid" id="epCoverGrid"></div>
   </section>
 
   <!-- PROJECTS -->
@@ -2074,11 +244,11 @@
     <div class="proj-tabs">
       <button class="ptab active" data-pcat="research">
         <span class="ptab-num">01</span>
-        <span class="ptab-name" data-en="Academic Research">Academic Research</span>
+        <span class="ptab-name">Academic Research</span>
       </button>
       <button class="ptab" data-pcat="side">
         <span class="ptab-num">02</span>
-        <span class="ptab-name" data-en="Side Projects">Side Projects</span>
+        <span class="ptab-name">Side Projects</span>
       </button>
     </div>
 
@@ -2090,9 +260,9 @@
           <div class="project-name">SceneFoundry</div>
           <span class="proj-badge badge-research">Publication</span>
         </div>
-        <div class="project-meta" data-en="2025 · Research Paper · 3rd Author">2025 &nbsp;·&nbsp; Research Paper &nbsp;·&nbsp; 第三作者</div>
+        <div class="project-meta">2025 · Research Paper · 3rd Author</div>
         <p class="project-authors">ChunTeng Chen, YiChen Hsu, <strong>YiWen Liu</strong>, WeiFang Sun, TsaiChing Ni, ChunYi Lee, Min Sun, YuanFu Yang<br><span> · NTHU · NVIDIA ATC · NTU</span></p>
-        <p class="project-desc" data-en="A language-guided diffusion framework that generates apartment-scale interactive 3D worlds with articulated furniture for robotics training and embodied AI research.">語言引導的擴散框架，自動生成公寓規模的互動式 3D 世界，包含具關節運動的家具與語意多樣的空間佈局，用於機器人訓練與具身智慧研究。</p>
+        <p class="project-desc">A language-guided diffusion framework that generates apartment-scale interactive 3D worlds with articulated furniture for robotics training and embodied AI research.</p>
         <div class="project-tags">
           <span class="ptag">Diffusion</span><span class="ptag">LLM</span><span class="ptag">Robotics</span><span class="ptag">3D Generation</span><span class="ptag">Embodied AI</span>
         </div>
@@ -2109,8 +279,8 @@
           <div class="project-name">FoxBrain — Data Augmentation</div>
           <span class="proj-badge badge-corp">Foxconn</span>
         </div>
-        <div class="project-meta" data-en="2024 · Foxconn · Ye-Yu Lin · <strong>Julia Liu</strong>">2024 &nbsp;·&nbsp; 鴻海精密工業 &nbsp;·&nbsp; Ye-Yu Lin · <strong>Julia Liu</strong></div>
-        <p class="project-desc" data-en="Executed data augmentation strategies to enhance the FoxBrain project, evaluated 8 LLMs for performance optimization.">執行資料增強策略強化 FoxBrain 專案，系統性評估 8 個 LLM 以優化模型效能；主導電動車部門超過 1,000 張影像的標注工作。</p>
+        <div class="project-meta">2024 · Foxconn · Ye-Yu Lin · <strong>Julia Liu</strong></div>
+        <p class="project-desc">Executed data augmentation strategies to enhance the FoxBrain project, evaluated 8 LLMs for performance optimization.</p>
         <div class="project-tags">
           <span class="ptag">LLM</span><span class="ptag">Data Augmentation</span><span class="ptag">Computer Vision</span><span class="ptag">EV</span>
         </div>
@@ -2123,8 +293,8 @@
           <div class="project-name">PDF RAG Benchmark</div>
           <span class="proj-badge badge-research">Research</span>
         </div>
-        <div class="project-meta" data-en="2025 · Research · <strong>Julia Liu</strong> · Kenny">2025 &nbsp;·&nbsp; Research &nbsp;·&nbsp; <strong>Julia Liu</strong> · Kenny</div>
-        <p class="project-desc" data-en="A systematic performance comparison of PDF extraction tools for RAG pipelines, providing practical tool selection guidance.">針對 RAG pipeline 中各種 PDF 擷取工具進行系統性效能比較，提供選型參考依據。</p>
+        <div class="project-meta">2025 · Research · <strong>Julia Liu</strong> · Kenny</div>
+        <p class="project-desc">A systematic performance comparison of PDF extraction tools for RAG pipelines, providing practical tool selection guidance.</p>
         <div class="project-tags">
           <span class="ptag">RAG</span><span class="ptag">PDF Parsing</span><span class="ptag">Benchmark</span><span class="ptag">LLM</span>
         </div>
@@ -2142,28 +312,28 @@
           <div class="project-name">Personal Portfolio — juliahahah.github.io</div>
           <span class="proj-badge badge-side">Side Project</span>
         </div>
-        <div class="project-meta" data-en="2025 · <strong>Julia Liu</strong> · Design &amp; Development">2025 &nbsp;·&nbsp; <strong>Julia Liu</strong> &nbsp;·&nbsp; Design &amp; Development</div>
-        <p class="project-desc" data-en="A personal portfolio built from scratch with zero frameworks — pure HTML / CSS / JavaScript in a single file. Features a photography gallery, travel episodes, project showcase, and a community log, with multilingual support.">從零打造的個人作品集網站，不依賴任何前端框架——純 HTML / CSS / JavaScript 單一檔案實作。涵蓋攝影 Gallery、旅遊 Episodes、專案展示與活動社群紀錄，支援多語切換。</p>
+        <div class="project-meta">2025 · <strong>Julia Liu</strong> · Design &amp; Development</div>
+        <p class="project-desc">A personal portfolio built from scratch with zero frameworks — pure HTML / CSS / JavaScript in a single file. Features a photography gallery, travel episodes, project showcase, and a community log, with multilingual support.</p>
 
         <!-- Colour & Style -->
         <div class="proj-style">
           <div class="ps-style-row">
-            <span class="ps-style-label" data-en="Colour">Colour</span>
+            <span class="ps-style-label">Colour</span>
             <div class="ps-swatches">
               <span class="swatch" style="background:#111111;" title="#111111"></span>
               <span class="swatch" style="background:#444444;" title="#444444"></span>
               <span class="swatch" style="background:#999999;" title="#999999"></span>
               <span class="swatch" style="background:#e8e8e8;" title="#e8e8e8"></span>
               <span class="swatch" style="background:#ffffff;border:1px solid #e8e8e8;" title="#ffffff"></span>
-              <span class="ps-style-note" data-en="Monochrome only · No colour accents · Hierarchy through contrast &amp; whitespace">Monochrome only · No colour accents · Hierarchy through contrast &amp; whitespace</span>
+              <span class="ps-style-note">Monochrome only · No colour accents · Hierarchy through contrast &amp; whitespace</span>
             </div>
           </div>
           <div class="ps-style-row">
-            <span class="ps-style-label" data-en="Style">Style</span>
-            <span class="ps-style-note" data-en="Editorial minimal — magazine-layout aesthetics with generous whitespace, italic serif headlines paired with monospace micro-labels. Visual language inspired by art photography books and literary journals.">Editorial minimal — magazine-layout aesthetics with generous whitespace, italic serif headlines paired with monospace micro-labels. Visual language inspired by art photography books and literary journals.</span>
+            <span class="ps-style-label">Style</span>
+            <span class="ps-style-note">Editorial minimal — magazine-layout aesthetics with generous whitespace, italic serif headlines paired with monospace micro-labels. Visual language inspired by art photography books and literary journals.</span>
           </div>
           <div class="ps-style-row">
-            <span class="ps-style-label" data-en="Type">Type</span>
+            <span class="ps-style-label">Type</span>
             <span class="ps-style-note">
               <em style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:0.01em;">Cormorant Garamond</em>
               <span style="color:var(--muted);font-size:11px;margin:0 6px;">·</span>
@@ -2188,8 +358,8 @@
           <div class="project-name">AI Fashion Designer</div>
           <span class="proj-badge badge-side">Side Project</span>
         </div>
-        <div class="project-meta" data-en="2024 · <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen">2024 &nbsp;·&nbsp; <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen</div>
-        <p class="project-desc" data-en="A virtual try-on system using ControlNet and Inpainting techniques, enabling users to preview outfits online in real time.">結合 ControlNet 與 Inpainting 技術打造的虛擬試穿系統，讓使用者能在線上即時預覽穿搭效果。</p>
+        <div class="project-meta">2024 · <strong>Julia Liu</strong> · Chia-Hsien Huang · JingWen</div>
+        <p class="project-desc">A virtual try-on system using ControlNet and Inpainting techniques, enabling users to preview outfits online in real time.</p>
         <div class="project-tags">
           <span class="ptag">ControlNet</span><span class="ptag">Inpainting</span><span class="ptag">Computer Vision</span><span class="ptag">Generative AI</span>
         </div>
@@ -2204,19 +374,19 @@
 
   <!-- COMMUNITY -->
   <section id="community">
-    <p class="comm-intro" data-en="Events I have organised, taught at, and helped grow.">Events I have organised, taught at, and helped grow.</p>
+    <p class="comm-intro">Events I have organised, taught at, and helped grow.</p>
 
       <div class="project">
         <div class="project-header">
           <div class="project-name">AWS Tech Campus Ambassador</div>
           <span class="proj-badge badge-aws">AWS</span>
         </div>
-        <div class="project-meta" data-en="2025.01 – 2025.07 · Amazon Web Services · 7 months">2025.01 – 2025.07 · Amazon Web Services · 7 months</div>
-        <p class="project-desc" data-en="Promoted AWS Educate cloud-learning resources on campus and co-organised 3+ technical events, from AI certification study sessions to hands-on AI Agent workshops.">Promoted AWS Educate cloud-learning resources on campus and co-organised 3+ technical events, from AI certification study sessions to hands-on AI Agent workshops.</p>
+        <div class="project-meta">2025.01 – 2025.07 · Amazon Web Services · 7 months</div>
+        <p class="project-desc">Promoted AWS Educate cloud-learning resources on campus and co-organised 3+ technical events, from AI certification study sessions to hands-on AI Agent workshops.</p>
         <div class="project-tags"><span class="ptag">Campus Ambassador</span><span class="ptag">Event Planning</span><span class="ptag">Cloud</span><span class="ptag">AI</span></div>
         <div class="comm-photos">
-          <figure><img src="photos/community/aws_01.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption data-en="AWS Taiwan · 2026.05">AWS Taiwan · 2026.05</figcaption></figure>
-          <figure><img src="photos/community/aws_02.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption data-en="AWS Taiwan · 2026.05">AWS Taiwan · 2026.05</figcaption></figure>
+          <figure><img src="photos/community/aws_01.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption>AWS Taiwan · 2026.05</figcaption></figure>
+          <figure><img src="photos/community/aws_02.jpg" alt="Group photo at AWS Taiwan" loading="lazy"><figcaption>AWS Taiwan · 2026.05</figcaption></figure>
         </div>
       </div>
 
@@ -2227,14 +397,14 @@
           <div class="project-name">AWS × Chiikawa AI Agent Workshop</div>
           <span class="proj-badge badge-aws">AWS</span>
         </div>
-        <div class="project-meta" data-en="2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong>">2025 &nbsp;·&nbsp; AWS Educate Taiwan &nbsp;·&nbsp; Reeve · Cody · <strong>Julia Liu</strong></div>
-        <p class="project-desc" data-en="Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.">使用 AWS Bedrock 與 Claude 3 打造 AI Agent 的工作坊教材，帶領學員從零開始實作雲端 AI 應用，觸及 3,000+ 學生。</p>
+        <div class="project-meta">2025 · AWS Educate Taiwan · Reeve · Cody · <strong>Julia Liu</strong></div>
+        <p class="project-desc">Workshop materials for building AI Agents with AWS Bedrock and Claude 3, guiding participants from zero to cloud AI applications, reaching 3,000+ students.</p>
         <div class="project-tags">
           <span class="ptag">AWS Bedrock</span><span class="ptag">Claude 3</span><span class="ptag">AI Agent</span><span class="ptag">Workshop</span>
         </div>
         <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
           <a href="https://github.com/aws-educate-tw/aws-educate-chiikawa-ai-workshop" target="_blank" class="project-link">View Repo →</a>
-          <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link" data-en="AIF Exam Prep Session →">AIF 重點整理衝刺班 →</a>
+          <a href="https://www.youtube.com/watch?v=JGZejbBKU40&t=5318s" target="_blank" class="project-link">AIF Exam Prep Session →</a>
         </div>
       </div>
 
@@ -2245,8 +415,8 @@
           <div class="project-name">“Yaha!” AI Agent Workshop &amp; AIF Study Session</div>
           <span class="proj-badge badge-aws">AWS</span>
         </div>
-        <div class="project-meta" data-en="2025.04 · Speaker · API Tool demo">2025.04 · Speaker · API Tool demo</div>
-        <p class="project-desc" data-en="Spoke on stage and built the API Tool demo that lets the agent call external APIs. When early sign-ups were low, I proposed partnering with student clubs and reframing the topic as an “AI love-advice bot”, so students who had never coded would want to try it.">Spoke on stage and built the API Tool demo that lets the agent call external APIs. When early sign-ups were low, I proposed partnering with student clubs and reframing the topic as an “AI love-advice bot”, so students who had never coded would want to try it.</p>
+        <div class="project-meta">2025.04 · Speaker · API Tool demo</div>
+        <p class="project-desc">Spoke on stage and built the API Tool demo that lets the agent call external APIs. When early sign-ups were low, I proposed partnering with student clubs and reframing the topic as an “AI love-advice bot”, so students who had never coded would want to try it.</p>
         <div class="project-tags"><span class="ptag">Amazon Bedrock</span><span class="ptag">AI Agent</span><span class="ptag">Public Speaking</span><span class="ptag">Promotion</span></div>
       </div>
 
@@ -2257,8 +427,8 @@
           <div class="project-name">Teaching Assistant — Computer Vision</div>
           <span class="proj-badge badge-research">Teaching</span>
         </div>
-        <div class="project-meta" data-en="2026 Spring · English-taught course">2026 Spring · English-taught course</div>
-        <p class="project-desc" data-en="TA for an English-taught Computer Vision course: grading, office hours, answering student emails in English and organising project groups. About five students a month came through the TA channel.">TA for an English-taught Computer Vision course: grading, office hours, answering student emails in English and organising project groups. About five students a month came through the TA channel.</p>
+        <div class="project-meta">2026 Spring · English-taught course</div>
+        <p class="project-desc">TA for an English-taught Computer Vision course: grading, office hours, answering student emails in English and organising project groups. About five students a month came through the TA channel.</p>
         <div class="project-tags"><span class="ptag">Teaching</span><span class="ptag">Computer Vision</span><span class="ptag">English</span></div>
       </div>
 
@@ -2269,11 +439,11 @@
           <div class="project-name">Dream Grant — France</div>
           <span class="proj-badge badge-side">Grant</span>
         </div>
-        <div class="project-meta" data-en="2025.06 France · 2025.12 Showcase">2025.06 France · 2025.12 Showcase</div>
-        <p class="project-desc" data-en="Funded by a Ministry of Education Dream Grant to travel to France for the UN Ocean Conference, then joined fellow grantees at the December 2025 showcase.">Funded by a Ministry of Education Dream Grant to travel to France for the UN Ocean Conference, then joined fellow grantees at the December 2025 showcase.</p>
+        <div class="project-meta">2025.06 France · 2025.12 Showcase</div>
+        <p class="project-desc">Funded by a Ministry of Education Dream Grant to travel to France for the UN Ocean Conference, then joined fellow grantees at the December 2025 showcase.</p>
         <div class="project-tags"><span class="ptag">Grant</span><span class="ptag">International</span><span class="ptag">UN Ocean Conference</span></div>
         <div class="comm-photos">
-          <figure><img src="photos/community/dream_01.jpg" alt="Dream Grant showcase group photo" loading="lazy"><figcaption data-en="Dream Grant showcase · 2025.12">Dream Grant showcase · 2025.12</figcaption></figure>
+          <figure><img src="photos/community/dream_01.jpg" alt="Dream Grant showcase group photo" loading="lazy"><figcaption>Dream Grant showcase · 2025.12</figcaption></figure>
         </div>
       </div>
 
@@ -2284,8 +454,8 @@
           <div class="project-name">Hsinchu Policy Hackathon</div>
           <span class="proj-badge badge-side">Hackathon</span>
         </div>
-        <div class="project-meta" data-en="2025.11 · Hsinchu City Government · 16 hours">2025.11 · Hsinchu City Government · 16 hours</div>
-        <p class="project-desc" data-en="Two days and 16 hours with a team, proposing solutions to city-policy challenges at the Hsinchu City Government Policy Hackathon.">Two days and 16 hours with a team, proposing solutions to city-policy challenges at the Hsinchu City Government Policy Hackathon.</p>
+        <div class="project-meta">2025.11 · Hsinchu City Government · 16 hours</div>
+        <p class="project-desc">Two days and 16 hours with a team, proposing solutions to city-policy challenges at the Hsinchu City Government Policy Hackathon.</p>
         <div class="project-tags"><span class="ptag">Hackathon</span><span class="ptag">Civic Tech</span><span class="ptag">Teamwork</span></div>
       </div>
 
@@ -2296,8 +466,8 @@
           <div class="project-name">Volunteering &amp; Service</div>
           <span class="proj-badge badge-side">Service</span>
         </div>
-        <div class="project-meta" data-en="2022 – 2025">2022 – 2025</div>
-        <p class="project-desc" data-en="International volunteer in the Philippines (2025.01), 43 hours tutoring under-resourced primary-school students, and the Xinchuan 100 tutoring programme. In 2022, campus ambassador for a Myanmar Chinese-education service team, promoting its activities.">International volunteer in the Philippines (2025.01), 43 hours tutoring under-resourced primary-school students, and the Xinchuan 100 tutoring programme. In 2022, campus ambassador for a Myanmar Chinese-education service team, promoting its activities.</p>
+        <div class="project-meta">2022 – 2025</div>
+        <p class="project-desc">International volunteer in the Philippines (2025.01), 43 hours tutoring under-resourced primary-school students, and the Xinchuan 100 tutoring programme. In 2022, campus ambassador for a Myanmar Chinese-education service team, promoting its activities.</p>
         <div class="project-tags"><span class="ptag">Volunteering</span><span class="ptag">Tutoring</span><span class="ptag">Campus Ambassador</span></div>
       </div>
 
@@ -2309,14 +479,14 @@
 
     <!~~ Category Tabs ~~>
     <div class="gallery-tabs">
-      <button class="gtab active" data-cat="all" data-en="All">All</button>
-      <button class="gtab" data-cat="greenpath" data-en="GreenPath">GreenPath</button>
-      <button class="gtab" data-cat="bluehour" data-en="Blue Hour">Blue Hour</button>
-      <button class="gtab" data-cat="amber" data-en="Amber">Amber</button>
-      <button class="gtab" data-cat="spark" data-en="Spark">Spark</button>
-      <button class="gtab" data-cat="stage" data-en="Off Stage">Off Stage</button>
-      <button class="gtab" data-cat="perf" data-en="Renaissance">Renaissance</button>
-      <button class="gtab" data-cat="clearing" data-en="Clearing">Clearing</button>
+      <button class="gtab active" data-cat="all">All</button>
+      <button class="gtab" data-cat="greenpath">GreenPath</button>
+      <button class="gtab" data-cat="bluehour">Blue Hour</button>
+      <button class="gtab" data-cat="amber">Amber</button>
+      <button class="gtab" data-cat="spark">Spark</button>
+      <button class="gtab" data-cat="stage">Off Stage</button>
+      <button class="gtab" data-cat="perf">Renaissance</button>
+      <button class="gtab" data-cat="clearing">Clearing</button>
     </div>
 
     <!~~ Cover grid (shown when All tab active) ~~>
@@ -2361,7 +531,7 @@
     <!~~ All ~~>
     <div class="gallery-empty" id="galleryEmpty">
       <div class="gallery-empty-icon">📷</div>
-      <div class="gallery-empty-text" data-en="Photos will appear once uploaded">Photos will appear once uploaded</div>
+      <div class="gallery-empty-text">Photos will appear once uploaded</div>
     </div>
     <div class="gallery-grid" data-cat="all">
       <div class="g-slot" data-tags="greenpath"><img src="photos/gallery/green-path-nycu/nycu_06.jpg" alt="GreenPath" loading="lazy"></div>
@@ -2457,455 +627,6 @@
 
 <!-- VISITOR BADGE removed — now inside sidebar -->
 
-<script>
-(function() {
-  function navigate(id) {
-    document.querySelectorAll('section').forEach(function(s) { s.classList.remove('active'); });
-    document.querySelectorAll('nav a').forEach(function(a) { a.classList.remove('active'); });
-    var sec = document.getElementById(id);
-    if (sec) sec.classList.add('active');
-    var link = document.querySelector('nav a[data-section="' + id + '"]');
-    if (link) link.classList.add('active');
-    window.scrollTo(0, 0);
-    if (id === 'gallery') {
-      var activeTab = document.querySelector('.gallery-tabs .gtab.active');
-      if (activeTab) switchGalleryTab(activeTab.getAttribute('data-cat'));
-      else if (typeof rebuildGalleryLayout === 'function') rebuildGalleryLayout();
-    }
-    if (id === 'episodes') {
-      var activeEpTab = document.querySelector('.ep-travels-tabs .gtab.active');
-      if (activeEpTab) switchEpTab(activeEpTab.getAttribute('data-ep'));
-    }
-  }
-  // Gallery tabs
-  function switchGalleryTab(cat) {
-    var coverGrid = document.getElementById('galleryCoverGrid');
-    var photoGrid = document.querySelector('.gallery-grid');
-    document.querySelectorAll('.gallery-tabs .gtab').forEach(function(t) { t.classList.remove('active'); });
-    var target = document.querySelector('.gallery-tabs .gtab[data-cat="' + cat + '"]');
-    if (target) target.classList.add('active');
-
-    if (cat === 'all') {
-      coverGrid.style.display = '';
-      photoGrid.style.display = 'none';
-    } else {
-      coverGrid.style.display = 'none';
-      photoGrid.style.display = '';
-      document.querySelectorAll('.gallery-grid .g-slot').forEach(function(slot) {
-        var tags = slot.getAttribute('data-tags') || '';
-        slot.classList.toggle('hidden', tags.indexOf(cat) === -1);
-      });
-      var lbl = document.getElementById('label-campus');
-      if (lbl) lbl.style.display = (cat === 'campus') ? 'flex' : 'none';
-      if (typeof rebuildGalleryLayout === 'function') rebuildGalleryLayout(cat);
-    }
-  }
-
-  document.querySelectorAll('.gallery-tabs .gtab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      switchGalleryTab(this.getAttribute('data-cat'));
-    });
-  });
-
-  // Cover card click → jump to category
-  document.querySelectorAll('#galleryCoverGrid .gc-card').forEach(function(card) {
-    card.addEventListener('click', function() {
-      switchGalleryTab(this.getAttribute('data-cat'));
-      window.scrollTo(0, 0);
-    });
-  });
-
-  // Init: show cover grid, hide photo grid
-  (function() {
-    var pg = document.querySelector('.gallery-grid');
-    if (pg) pg.style.display = 'none';
-  })();
-
-  // Language picker
-  var currentLang = 'en';
-
-  var navLabels = {
-    en: { about:'about',    gallery:'portraits', thoughts:'journal',       episodes:'travels',      projects:'projects', community:'community'   }
-  };
-
-  function applyLang(lang) {
-    currentLang = lang;
-    document.documentElement.lang = { en:'en', zh:'zh-TW', fr:'fr', ja:'ja', ko:'ko' }[lang] || 'en';
-
-    // update picker buttons
-    document.querySelectorAll('.lp-btn').forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-lang') === lang);
-    });
-
-    // translate elements — use lang attr, fall back to en
-    document.querySelectorAll('[data-en]').forEach(function(el) {
-      var parent = el.parentElement && el.parentElement.closest('[data-en]');
-      if (parent && parent !== el) return;
-      var val = el.getAttribute('data-' + lang) || el.getAttribute('data-en');
-      el.innerHTML = val;
-    });
-
-    // nav labels
-    var map = navLabels[lang] || navLabels.en;
-    document.querySelectorAll('nav a[data-section]').forEach(function(a) {
-      a.textContent = map[a.getAttribute('data-section')] || a.getAttribute('data-section');
-    });
-  }
-
-  document.querySelectorAll('.lp-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      applyLang(this.getAttribute('data-lang'));
-    });
-  });
-  applyLang('en');
-
-  // Episodes country tabs
-  function switchEpTab(ep) {
-    document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(t) { t.classList.remove('active'); });
-    var target = document.querySelector('.ep-travels-tabs .gtab[data-ep="' + ep + '"]');
-    if (target) target.classList.add('active');
-    var coverGrid = document.getElementById('epCoverGrid');
-    if (ep === 'all') {
-      coverGrid.style.display = '';
-      document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
-    } else {
-      coverGrid.style.display = 'none';
-      // hide all first
-      document.querySelectorAll('.ep-photo-grid').forEach(function(g) { g.classList.remove('active'); });
-      // show target on next frame so columns layout is fresh
-      var grid = document.querySelector('.ep-photo-grid[data-ep="' + ep + '"]');
-      if (grid) requestAnimationFrame(function() { grid.classList.add('active'); });
-    }
-  }
-
-  document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      switchEpTab(this.getAttribute('data-ep'));
-    });
-  });
-
-  // Cover card click → jump to country tab
-  document.querySelectorAll('#epCoverGrid .ep-country').forEach(function(card) {
-    card.addEventListener('click', function() {
-      var country = this.getAttribute('data-country');
-      switchEpTab(country);
-      window.scrollTo(0, 0);
-    });
-  });
-
-  // Dynamic country count
-  (function() {
-    var n = document.querySelectorAll('.ep-travels-tabs .gtab:not([data-ep="all"])').length;
-    var el = document.querySelector('#travelsCount > span');
-    if (el) {
-      el.setAttribute('data-zh', n + ' 個國家');
-      el.setAttribute('data-en', n + ' countries');
-      el.setAttribute('data-fr', n + ' pays');
-      el.setAttribute('data-ja', n + 'ヵ国');
-      el.setAttribute('data-ko', n + '개국');
-    }
-  })();
-
-
-
-  // ── LIGHTBOX ──
-  var lbOverlay = document.getElementById('lightbox');
-  var lbImg     = document.getElementById('lbImg');
-  var lbCounter = document.getElementById('lbCounter');
-  var lbImages  = [];
-  var lbIndex   = 0;
-
-  function openLightbox(imgs, idx) {
-    lbImages = imgs;
-    lbIndex  = idx;
-    showLb();
-    lbOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function showLb() {
-    lbImg.src = lbImages[lbIndex].src;
-    lbCounter.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
-  }
-  function closeLightbox() {
-    lbOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    lbImg.src = '';
-  }
-
-  document.getElementById('lbClose').addEventListener('click', function(e) {
-    e.stopPropagation(); closeLightbox();
-  });
-  lbOverlay.addEventListener('click', function(e) {
-    if (e.target === lbOverlay || e.target === lbImg) closeLightbox();
-  });
-  document.getElementById('lbPrev').addEventListener('click', function(e) {
-    e.stopPropagation();
-    lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLb();
-  });
-  document.getElementById('lbNext').addEventListener('click', function(e) {
-    e.stopPropagation();
-    lbIndex = (lbIndex + 1) % lbImages.length; showLb();
-  });
-  document.addEventListener('keydown', function(e) {
-    if (!lbOverlay.classList.contains('active')) return;
-    if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLb(); }
-    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLb(); }
-    if (e.key === 'Escape')     { closeLightbox(); }
-  });
-
-  // ── WATERMARK ──
-  (function() {
-    var WM = 'juliahahah.github.io';
-
-    // Gallery slots & episode covers & episode photo slots → append wm-label span
-    document.querySelectorAll('.g-slot, .ep-cover, .ep-slot').forEach(function(el) {
-      var s = document.createElement('span');
-      s.className = 'wm-label';
-      s.textContent = WM;
-      el.appendChild(s);
-    });
-
-    // Lightbox for ep-slot
-    document.querySelectorAll('.ep-photo-grid').forEach(function(grid) {
-      var slots = Array.from(grid.querySelectorAll('.ep-slot'));
-      slots.forEach(function(slot, i) {
-        slot.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var imgs = slots.map(function(s) { return s.querySelector('img'); });
-          openLightbox(imgs, i);
-        });
-      });
-    });
-  })();
-
-  var rebuildGalleryLayout; // exposed for navigate()
-
-  // ── GALLERY: dynamic layout rebuild ──
-  (function() {
-    var PATTERN = ['wide','tall','','','','wide','','tall','',''];
-
-    function applyPattern(slots) {
-      slots.forEach(function(s) { s.classList.remove('wide','tall'); });
-      slots.forEach(function(s, i) {
-        var t = PATTERN[i % PATTERN.length];
-        if (t) s.classList.add(t);
-      });
-    }
-
-    rebuildGalleryLayout = function(catFilter) {
-      var cat = catFilter || (document.querySelector('.gallery-tabs .gtab.active') ? document.querySelector('.gallery-tabs .gtab.active').getAttribute('data-cat') : 'all');
-      var slots;
-      if (cat === 'all') {
-        slots = Array.from(document.querySelectorAll('.gallery-grid .g-slot:not(.hidden)'));
-      } else {
-        slots = Array.from(document.querySelectorAll(
-          '.gallery-grid .g-slot:not(.hidden)[data-tags*="' + cat + '"]'
-        ));
-      }
-      applyPattern(slots);
-      var empty = document.getElementById('galleryEmpty');
-      if (empty) empty.classList.toggle('visible', slots.length === 0);
-    };
-
-    // Hide broken images then rebuild
-    function checkImg(img) {
-      if (!img.complete || img.naturalWidth === 0) {
-        img.closest('.g-slot').classList.add('hidden');
-      }
-    }
-
-    var imgs = Array.from(document.querySelectorAll('.gallery-grid .g-slot img'));
-    var pending = imgs.length;
-
-    function onSettle() {
-      pending--;
-      if (pending <= 0) rebuildGalleryLayout();
-    }
-
-    imgs.forEach(function(img) {
-      img.addEventListener('error', function() {
-        this.closest('.g-slot').classList.add('hidden');
-        onSettle();
-      });
-      img.addEventListener('load', onSettle);
-      // already settled
-      if (img.complete) {
-        checkImg(img);
-        onSettle();
-      }
-    });
-
-    // Fallback: force rebuild after 1.2s
-    setTimeout(function() {
-      imgs.forEach(checkImg);
-      rebuildGalleryLayout();
-    }, 1200);
-
-    // Re-apply layout on tab switch (already handled inside switchGalleryTab)
-  })();
-
-
-  // ── EPISODES: fade in each photo once loaded (no pop-in) ──
-  document.querySelectorAll('.ep-slot img').forEach(function(img) {
-    function done() { img.classList.add('is-loaded'); }
-    if (img.complete && img.naturalWidth > 0) done();
-    else img.addEventListener('load', done);
-  });
-  // start downloading a country's photos when the pointer reaches its tab or cover
-  function warmEp(ep) {
-    var g = document.querySelector('.ep-photo-grid[data-ep="' + ep + '"]');
-    if (!g || g.dataset.warm) return;
-    g.dataset.warm = '1';
-    g.querySelectorAll('img[loading="lazy"]').forEach(function(img) { img.loading = 'eager'; });
-  }
-  document.querySelectorAll('.ep-travels-tabs .gtab').forEach(function(tab) {
-    tab.addEventListener('pointerenter', function() { warmEp(tab.getAttribute('data-ep')); });
-  });
-  document.querySelectorAll('#epCoverGrid .ep-country').forEach(function(card) {
-    card.addEventListener('pointerenter', function() { warmEp(card.getAttribute('data-country')); });
-  });
-
-  // ── EPISODES: hide broken cells ──
-  document.querySelectorAll('.ep-slot img').forEach(function(img) {
-    function hideSlot() { var s = img.closest('.ep-slot'); if (s) s.style.display = 'none'; }
-    img.addEventListener('error', hideSlot);
-    if (img.complete && img.naturalWidth === 0) hideSlot();
-  });
-  document.querySelectorAll('.ep-cover img').forEach(function(img) {
-    img.addEventListener('error', function() { img.style.display = 'none'; });
-    if (img.complete && img.naturalWidth === 0) img.style.display = 'none';
-  });
-
-  // ── PROJECT TABS ──
-  document.querySelectorAll('.ptab').forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      var cat = this.getAttribute('data-pcat');
-      document.querySelectorAll('.ptab').forEach(function(t) { t.classList.remove('active'); });
-      document.querySelectorAll('.proj-group').forEach(function(g) { g.classList.remove('active'); });
-      this.classList.add('active');
-      var group = document.querySelector('.proj-group[data-pcat="' + cat + '"]');
-      if (group) group.classList.add('active');
-      window.scrollTo(0, 0);
-    });
-  });
-
-  // ── FLIP CARDS ──
-  document.querySelectorAll('.ab-card').forEach(function(card) {
-    card.addEventListener('click', function() {
-      this.classList.toggle('flipped');
-    });
-  });
-
-  // ── VISITOR COUNT ──
-  fetch('https://abacus.jasoncameron.dev/hit/juliahahah-github-io/visits')
-    .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function(d){
-      var n = Number(d.value);
-      if (!isFinite(n)) throw new Error('bad count');
-      var s = n.toLocaleString();
-      document.getElementById('vbCount').textContent = s;
-      var m = document.getElementById('vbCountMob'); if (m) m.textContent = s;
-    })
-    .catch(function(){ document.getElementById('vbCount').textContent = '—'; });
-
-  fetch('https://ipapi.co/json/')
-    .then(function(r){ return r.json(); })
-    .then(function(d){
-      var flag = d.country_code
-        ? d.country_code.toUpperCase().replace(/./g, function(c){
-            return String.fromCodePoint(127397 + c.charCodeAt(0));
-          })
-        : '🌐';
-      document.getElementById('vbFlag').textContent = flag;
-      var city = d.city || '';
-      var country = d.country_name || '';
-      document.getElementById('vbLocText').textContent = city ? city + ', ' + country : country || '—';
-    })
-    .catch(function(){ document.getElementById('vbLocText').textContent = '—'; });
-
-  document.addEventListener('click', function(e) {
-    var t = e.target.closest('[data-section]');
-    if (t) { e.preventDefault(); navigate(t.getAttribute('data-section')); return; }
-    var g = e.target.closest('[data-go]');
-    if (g) { e.preventDefault(); navigate(g.getAttribute('data-go')); return; }
-    var m = e.target.closest('[data-mail]');
-    if (m) { e.preventDefault(); window.location.href = 'mai' + 'lto:juliaangle61@gmai' + 'l.com'; }
-  });
-
-  // ── CONTENT PROTECTION ──
-
-  // 1. 停用右鍵
-  document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-
-  // 2. 攔截開發者工具快捷鍵
-  document.addEventListener('keydown', function(e) {
-    // F12
-    if (e.key === 'F12') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + Shift + I  (DevTools)
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + Shift + J  (Console)
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + Shift + C  (Inspector)
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + U  (View Source)
-    if ((e.ctrlKey || e.metaKey) && e.key === 'u') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + S  (Save page)
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); return false; }
-    // Ctrl/Cmd + A  (Select all)
-    if ((e.ctrlKey || e.metaKey) && e.key === 'a') { e.preventDefault(); return false; }
-  });
-
-  // ── WORLD MAP CANVAS ──
-  (function(){
-    var hamburger = document.getElementById('mobHamburger');
-    var drawer    = document.getElementById('mobDrawer');
-    var overlay   = document.getElementById('mobOverlay');
-    var closeBtn  = document.getElementById('mobDrawerClose');
-
-    function openDrawer() {
-      hamburger.classList.add('open');
-      hamburger.setAttribute('aria-expanded', 'true');
-      drawer.classList.add('open');
-      drawer.setAttribute('aria-hidden', 'false');
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden'; // 防止背景滾動
-    }
-    function closeDrawer() {
-      hamburger.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      drawer.classList.remove('open');
-      drawer.setAttribute('aria-hidden', 'true');
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    hamburger.addEventListener('click', function(){
-      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
-    });
-    closeBtn.addEventListener('click', closeDrawer);
-    overlay.addEventListener('click', closeDrawer);
-
-    // 點 drawer 內的 nav link 後自動關閉
-    document.getElementById('mobNav').addEventListener('click', function(e){
-      var a = e.target.closest('[data-section]');
-      if (a) { closeDrawer(); }
-    });
-
-
-    // 同步 drawer views 數字（從 sidebar 複製）
-    function syncDrawerViews(){
-      var n = document.getElementById('vbCount').textContent;
-      var f = document.getElementById('vbFlag').textContent;
-      var l = document.getElementById('vbLocText').textContent;
-      document.getElementById('vbCountMob').textContent = n;
-      document.getElementById('vbFlagMob').textContent  = f;
-      document.getElementById('vbLocTextMob').textContent = l;
-    }
-    // 在 fetch 完成後同步（延遲等 fetch 跑完）
-    setTimeout(syncDrawerViews, 2000);
-  }());
-
-})();
-</script>
+<script type="module" src="/src/main.js"></script>
 </body>
 </html>

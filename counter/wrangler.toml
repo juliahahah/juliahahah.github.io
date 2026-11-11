@@ -1,0 +1,14 @@
+name = "juliahahah-counter"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Production allows only the real site. For local testing put
+# ALLOWED_ORIGINS="http://localhost:5173" in counter/.dev.vars (not committed).
+ALLOWED_ORIGINS = "https://juliahahah.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "juliahahah-counter"
+# Paste the id printed by `npx wrangler d1 create juliahahah-counter`:
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

@@ -1,0 +1,97 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #ffffff;
+  --text:    #111111;
+  --text2:   #444444;
+  --muted:   #999999;
+  --border:  #e8e8e8;
+  --dot:     #cccccc;
+  --accent:  #111111;
+}
+
+/* ── WATERMARK ── */
+.wm-label {
+  position: absolute;
+  bottom: 8px; right: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.07em;
+  pointer-events: none;
+  z-index: 5;
+  -webkit-user-select: none;
+  user-select: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+/* album grid images need their own wrapper */
+.img-wrap {
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.img-wrap img {
+  width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; display: block;
+  transition: opacity 0.2s, transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  cursor: zoom-in;
+}
+.img-wrap:hover img { opacity: 0.88; transform: scale(1.02); }
+
+/* ── FOOTER ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.site-footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.site-footer-copy a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-footer-copy a:hover { color: var(--text); }
+@media(max-width:680px) {
+  .site-footer { margin-left: 0; padding: 20px 24px; }
+}
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none; /* blocks right-click on images */
+}
+/* Re-enable pointer for lightbox trigger (handled via parent) */
+.g-slot, .ep-album-grid, .ep-cover { pointer-events: auto; }
+
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Allow text selection only on readable content */
+.project-desc, .about-bio, .ab-tl-text, .item-title {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+@media print {
+  body { display: none !important; }
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}

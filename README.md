@@ -1,91 +1,82 @@
-# Julia Liu — 網站結構文件
+# juliahahah.github.io
 
-## 頁面架構
+Julia Liu's personal site — about, travels (with an interactive globe), projects and community.
+Plain HTML / CSS / JavaScript, bundled with [Vite](https://vite.dev), deployed to GitHub Pages by GitHub Actions.
+
+## Structure
 
 ```
-juliahahah.github.io/
-├── index.html          ← 主網站檔案
-└── photos/
-    ├── gallery/
-    │   ├── green-path-nycu/    ← GreenPath（交大外拍，8張）
-    │   ├── blue-hour/          ← Blue Hour（黃昏街頭，5張）
-    │   ├── amber/              ← Amber（復古書店，10張）
-    │   ├── spark/              ← Spark（仙女棒夜拍，7張）
-    │   ├── stage-dance/        ← Off Stage（停車場外拍，10張）
-    │   └── stage-performance/  ← Renaissance（成發演出，14張）
-    └── episodes/
-        ├── japan/              ← 日本 2025.10
-        ├── france/             ← 法國 2025.06
-        ├── singapore/          ← 新加坡 2025.11
-        ├── malaysia/           ← 馬來西亞 2025.06
-        ├── philippines/        ← 菲律賓 2025.01
-        ├── china/              ← 中國 2023.07
-        ├── macau/              ← 澳門 2025.02
-        └── taiwan/             ← 台灣 各地
+.
+├── index.html                 page markup (about, projects, community, sidebar, lightbox)
+├── src/
+│   ├── main.js                entry: imports the styles, starts each feature
+│   ├── config.js              site settings (counter URL, watermark text, …)
+│   ├── data/
+│   │   └── travels.json       every travel country: name, date, map code, cover, photos
+│   ├── scripts/               one file per feature
+│   │   ├── travels.js         builds the Travels tabs / covers / grids from travels.json
+│   │   ├── globe.js           interactive 3D globe (loaded only when opened)
+│   │   ├── nav.js             section switching + mobile drawer
+│   │   ├── lightbox.js        full-screen photo viewer
+│   │   ├── gallery.js         Portraits gallery (section currently hidden)
+│   │   ├── visitor-badge.js   visit count + visitor location in the sidebar
+│   │   ├── about.js · projects.js · watermark.js · protection.js
+│   └── styles/                one file per area, imported in this order by main.js
+│       └── base · layout · about · projects · community · gallery · travels · lightbox · responsive
+├── public/photos/             served as-is at /photos/…
+│   ├── episodes/<country>/    travel photos
+│   ├── community/             event photos
+│   └── gallery/<series>/      portrait series (Portraits section is hidden for now)
+├── counter/                   visitor counter: Cloudflare Worker + D1 (see counter/README.md)
+├── .github/workflows/deploy.yml   build + deploy on every push to main
+└── vite.config.js             build settings + Content Security Policy
 ```
 
-## Gallery Tab 對照
+## Run it locally
 
-| Tab 名稱     | 資料夾                  | 張數 | 說明               |
-|-------------|------------------------|-----|--------------------|
-| GreenPath   | gallery/green-path-nycu | 8   | 交大校園，綠意自然光 |
-| Blue Hour   | gallery/blue-hour       | 5   | 黃昏街頭，藍紫夕陽  |
-| Amber       | gallery/amber           | 10  | 復古書店，暖黃燈光  |
-| Spark       | gallery/spark           | 7   | 仙女棒夜拍，點燃時刻|
-| Off Stage   | gallery/stage-dance     | 10  | 黑色穿搭，停車場外拍|
-| Renaissance | gallery/stage-performance| 14  | NTHU KDC 成發演出  |
+Needs Node 20.
 
-## 照片命名規則
+```bash
+npm install
+```
 
-| 系列        | 命名格式       | 範例         |
-|------------|---------------|-------------|
-| GreenPath  | nycu_01.jpg   | nycu_01~08  |
-| Blue Hour  | bh_01.jpg     | bh_01~05    |
-| Amber      | amb_01.jpg    | amb_01~10   |
-| Spark      | sp_01.jpg     | sp_01~07    |
-| K-Dance    | stage_01.jpg  | stage_01~10 |
-| Stage      | perf_01.jpg   | perf_01~14  |
+```bash
+npm run dev
+```
 
-## Episodes 封面照命名規則
+Opens http://localhost:5173 and reloads on save. `npm run build` writes the production site to `dist/`, and `npm run preview` serves that build.
 
-每個國家放 **1 張代表照**，統一命名為 `cover.jpg`：
+## Common edits
 
-| 資料夾                  | 對應 HTML 路徑                          | 日期      |
-|------------------------|----------------------------------------|----------|
-| episodes/japan/        | photos/episodes/japan/cover.jpg        | 2025.10  |
-| episodes/france/       | photos/episodes/france/cover.jpg       | 2025.06  |
-| episodes/singapore/    | photos/episodes/singapore/cover.jpg    | 2025.11  |
-| episodes/malaysia/     | photos/episodes/malaysia/cover.jpg     | 2025.06  |
-| episodes/philippines/  | photos/episodes/philippines/cover.jpg  | 2025.01  |
-| episodes/china/        | photos/episodes/china/cover.jpg        | 2023.07  |
-| episodes/macau/        | photos/episodes/macau/cover.jpg        | 2025.02  |
-| episodes/taiwan/       | photos/episodes/taiwan/cover.jpg       | ——       |
+**Add a travel country** — put the photos in `public/photos/episodes/<id>/` (resize to ≤1600 px first), then add an entry to `src/data/travels.json`:
 
-## 導覽頁面
+```json
+{
+  "id": "spain", "name": "Spain", "label": "Spain", "date": "2027.03",
+  "iso": "724",
+  "cover":  { "src": "photos/episodes/spain/spain_01.jpg", "w": 1600, "h": 1200 },
+  "photos": [ { "src": "photos/episodes/spain/spain_01.jpg", "w": 1600, "h": 1200 } ]
+}
+```
 
-| 頁面       | 說明                                 |
-|-----------|--------------------------------------|
-| About     | 自我介紹、身份卡片、時間軸            |
-| Gallery   | 外拍照片集，分系列 tab 切換           |
-| Thoughts  | 個人文章（法國、AWS、鴻海）           |
-| Episodes  | 旅遊紀錄（日本、法國、新加坡等 8 國） |
-| Projects  | 作品集（6 個專案，依影響力分三類）    |
-| Notes     | 技術筆記（AI Agent、RAG、Robotics）  |
+The tab, cover card, photo grid, country count and the globe highlight all update from that one entry.
+`iso` is the ISO 3166 numeric code (Spain 724, Germany 276, UK 826…). For a country too small for the
+world map (like Singapore), also add `"pin": [longitude, latitude]` so it shows as a dot.
+`w` / `h` are the image's pixel size; they let the page reserve space so the grid doesn't jump while loading.
 
-## 待補內容
+Still listed in About → "12 countries": update the number and flag list in `index.html` by hand.
 
-- [ ] Episodes 各國旅遊封面照
-- [ ] About 頁照片
-- [ ] Thoughts 文章內文
-- [ ] Notes 筆記內文
-- [ ] Off Stage / Renaissance tab 名稱已確認
+**Edit projects, community or about text** — it's ordinary HTML in `index.html`; styles are in the matching file in `src/styles/`.
 
-## 語言設定
+**Visitor counter** — see `counter/README.md`. Until `COUNTER_URL` in `src/config.js` is set, the free public Abacus counter is used.
 
-預設：英文（EN）
-切換：點右上角「中文」按鈕
+## Deploy
 
-## 部署
+Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes `dist/` to GitHub Pages.
+(Repository → Settings → Pages → Source must be **GitHub Actions**.)
 
-目標：`juliahahah.github.io`
-方式：GitHub Pages（main branch）
+## Hidden sections
+
+Portraits (`#gallery`) and Journal (`#thoughts`) are commented out in `index.html`, and their nav links too. Uncomment both to bring them back; their scripts and styles are still in place.
+
+Portrait series: GreenPath (`gallery/green-path-nycu`), Blue Hour (`blue-hour`), Amber (`amber`), Spark (`spark`), Off Stage (`stage-dance`), Renaissance (`stage-performance`), Clearing (`clearing`).

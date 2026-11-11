@@ -1,0 +1,235 @@
+/* ── RESPONSIVE ── */
+
+/* Tablet: narrow sidebar */
+@media(max-width:960px){
+  .sidebar { width: 140px; padding: 40px 24px 36px; }
+  .content-wrap { margin-left: 140px; }
+  main { padding: 56px 52px 80px; }
+}
+
+/* ── MOBILE TOPBAR (hamburger) ── */
+.mob-topbar {
+  display: none; /* 手機才顯示 */
+}
+
+/* ── DRAWER OVERLAY ── */
+.mob-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 299;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.mob-drawer-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+/* ── DRAWER PANEL (從右側滑出) ── */
+.mob-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: min(280px, 82vw);
+  height: 100dvh;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  overflow-y: auto;
+}
+.mob-drawer.open {
+  transform: translateX(0);
+}
+
+/* Drawer header：名字 + 關閉按鈕 */
+.mob-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.mob-drawer-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+.mob-drawer-close {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  transition: color 0.2s;
+}
+.mob-drawer-close:hover { color: var(--text); }
+
+/* Drawer nav links */
+.mob-drawer nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 8px 0;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.mob-drawer nav a {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, background 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+.mob-drawer nav a:last-child { border-bottom: none; }
+.mob-drawer nav a:hover { color: var(--text); background: #fafafa; }
+.mob-drawer nav a.active { color: var(--text); font-weight: 500; }
+.mob-drawer nav a.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--text);
+}
+
+/* Drawer views */
+.mob-drawer-views {
+  padding: 16px 24px 24px;
+  flex-shrink: 0;
+}
+.mob-drawer-views .sv-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.mob-drawer-views .sv-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.mob-drawer-views .sv-loc {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── MOBILE BREAKPOINT ── */
+@media(max-width:680px){
+  /* 桌面 sidebar 完全隱藏 */
+  .sidebar { display: none; }
+
+  body { flex-direction: column; }
+  .content-wrap { margin-left: 0; }
+
+  /* 顯示手機 topbar */
+  .mob-topbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 52px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 200;
+    flex-shrink: 0;
+  }
+  .mob-topbar-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+  /* 漢堡按鈕 */
+  .mob-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 2px;
+    transition: opacity 0.2s;
+  }
+  .mob-hamburger:hover { opacity: 0.6; }
+  .mob-hamburger span {
+    display: block;
+    height: 1.5px;
+    background: var(--text);
+    border-radius: 1px;
+    transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.2s;
+    transform-origin: center;
+  }
+  /* 開啟狀態：變成 × */
+  .mob-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .mob-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .mob-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  main { padding: 36px 20px 80px; }
+  .site-footer { padding: 20px 24px; }
+  #about, #thoughts, #projects, #community { max-width: 100%; }
+
+  .about-name { font-size: 36px; }
+  .about-bio { font-size: 17px; }
+  .about-sub { font-size: 9px; }
+  .photo-grid { grid-template-columns: 1fr 1fr; }
+  .photo-grid-b { grid-template-columns: 1fr 1fr; }
+  .photo-grid .r1,.photo-grid .r3 { display: none; }
+  .item-title { font-size: 15px; white-space: normal; }
+  .project-name { font-size: 22px; }
+  .project-desc { font-size: 15px; }
+  .about-tags { gap: 12px; }
+  .about-tag { font-size: 10px; }
+  .project-tags { gap: 5px; }
+  .ptag { font-size: 10px; padding: 4px 10px; }
+  .about-social { flex-wrap: wrap; gap: 12px; }
+  .ep-album-grid { grid-template-columns: repeat(2, 1fr); }
+  .ep-country.open .ep-cover { aspect-ratio: 4/3; }
+  .ep-country.open .ep-cover-name { font-size: 20px; }
+  .ab-cards { grid-template-columns: repeat(2,1fr); }
+}
+
+@media(max-width:400px){
+  .mob-topbar { padding: 0 14px; }
+  .mob-topbar-name { font-size: 15px; }
+  .about-name { font-size: 28px; }
+}

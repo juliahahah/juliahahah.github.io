@@ -1,0 +1,153 @@
+/* ── GALLERY SERIES LABEL ── */
+.gallery-series-label {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.series-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text);
+}
+.series-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── GALLERY TABS ── */
+.gallery-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.gtab {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 10px 24px 10px 0;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.gtab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 100%; height: 1px;
+  background: var(--text);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+.gtab:hover { color: var(--text); }
+.gtab.active { color: var(--text); }
+.gtab.active::after { transform: scaleX(1); }
+.g-slot.hidden { display: none; }
+
+/* Gallery cover grid (All tab) */
+.gallery-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  margin-bottom: 0;
+}
+.gc-card {
+  position: relative;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  cursor: pointer;
+}
+.gc-card img { width:100%; height:100%; object-fit:cover; display:block;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.gc-card:hover img { transform: scale(1.04); }
+.gc-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%);
+  pointer-events: none;
+}
+.gc-card-label {
+  position: absolute;
+  bottom: 14px; left: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: rgba(255,255,255,0.95);
+  pointer-events: none;
+}
+
+/* ── GALLERY ── */
+.gallery-intro {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.gallery-grid {
+  columns: 3;
+  column-gap: 4px;
+}
+@media(max-width: 900px) { .gallery-grid { columns: 2; } }
+@media(max-width: 500px) { .gallery-grid { columns: 1; } }
+.g-slot {
+  break-inside: avoid;
+  margin-bottom: 4px;
+  background: #f0eeeb;
+  overflow: hidden;
+  position: relative;
+}
+.g-slot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  cursor: pointer;
+}
+.g-slot:hover img { transform: scale(1.04); }
+.gph {
+  width: 100%; height: 100%;
+  background: #ece9e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #ccc;
+  letter-spacing: 0.05em;
+}
+.gph::after { content: 'photo'; }
+
+.gallery-empty {
+  display: none;
+  padding: 80px 0;
+  text-align: center;
+}
+.gallery-empty.visible { display: block; }
+.gallery-empty-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+.gallery-empty-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

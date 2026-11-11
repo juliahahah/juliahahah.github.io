@@ -1,0 +1,6 @@
+/* ── COMMUNITY ── */
+.comm-intro { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--muted); margin-bottom:40px; }
+.comm-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px; margin-top:18px; }
+.comm-photos figure { margin:0; }
+.comm-photos img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+.comm-photos figcaption { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em; color:var(--muted); margin-top:6px; }

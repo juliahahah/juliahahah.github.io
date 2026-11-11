@@ -1,0 +1,803 @@
+[
+  {
+    "id": "japan",
+    "name": "Japan",
+    "label": "Japan",
+    "date": "2025.10",
+    "iso": "392",
+    "cover": {
+      "src": "photos/episodes/japan/japan_01.jpg",
+      "w": 960,
+      "h": 1280
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/japan/japan_01.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/japan/japan_02.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/japan/japan_03.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/japan/japan_04.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/japan/japan_05.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/japan/japan_06.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/japan/japan_07.jpg",
+        "w": 1108,
+        "h": 1478
+      },
+      {
+        "src": "photos/episodes/japan/japan_08.jpg",
+        "w": 1108,
+        "h": 1478
+      },
+      {
+        "src": "photos/episodes/japan/japan_09.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/japan/japan_10.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/japan/japan_11.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/japan/japan_12.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/japan/japan_13.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/japan/japan_14.jpg",
+        "w": 1477,
+        "h": 1108
+      }
+    ]
+  },
+  {
+    "id": "france",
+    "name": "France",
+    "label": "France",
+    "date": "2025.06",
+    "iso": "250",
+    "cover": {
+      "src": "photos/episodes/france/france_08.jpg",
+      "w": 1280,
+      "h": 960
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/france/france_01.jpg",
+        "w": 1125,
+        "h": 2000
+      },
+      {
+        "src": "photos/episodes/france/france_02.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/france/france_03.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/france/france_04.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/france/france_05.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/france/france_06.jpg",
+        "w": 837,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/france/france_07.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/france/france_08.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/france/france_10.jpg",
+        "w": 1125,
+        "h": 2000
+      },
+      {
+        "src": "photos/episodes/france/france_11.jpg",
+        "w": 2000,
+        "h": 1125
+      },
+      {
+        "src": "photos/episodes/france/france_12.jpg",
+        "w": 1125,
+        "h": 2000
+      },
+      {
+        "src": "photos/episodes/france/france_20.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/france/france_23.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/france/france_24.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/france/france_25.jpg",
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "src": "photos/episodes/france/france_28.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/france/france_29.jpg",
+        "w": 900,
+        "h": 1600
+      }
+    ]
+  },
+  {
+    "id": "singapore",
+    "name": "Singapore",
+    "label": "Singapore",
+    "date": "2025.11",
+    "iso": "702",
+    "pin": [
+      103.82,
+      1.35
+    ],
+    "cover": {
+      "src": "photos/episodes/singapore/singapore_05.jpg",
+      "w": 1477,
+      "h": 1108
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/singapore/singapore_01.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_03.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_04.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_05.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_06.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_07.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_08.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/singapore/singapore_09.jpg",
+        "w": 1477,
+        "h": 1108
+      }
+    ]
+  },
+  {
+    "id": "malaysia",
+    "name": "Malaysia",
+    "label": "Malaysia",
+    "date": "2025.06",
+    "iso": "458",
+    "cover": {
+      "src": "photos/episodes/malaysia/malaysia_01.jpg",
+      "w": 1280,
+      "h": 960
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/malaysia/malaysia_01.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_03.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_04.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_05.jpg",
+        "w": 964,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_06.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_07.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_09.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_10.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_11.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/malaysia/malaysia_12.jpg",
+        "w": 960,
+        "h": 1280
+      }
+    ]
+  },
+  {
+    "id": "china",
+    "name": "China",
+    "label": "China",
+    "date": "2023.07",
+    "iso": "156",
+    "cover": {
+      "src": "photos/episodes/china/china_01.jpg",
+      "w": 960,
+      "h": 1280
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/china/china_01.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/china/china_03.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/china/china_04.jpg",
+        "w": 1280,
+        "h": 960
+      }
+    ]
+  },
+  {
+    "id": "macau",
+    "name": "Macau",
+    "label": "Macau",
+    "date": "2025.02",
+    "iso": "446",
+    "pin": [
+      113.55,
+      22.19
+    ],
+    "cover": {
+      "src": "photos/episodes/macau/macau_03.jpg",
+      "w": 852,
+      "h": 1280
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/macau/macau_01.jpg",
+        "w": 852,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/macau/macau_02.jpg",
+        "w": 853,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/macau/macau_03.jpg",
+        "w": 852,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/macau/macau_04.jpg",
+        "w": 1280,
+        "h": 852
+      },
+      {
+        "src": "photos/episodes/macau/macau_05.jpg",
+        "w": 1280,
+        "h": 852
+      }
+    ]
+  },
+  {
+    "id": "philippines",
+    "name": "Philippines",
+    "label": "Philippines",
+    "date": "2025.01",
+    "iso": "608",
+    "cover": {
+      "src": "photos/episodes/philippines/philippines_01.jpg",
+      "w": 1567,
+      "h": 1045
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/philippines/philippines_01.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_02.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_03.jpg",
+        "w": 1045,
+        "h": 1567
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_04.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_05.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_06.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_07.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_08.jpg",
+        "w": 1567,
+        "h": 1045
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_09.jpg",
+        "w": 1045,
+        "h": 1567
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_10.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_11.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_12.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_13.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_14.jpg",
+        "w": 1477,
+        "h": 1108
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_15.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/philippines/philippines_16.jpg",
+        "w": 1108,
+        "h": 1477
+      }
+    ]
+  },
+  {
+    "id": "taiwan",
+    "name": "Taiwan",
+    "label": "Taiwan · Various",
+    "date": "——",
+    "iso": "158",
+    "cover": {
+      "src": "photos/episodes/taiwan/taiwan_01.jpg",
+      "w": 720,
+      "h": 1280
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/taiwan/taiwan_01.jpg",
+        "w": 720,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/taiwan/taiwan_02.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/taiwan/taiwan_03.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/taiwan/taiwan_04.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/taiwan/LINE_ALBUM_2024116⛰️_260412_1.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/taiwan/LINE_ALBUM_202419_260412_1.jpg",
+        "w": 960,
+        "h": 1280
+      }
+    ]
+  },
+  {
+    "id": "italy",
+    "name": "Italy",
+    "label": "Italy",
+    "date": "2025.07",
+    "iso": "380",
+    "cover": {
+      "src": "photos/episodes/italy/italy_03.jpg",
+      "w": 1280,
+      "h": 960
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/italy/italy_01.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_02.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_03.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/italy/italy_04.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_05.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/italy/italy_06.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_07.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_08.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_09.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/italy/italy_10.jpg",
+        "w": 1280,
+        "h": 960
+      },
+      {
+        "src": "photos/episodes/italy/italy_11.jpg",
+        "w": 960,
+        "h": 1280
+      },
+      {
+        "src": "photos/episodes/italy/italy_12.jpg",
+        "w": 960,
+        "h": 1280
+      }
+    ]
+  },
+  {
+    "id": "usa",
+    "name": "USA",
+    "label": "USA",
+    "date": "2026.06",
+    "iso": "840",
+    "cover": {
+      "src": "photos/episodes/usa/usa_01.jpg",
+      "w": 900,
+      "h": 1600
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/usa/usa_01.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_02.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/usa/usa_03.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_04.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_05.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_06.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/usa/usa_07.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_08.jpg",
+        "w": 1440,
+        "h": 1080
+      },
+      {
+        "src": "photos/episodes/usa/usa_09.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_10.jpg",
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "src": "photos/episodes/usa/usa_11.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/usa/usa_12.jpg",
+        "w": 900,
+        "h": 1600
+      }
+    ]
+  },
+  {
+    "id": "thailand",
+    "name": "Thailand",
+    "label": "Thailand",
+    "date": "2026.08",
+    "iso": "764",
+    "cover": {
+      "src": "photos/episodes/thailand/thailand_01.jpg",
+      "w": 1108,
+      "h": 1477
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/thailand/thailand_01.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_02.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_03.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_04.jpg",
+        "w": 1108,
+        "h": 1477
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_05.jpg",
+        "w": 1108,
+        "h": 1476
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_06.jpg",
+        "w": 1108,
+        "h": 1476
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_07.jpg",
+        "w": 1108,
+        "h": 1476
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_08.jpg",
+        "w": 1084,
+        "h": 1448
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_09.jpg",
+        "w": 1108,
+        "h": 1476
+      },
+      {
+        "src": "photos/episodes/thailand/thailand_10.jpg",
+        "w": 1476,
+        "h": 1108
+      }
+    ]
+  },
+  {
+    "id": "korea",
+    "name": "Korea",
+    "label": "Korea",
+    "date": "2026.09",
+    "iso": "410",
+    "cover": {
+      "src": "photos/episodes/korea/korea_01.jpg",
+      "w": 900,
+      "h": 1600
+    },
+    "photos": [
+      {
+        "src": "photos/episodes/korea/korea_01.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_02.jpg",
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "src": "photos/episodes/korea/korea_03.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_04.jpg",
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "src": "photos/episodes/korea/korea_05.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_06.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_07.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_08.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_09.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_10.jpg",
+        "w": 900,
+        "h": 1600
+      },
+      {
+        "src": "photos/episodes/korea/korea_11.jpg",
+        "w": 1600,
+        "h": 900
+      },
+      {
+        "src": "photos/episodes/korea/korea_12.jpg",
+        "w": 900,
+        "h": 1600
+      }
+    ]
+  }
+]

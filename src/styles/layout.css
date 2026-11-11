@@ -1,0 +1,99 @@
+/* ── SIDEBAR LAYOUT ── */
+body {
+  display: flex;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+.content-wrap {
+  margin-left: 160px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 160px;
+  height: 100vh;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 48px 32px 40px;
+  z-index: 100;
+  background: var(--bg);
+}
+
+.sidebar-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  margin-bottom: 48px;
+  line-height: 1.2;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+nav a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 9px 0;
+  position: relative;
+}
+nav a::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%; transform: translateY(-50%);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--text);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+nav a:hover { color: var(--text); }
+nav a.active { color: var(--text); }
+nav a.active::before { opacity: 1; }
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  padding: 64px 80px 80px;
+  min-width: 0;
+}
+
+/* text-heavy sections get a comfortable reading width */
+#about, #thoughts, #community {
+  max-width: 680px;
+}
+
+section { display: none; }
+section.active {
+  display: block;
+  animation: fadeUp 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE TOPBAR (kept for reference, activated below) ── */
+.mobile-topbar { display: none; }

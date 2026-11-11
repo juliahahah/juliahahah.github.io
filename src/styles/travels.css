@@ -1,0 +1,197 @@
+/* ── EPISODES ── */
+.ep-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,0.35) 0%,transparent 55%); }
+
+/* ── TRAVELS HEADER ── */
+.travels-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.travels-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.travels-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.ep-travels-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin-bottom: 24px;
+}
+.ep-country.ep-hidden { display: none; }
+
+/* ── EPISODES PHOTO GRID ── */
+.ep-photo-grid {
+  columns: 3;
+  column-gap: 4px;
+  display: none;
+}
+.ep-photo-grid.active {
+  display: block;
+}
+@media(max-width: 900px) { .ep-photo-grid { columns: 2; } }
+@media(max-width: 500px) { .ep-photo-grid { columns: 1; } }
+.ep-slot {
+  break-inside: avoid;
+  margin-bottom: 4px;
+  background: #f0eeeb;
+  overflow: hidden;
+  position: relative;
+}
+.ep-slot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  cursor: zoom-in;
+}
+.ep-slot:hover img { transform: scale(1.04); }
+.ep-slot img { opacity: 0; transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+.ep-slot img.is-loaded { opacity: 1; }
+
+
+/* ── EPISODES COVER GRID (All tab) ── */
+.ep-country-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+.ep-country { display: flex; flex-direction: column; }
+.ep-cover {
+  position: relative;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+  cursor: pointer;
+}
+.ep-cover img { width:100%; height:100%; object-fit:cover; display:block; }
+.ep-cover-info {
+  position: absolute;
+  bottom: 16px; left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+}
+.ep-cover-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: rgba(255,255,255,0.95);
+}
+.ep-cover-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* ── TRAVEL GLOBE ── */
+.globe-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 8px 14px 8px 10px;
+  background: none;
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.globe-toggle:hover,
+.globe-toggle.open { border-color: var(--text); color: var(--text); }
+.globe-toggle-icon {
+  width: 14px;
+  height: 14px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat,
+    radial-gradient(ellipse 35% 50% at center, transparent 92%, currentColor 94%, transparent 100%);
+}
+.globe-panel { margin-bottom: 28px; }
+.globe-panel[hidden] { display: none; }
+.globe-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.globe-stage canvas {
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+.globe-stage canvas:active { cursor: grabbing; }
+.globe-tip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 12px));
+  pointer-events: none;
+  padding: 6px 10px;
+  background: var(--text);
+  color: #fff;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.globe-tip[hidden] { display: none; }
+.globe-tip strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 400;
+}
+.globe-tip span {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+.globe-zoom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.globe-zoom button {
+  width: 28px;
+  height: 28px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--text2);
+  cursor: pointer;
+}
+.globe-zoom button:hover { border-color: var(--text); color: var(--text); }
+.globe-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.globe-count { color: var(--text); }
